@@ -4,10 +4,10 @@ Learn to direct Copilot App through a realistic Java development loop:
 **reproduce → plan → implement → inspect → verify**.
 
 Follow the [workshop handbook](https://www.julien-dubois.com/workshops/copilot-app/).
-This hands-on workshop covers a cart bug, generated removal
+This hands-on workshop covers fixing a cart bug, adding item removal
 and a Hibernate N+1 investigation through MCP. Parallel sessions and integration
-are required, followed by a Chronicle usage clinic after integration and a final
-handoff. Native App flows remain pilot gates.
+are required. After integrating the changes, use Chronicle to review your usage,
+then prepare a final handoff. The native App steps still need classroom validation.
 
 ## Create your own repository
 
@@ -29,7 +29,7 @@ Use JDK 21+, Git and a supported App account. No Docker, Node, external database
 or payment provider is needed. The three Java skills are already installed in
 `.github/skills/`.
 
-Run the baseline in your workshop session's terminal:
+Run the initial tests in your workshop session's terminal:
 
 ```sh
 ./mvnw -q -Dtest=BaselineTest test
@@ -54,17 +54,19 @@ customer data.
 1. Activate `teaching/CartContractTest.java`: 3 tests, 2 expected failures in the
    starter. Fix accumulated quantity and total, not just displayed text.
 2. Activate `teaching/RemoveContractTest.java`: generate DELETE
-   `/api/cart/items/{productId}`, a Remove button and tests. Existing line:
-   200 with updated cart and remaining item count; missing line: 404, no state
-   change, including a catalogue product that is not in the cart.
+   `/api/cart/items/{productId}`, a Remove button and tests. Removing an item
+   returns 200 with the updated cart and remaining item count. If the item is
+   not in the cart, return 404 without changing the cart, whether or not the
+   product exists in the catalogue.
 3. Activate `teaching/QueryContractTest.java`: inspect GET `/api/cart` through
    BootUI MCP for 8 distinct products. Tests measure the completed HTTP response
-   at 8 and 16 products; the query budget is 1 SELECT instead of 9 and 17.
+   at 8 and 16 products; each response should require 1 SELECT instead of 9 and 17.
 
 Ask Copilot to copy each acceptance file unchanged into
 `src/test/java/com/juliendubois/workshop/`, review the diff, then have Copilot
 commit it before fixing code.
-`teaching/` keeps future tests out of Maven discovery; it is not application code.
+Maven does not run tests in `teaching/`; copying them into `src/test/java/`
+adds them to the test suite.
 Do not weaken the tests. Keep bug, feature and query changes separately reviewed.
 
 ```sh
@@ -72,30 +74,32 @@ Do not weaken the tests. Keep bug, feature and query changes separately reviewed
 ```
 
 The final suite has 12 tests. CI runs all activated tests on pushes and PRs.
-Your baseline CI can be green while the known bug still exists.
+Passing the four initial tests does not mean the known cart bug is fixed.
 
 ## Skills, MCP and Chronicle
 
 `java-junit`, `spring-boot-testing` and `java-hibernate-jpa` are complete pinned
-Awesome Copilot skills with references and provenance. Invoke only the guidance
+Awesome Copilot skills with references and source records. Use only the guidance
 relevant to the task. Their general recommendations never override the workshop's
 H2-only, no-Docker stack; do not introduce Testcontainers or replace H2.
 
 The `.github/mcp.json` endpoint is loopback-only. BootUI runs normally with masked
 values; this workshop uses it only through the two configured diagnostic tools.
-No dashboard tour is required. The human owns the running JVM and restart.
+You do not need to use the dashboard. You control the running app and restart it
+when needed.
 
 Use `/chronicle` in Copilot App to investigate your named workshop sessions,
-identify avoidable usage and choose one improvement. Scope and review results
-before sharing. Do not equate missing accounting data, usage multipliers or byte
-counts with tokens or dollars.
+identify avoidable usage and choose one improvement. Before running it, limit the
+analysis to those sessions and check what data will be accessed. Review the
+results for private information before sharing. Missing usage data is unknown,
+not zero; usage multipliers and byte counts are not token counts or dollar costs.
 
 ## Reference solutions
 
 This repository is the **only source of sample code and reference solutions**.
 There are no maintained source ZIPs or copies in the website repository.
 
-| Versioned tag | State | Green tests |
+| Versioned tag | State | Passing tests |
 |---|---|---:|
 | [`v2-start`](https://github.com/jdubois/copilot-shopping-cart-workshop/tree/v2-start) | Intentionally broken starter | 4 |
 | [`v2-bugfix`](https://github.com/jdubois/copilot-shopping-cart-workshop/tree/v2-bugfix) | Repeated additions fixed | 7 |
@@ -107,8 +111,9 @@ project directories. The `v1-*` tags and `reference/v1` remain unchanged for old
 workshops. Review each ticket's diff, then the
 [whole change from starter to final](https://github.com/jdubois/copilot-shopping-cart-workshop/compare/v2-start...v2-performance):
 check application behavior, activated tests and the Remove button together, not
-just the last performance commit. For labelled recovery, ask your facilitator.
-Preserve your original project and mark reference work honestly.
+just the last performance commit. If you need help restarting from a reference
+checkpoint, ask your facilitator. Keep your original project and distinguish
+results from the reference solution from results you verified in your own work.
 
 ## Maintainers
 
@@ -124,12 +129,13 @@ git clone --branch v2-bugfix --single-branch https://github.com/jdubois/copilot-
 
 This clone starts in detached HEAD. Create a local branch to continue editing;
 its `origin` points to the template, not the participant's repository. Do not push
-to the template. Preserve the participant's original project and label the recovery.
+to the template. Preserve the participant's original project and record which
+reference checkpoint was used.
 
-The reference gate loads `tools/checkpoint-pins.json` from current `main` and
+The checkpoint verifier loads `tools/checkpoint-pins.json` from current `main` and
 verifies every published checkpoint tag and reference tip against its expected
-full commit SHA before running tests. It does not trust a tag just because Git
-can resolve it. Use a current maintainer checkout with all published refs:
+full commit SHA before running tests. Use a current maintainer checkout with all
+published refs:
 
 ```sh
 git fetch origin main 'refs/heads/reference/*:refs/remotes/origin/reference/*' --tags
@@ -147,7 +153,7 @@ than updating the manifest to match an unexpected remote value.
 Python is maintainer-only. The verifier uses temporary Git worktrees and changes
 neither your current checkout nor tags. Receipts and per-check logs are written
 under `target/checkpoint-checks/`. The seven checks execute 4, 3, 7, 3, 10, 2 and
-12 tests with respectively 0, 2, 0, 2, 0, 2 and 0 intended assertion failures,
+12 tests with respectively 0, 2, 0, 2, 0, 2 and 0 expected assertion failures,
 and no errors or skips. Reference CI runs only in the template
 repository; participant repositories run the normal Maven suite.
 `tools/vendor-skills.py` intentionally refreshes the pinned complete skill folders.
