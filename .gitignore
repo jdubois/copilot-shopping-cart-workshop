@@ -1,0 +1,6 @@
+/target/
+/.workshop/
+/.idea/
+/.jdtls-workspace/
+*.log
+.env
