@@ -3,6 +3,7 @@
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import tempfile
@@ -56,16 +57,50 @@ def git(*args):
     return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True).strip()
 
 
+def verify_revision(ref, expected):
+    if not isinstance(expected, str) or re.fullmatch(r"[0-9a-f]{40}", expected) is None:
+        raise RuntimeError(f"Invalid expected commit SHA in checkpoint pins: {ref}")
+    result = subprocess.run(
+        ["git", "-C", str(ROOT), "rev-parse", "--verify", f"{ref}^{{commit}}"],
+        text=True, capture_output=True, check=False)
+    if result.returncode:
+        raise RuntimeError(f"Missing published ref {ref}; fetch all checkpoint tags and reference branches")
+    actual = result.stdout.strip()
+    if actual != expected:
+        raise RuntimeError(f"Published ref moved: {ref}: expected {expected}, found {actual}")
+
+
+def verify_pins():
+    pins = json.loads((ROOT / "tools/checkpoint-pins.json").read_text())
+    for tag, expected in pins["checkpoints"].items():
+        verify_revision(f"refs/tags/{tag}", expected)
+    for branch, expected in pins["references"].items():
+        refs = [ref for ref in (f"refs/heads/{branch}", f"refs/remotes/origin/{branch}")
+                if subprocess.run(["git", "-C", str(ROOT), "show-ref", "--verify", "--quiet", ref],
+                                  check=False).returncode == 0]
+        if not refs:
+            raise RuntimeError(f"Missing published reference branch {branch}; fetch reference branches")
+        for ref in refs:
+            verify_revision(ref, expected)
+    for stage in STAGES:
+        tag = f"{pins['edition']}-{stage}"
+        if tag not in pins["checkpoints"]:
+            raise RuntimeError(f"Missing active checkpoint pin: {tag}")
+    return pins
+
+
 def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
+    (OUTPUT / "manifest.json").unlink(missing_ok=True)
+    pins = verify_pins()
     checks = []
     revisions = {}
     with tempfile.TemporaryDirectory(prefix="cart-checkpoints-") as directory:
         projects = {}
         try:
             for stage in STAGES:
-                tag = f"v1-{stage}"
-                revision = git("rev-parse", f"{tag}^{{commit}}")
+                tag = f"{pins['edition']}-{stage}"
+                revision = pins["checkpoints"][tag]
                 project = Path(directory) / tag
                 subprocess.run(["git", "-C", str(ROOT), "worktree", "add", "--detach",
                                 str(project), revision], check=True, stdout=subprocess.DEVNULL)
@@ -76,8 +111,11 @@ def main():
                     if hashlib.sha256((project / ".github/skills" / name).read_bytes()).hexdigest() != digest:
                         raise RuntimeError(f"Skill provenance mismatch: {tag}/{name}")
                 for name in ("CartContractTest", "RemoveContractTest", "QueryContractTest"):
+                    teaching = project / "teaching" / f"{name}.java"
+                    if teaching.read_bytes() != (ROOT / "teaching" / f"{name}.java").read_bytes():
+                        raise RuntimeError(f"Teaching test changed between checkpoints: {tag}/{name}")
                     activated = project / TESTS / f"{name}.java"
-                    if activated.exists() and activated.read_bytes() != (project / "teaching" / f"{name}.java").read_bytes():
+                    if activated.exists() and activated.read_bytes() != teaching.read_bytes():
                         raise RuntimeError(f"Acceptance test changed: {tag}/{name}")
 
             start, fixed, feature, optimized = (projects[stage] for stage in STAGES)
@@ -105,7 +143,8 @@ def main():
             for project in projects.values():
                 subprocess.run(["git", "-C", str(ROOT), "worktree", "remove", "--force", str(project)], check=True)
     (OUTPUT / "manifest.json").write_text(json.dumps({
-        "edition": "v1", "revisions": revisions, "checks": checks
+        "edition": pins["edition"], "verifierRevision": git("rev-parse", "HEAD"),
+        "pins": pins, "revisions": revisions, "checks": checks
     }, indent=2) + "\n")
 
 
