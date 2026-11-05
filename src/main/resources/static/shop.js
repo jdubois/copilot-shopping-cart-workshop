@@ -28,6 +28,13 @@ function renderCart(cart) {
     quantity.textContent = `Quantity ${item.quantity} × ${money(item.priceCents)}`;
     const actions = document.createElement('div');
     actions.className = 'actions';
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.textContent = 'Remove';
+    remove.setAttribute('aria-label', `Remove ${item.name}`);
+    remove.addEventListener('click', () =>
+      changeCart('DELETE', `/api/cart/items/${item.productId}`));
+    actions.append(remove);
     row.append(name, total, quantity, actions);
     return row;
   });

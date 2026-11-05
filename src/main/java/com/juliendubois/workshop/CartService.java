@@ -39,6 +39,15 @@ public class CartService {
     }
 
     @Transactional
+    public CartView remove(long productId) {
+        var item = repository.findById(productId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart item not found"));
+        repository.delete(item);
+        repository.flush();
+        return cart();
+    }
+
+    @Transactional
     public CartView add(Long productId, Integer quantity) {
         if (productId == null || quantity == null || quantity < 1 || quantity > 99) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Quantity must be between 1 and 99");
