@@ -17,17 +17,26 @@ Leave **Include all branches** off: `main` contains the intentionally broken
 starter. Your new repository has independent history and does not inherit the
 solution tags.
 
-Clone your new repository, not the template, then open it in Copilot App.
+In Copilot App, click **+** next to **Sessions** in the sidebar, then
+**Add GitHub repository**. Choose your new repository, not the template; the App
+clones it for you. Start a session in that repository with **Environment → This
+computer** and **Workspace → New worktree**.
+
+Let Copilot handle Git bookkeeping for branches, commits and integration.
+Review the **Changes** diff before authorizing commits or integration.
+You do not need to type Git commands for the workshop.
 Use JDK 21+, Git and a supported App account. No Docker, Node, external database
 or payment provider is needed. The three Java skills are already installed in
 `.github/skills/`.
+
+Run the baseline in your workshop session's terminal:
 
 ```sh
 ./mvnw -q -Dtest=BaselineTest test
 ```
 
 Four baseline tests pass, but adding the same product twice is not covered.
-From your own repository directory, start one shop. Stop any previous workshop
+In that session's worktree terminal, start one shop. Stop any previous workshop
 server before starting another:
 
 ```sh
@@ -52,8 +61,9 @@ customer data.
    BootUI MCP for 8 distinct products. Tests measure the completed HTTP response
    at 8 and 16 products; the query budget is 1 SELECT instead of 9 and 17.
 
-Copy each acceptance file unchanged into
-`src/test/java/com/juliendubois/workshop/`, review and commit it before fixing code.
+Ask Copilot to copy each acceptance file unchanged into
+`src/test/java/com/juliendubois/workshop/`, review the diff, then have Copilot
+commit it before fixing code.
 `teaching/` keeps future tests out of Maven discovery; it is not application code.
 Do not weaken the tests. Keep bug, feature and query changes separately reviewed.
 
@@ -97,22 +107,24 @@ project directories. The `v1-*` tags and `reference/v1` remain unchanged for old
 workshops. Review each ticket's diff, then the
 [whole change from starter to final](https://github.com/jdubois/copilot-shopping-cart-workshop/compare/v2-start...v2-performance):
 check application behavior, activated tests and the Remove button together, not
-just the last performance commit. Clone a tag into a separate directory for
-labelled recovery:
-
-```sh
-git clone --branch v2-bugfix --single-branch https://github.com/jdubois/copilot-shopping-cart-workshop.git cart-reference-bugfix
-```
-
-This clone starts in detached HEAD. Create a local branch to continue editing;
-its `origin` points to the template, not your personal repository. Do not push to
-the template. Preserve your original project and mark reference work honestly.
+just the last performance commit. For labelled recovery, ask your facilitator.
+Preserve your original project and mark reference work honestly.
 
 ## Maintainers
 
 Java 21 baseline, Spring Boot 4.1.2, BootUI 2.3.0, Maven wrapper 3.9.9.
 Skills are pinned to `7e408815ddcb64889a3683799a85399331cfd4ef`.
 See `NOTICE.md` and `.github/skills/provenance.json`.
+
+For facilitator-led recovery, clone a tag into a separate directory:
+
+```sh
+git clone --branch v2-bugfix --single-branch https://github.com/jdubois/copilot-shopping-cart-workshop.git cart-reference-bugfix
+```
+
+This clone starts in detached HEAD. Create a local branch to continue editing;
+its `origin` points to the template, not the participant's repository. Do not push
+to the template. Preserve the participant's original project and label the recovery.
 
 The reference gate loads `tools/checkpoint-pins.json` from current `main` and
 verifies every published checkpoint tag and reference tip against its expected
