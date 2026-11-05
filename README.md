@@ -27,14 +27,15 @@ or payment provider is needed. The three Java skills are already installed in
 ```
 
 Four baseline tests pass, but adding the same product twice is not covered.
-Start one shop; the command derives its revision from the current commit:
+From your own repository directory, start one shop. Stop any previous workshop
+server before starting another:
 
 ```sh
-./mvnw spring-boot:run "-Dspring-boot.run.arguments=--workshop.revision=$(git rev-parse HEAD)"
+./mvnw spring-boot:run
 ```
 
 Open http://127.0.0.1:18765. Add the €10 Notebook twice: the starter incorrectly
-shows quantity 1 / €10 instead of 2 / €20. `GET /api/workshop` returns revision/PID.
+shows quantity 1 / €10 instead of 2 / €20.
 Restarting or using Reset cart clears synthetic data. Windows: `.\mvnw.cmd`.
 The code is intentionally defective and local-only; do not deploy it or use real
 customer data.
