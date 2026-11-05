@@ -24,14 +24,13 @@ or payment provider is needed. The three Java skills are already installed in
 
 ```sh
 ./mvnw -q -Dtest=BaselineTest test
-git rev-parse HEAD
 ```
 
 Four baseline tests pass, but adding the same product twice is not covered.
-Record your SHA, then start one shop:
+Start one shop; the command derives its revision from the current commit:
 
 ```sh
-./mvnw spring-boot:run -Dspring-boot.run.arguments=--workshop.revision=YOUR_SHA
+./mvnw spring-boot:run "-Dspring-boot.run.arguments=--workshop.revision=$(git rev-parse HEAD)"
 ```
 
 Open http://127.0.0.1:18765. Add the €10 Notebook twice: the starter incorrectly
