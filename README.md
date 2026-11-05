@@ -4,7 +4,7 @@ Learn to direct Copilot App through a realistic Java development loop:
 **reproduce → plan → implement → inspect → verify**.
 
 Follow the [workshop handbook](https://www.julien-dubois.com/workshops/copilot-app/).
-This single three-hour hands-on workshop covers a cart bug, generated removal
+This hands-on workshop covers a cart bug, generated removal
 and a Hibernate N+1 investigation through MCP. Parallel sessions and integration
 are required, followed by a Chronicle usage clinic after integration and a final
 handoff. Native App flows remain pilot gates.
