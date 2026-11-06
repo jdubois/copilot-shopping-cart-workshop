@@ -4,10 +4,13 @@ Learn to direct Copilot App through a realistic Java development loop:
 **reproduce → plan → implement → inspect → verify**.
 
 Follow the [workshop handbook](https://www.julien-dubois.com/workshops/copilot-app/).
-This hands-on workshop covers fixing a cart bug, adding item removal
-and a Hibernate N+1 investigation through MCP. Parallel sessions and integration
-are required. After integrating the changes, use Chronicle to review your usage,
-then prepare a final handoff. The native App steps still need classroom validation.
+Start with a cart bug, item removal and a Hibernate N+1 investigation through
+MCP, then improve the UI with Browser/Canvas, integrate two isolated worktree
+improvements with Agent Merge and independently critique the result. A fourth
+ticket uses exactly five specialists to build checkout; their orchestrator
+delivers it to **your repository's `main`** after your approval. Use Chronicle to
+review workshop usage and prepare the final handoff. The native App steps still
+need classroom validation.
 
 ## Create your own repository
 
@@ -45,11 +48,14 @@ server before starting another:
 
 Open http://127.0.0.1:18765. Add the €10 Notebook twice: the starter incorrectly
 shows quantity 1 / €10 instead of 2 / €20.
+Opening a Browser canvas does not restart the server or change its revision.
+You own the single persistent server and its restart: for final verification,
+run the accepted, merged `main` revision, not an earlier worktree build.
 Restarting or using Reset cart clears synthetic data. Windows: `.\mvnw.cmd`.
 The code is intentionally defective and local-only; do not deploy it or use real
 customer data.
 
-## Three separate tickets
+## First three separate tickets
 
 1. Activate `teaching/CartContractTest.java`: 3 tests, 2 expected failures in the
    starter. Fix accumulated quantity and total, not just displayed text.
@@ -73,8 +79,47 @@ Do not weaken the tests. Keep bug, feature and query changes separately reviewed
 ./mvnw -q -Dtest=BaselineTest,CartContractTest,RemoveContractTest,QueryContractTest test
 ```
 
-The final suite has 12 tests. CI runs all activated tests on pushes and PRs.
-Passing the four initial tests does not mean the known cart bug is fixed.
+These three tickets bring the supplied suite to 12 tests, not the final workshop
+total. Generated boundary and checkout tests add cases alongside the unchanged
+contracts. CI runs all activated tests on pushes and PRs. Passing the four
+initial tests does not mean the known cart bug is fixed.
+
+## UI, parallel improvements and checkout delivery
+
+Follow the handbook's acceptance cards for Browser/Canvas UI work, then two
+bounded improvements in isolated worktree sessions. Review each diff and grant
+scoped permission before using Agent Merge to integrate its PR. Independently
+critique the integrated result and add boundary tests without weakening the
+supplied contracts.
+
+For the fourth ticket, use the existing orchestrator session with **exactly five
+bounded specialists**: Order model, Checkout service, REST API, UI and Acceptance
+tests. Agree their interfaces and file ownership before implementation; each
+specialist returns its changes and evidence to the orchestrator, not a separate
+checkout PR. The orchestrator owns integration and the full test suite:
+
+```sh
+./mvnw -q test
+```
+
+Checkout is a synthetic order-and-receipt exercise: no payment provider,
+authentication or personal/customer data. Keep integer cents, server-owned prices,
+quantities of 1–99 including accumulated quantities, and the existing cart contracts.
+The supplied starter has no checkout implementation or checkout acceptance file;
+generate those tests from the fourth ticket's acceptance card.
+
+Review the final integrated diff and explicitly authorize publishing and merging
+this checkout delivery. Only then does the orchestrator commit and push one
+checkout branch, open one PR targeting **your repository's `main`**, and address
+CI and review feedback within the approved scope. It squash-merges only with
+passing checks and required approvals, reruns the full suite on postmerge `main`,
+and verifies checkout and the receipt in the running app at that merged revision
+after your restart. Do not reuse or retarget the earlier worker PRs.
+
+Feature-branch tests or offline changes are not a merge. If publishing, approval,
+checks, merging or runtime verification is blocked, preserve the work and mark
+delivery incomplete. The reusable template's `main` stays intentionally unsolved;
+only the participant's `main` should finish with the completed app.
 
 ## Skills, MCP and Chronicle
 
@@ -90,9 +135,10 @@ when needed.
 
 Use `/chronicle` in Copilot App to investigate your named workshop sessions,
 identify avoidable usage and choose one improvement. Before running it, limit the
-analysis to those sessions and check what data will be accessed. Review the
-results for private information before sharing. Missing usage data is unknown,
-not zero; usage multipliers and byte counts are not token counts or dollar costs.
+analysis to those sessions and an explicit time range, and check what data will
+be accessed. Review the results for private information before sharing. Missing
+usage data is unknown, not zero; usage multipliers and byte counts are not token
+counts or dollar costs.
 
 ## Reference solutions
 
@@ -106,10 +152,12 @@ There are no maintained source ZIPs or copies in the website repository.
 | [`v2-feature`](https://github.com/jdubois/copilot-shopping-cart-workshop/tree/v2-feature) | Removal implemented | 10 |
 | [`v2-performance`](https://github.com/jdubois/copilot-shopping-cart-workshop/tree/v2-performance) | N+1 fixed | 12 |
 
-These are commits in one reference history on `reference/v2`, not duplicated
+These immutable checkpoints cover only the first three tickets and their 12
+supplied tests, not the expanded curriculum, generated boundary tests or checkout.
+They are commits in one reference history on `reference/v2`, not duplicated
 project directories. The `v1-*` tags and `reference/v1` remain unchanged for older
 workshops. Review each ticket's diff, then the
-[whole change from starter to final](https://github.com/jdubois/copilot-shopping-cart-workshop/compare/v2-start...v2-performance):
+[whole change across the first three tickets](https://github.com/jdubois/copilot-shopping-cart-workshop/compare/v2-start...v2-performance):
 check application behavior, activated tests and the Remove button together, not
 just the last performance commit. If you need help restarting from a reference
 checkpoint, ask your facilitator. Keep your original project and distinguish
