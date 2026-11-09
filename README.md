@@ -52,8 +52,15 @@ URL using the bound port and configured paths, or marks BootUI as disabled.
 Open http://127.0.0.1:18765. Add the €10 Notebook twice: the starter incorrectly
 shows quantity 1 / €10 instead of 2 / €20.
 Opening a Browser canvas does not restart the server or change its revision.
-You own the single persistent server and its restart: for final verification,
-run the accepted, merged `main` revision, not an earlier worktree build.
+After approved UI edits, Copilot confirms the shop runs from its worktree, runs
+`./mvnw compile` there to copy static resources, then reloads the existing Browser
+canvas and verifies the visible change. Static edits do not need a JVM restart;
+compiled Java changes can trigger DevTools auto-restart. Saving source alone
+does not update the running app. Copilot reports any ownership, compilation or
+browser-control blocker rather than claiming the preview was refreshed.
+You own the single persistent server and manual restarts for switching runtime
+worktrees or recovery: for final verification, run the accepted, merged `main`
+revision, not an earlier worktree build.
 Restarting or using Reset cart clears synthetic data. Windows: `.\mvnw.cmd`.
 The code is intentionally defective and local-only; do not deploy it or use real
 customer data.
