@@ -10,7 +10,25 @@ This is a synthetic local training app, not a production shop.
 - Run all Maven commands below from the repository root.
 - Application (human-run): `./mvnw spring-boot:run`, then open
   http://127.0.0.1:18765. Stop any previous workshop server first; agents must
-  not start or restart the persistent app.
+  not start, stop, kill or manually restart the persistent app.
+- After approved static UI changes (including Impeccable edits), refresh the
+  preview yourself; do not ask the human to compile or refresh routinely.
+  First confirm that this worktree owns the existing human-run shop; a matching
+  URL alone does not establish ownership. If ownership is unknown or the shop
+  runs from another checkout, report the limitation and leave it untouched.
+  Otherwise run `./mvnw compile` from this worktree's repository root. Maven
+  copies static resources into `target/classes`; DevTools normally excludes
+  static assets from backend restart, so do not force a JVM restart.
+  After successful compilation, reload the EXISTING Browser canvas using its
+  navigation/reload action when available, then inspect the page or screenshot
+  to verify the visible change. Reuse its instance; do not open a replacement.
+  Compilation is not a browser refresh, and saving source alone is not enough.
+  Compiled Java changes can trigger DevTools auto-restart and clear synthetic
+  data; that automatic restart is allowed, but is unnecessary for static edits.
+  If compilation fails, browser control is unavailable or the change is not
+  visible, report the limitation; do not claim a restart or visible verification.
+  Switching runtime worktrees or explicit recovery still requires a human-run
+  restart. Do not add a watcher, LiveReload script or dependencies.
 - Baseline: `./mvnw -Dtest=BaselineTest test` (4 tests).
 - Full suite: `./mvnw test` (all currently activated tests, including any
   additional tests in `src/test/java/`).
@@ -39,7 +57,8 @@ This is a synthetic local training app, not a production shop.
 - BootUI is only used through MCP for the N+1 exercise: bounded
   `get_live_activity` and `get_request_profile` reads. No dashboard tour or scan.
 - Tests use random ports and isolated H2. The human owns the ONE persistent
-  app on loopback port 18765 and its revision/restart.
+  app on loopback port 18765, its runtime worktree and manual lifecycle;
+  compilation/DevTools auto-restart and canvas reload follow the rules above.
 - Chronicle analysis must explicitly scope the workshop sessions and time range.
   Do not inspect unrelated history, publish private transcripts, invent missing
   token/cache/cost fields or equate usage multipliers with billed currency.
