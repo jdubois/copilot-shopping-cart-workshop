@@ -837,6 +837,7 @@ class WorkshopScheduleTests(unittest.TestCase):
         for text in ["Make this Remove button more compact",
                      "use the existing secondary theme color",
                      "not Add to cart's primary styling",
+                     'Use a real <button type="button"> with secondary button styling, not a link',
                      "Keep its label, accessibility and whole-line DELETE behavior",
                      "visible keyboard focus", "usable click/tap target",
                      "If it already meets these criteria",
