@@ -443,7 +443,7 @@ class WorkshopScheduleTests(unittest.TestCase):
         parallel = re.sub(r"\s+", " ", chapter("parallel"))
         for text in ["**Copilot App UI**", "**New worktree**",
                      "Both sessions may edit the same files",
-                     "Both sessions start from that same published version"]:
+                     "Both sessions will start from that same published version"]:
             self.assertIn(text, parallel)
         self.assertNotIn("AGENTS.md", parallel)
         self.assertNotIn("Update only the collaboration rule", parallel)
@@ -984,13 +984,13 @@ class WorkshopScheduleTests(unittest.TestCase):
                 "The quantity, removal-and-Canvas and MCP PRs must be merged before continuing",
                 "/tools/#publish-the-reviewed-result",
                 "Use the updated **`main`** verified at the end",
-                "If you already created the sessions from an older baseline, keep them",
-                "preserving local work and asking before resolving conflicts",
                 "**`main` as the base branch** for both",
-                "**do not have both edit `main` directly**",
+                "Each session will work in its own worktree on a separate branch",
+                "**`main` unchanged until its PR is merged**",
                 "main not updated: local recovery used"]:
             with self.subTest(requirement=text):
                 self.assertIn(text, prose)
+        self.assertNotIn("If you already created the sessions from an older baseline", prose)
         self.assertNotIn("open one PR targeting main for the three completed tickets", prose)
         self.assertNotIn("push the reviewed changes to main", prose)
         introduction = parallel.split("## Create two sessions from main", 1)[1].split(

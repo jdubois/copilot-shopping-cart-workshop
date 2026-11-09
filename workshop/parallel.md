@@ -20,19 +20,13 @@ The quantity, removal-and-Canvas and MCP PRs must be merged before continuing.
 Use the updated **`main`** verified at the end of the
 [MCP chapter]({{ site.baseurl }}/tools/#publish-the-reviewed-result).
 
-In the **Copilot App UI**, create two project sessions with **isolated worktrees**.
-Choose **New worktree** for each and select **`main` as the base branch** for both.
-Send the corresponding task prompt below to start each session, then rename it
-once the conversation has started.
-Both sessions start from that same published version. Keep each on its own
-branch; **do not have both edit `main` directly**.
-
-If you already created the sessions from an older baseline, keep them and ask
-Copilot to update their branches from the verified `origin/main`, preserving
-local work and asking before resolving conflicts.
-
-If the MCP handoff could not be published, use the
-[local recovery steps](#local-recovery) instead of claiming `main` is updated.
+In this exercise, you will create two project sessions with **isolated worktrees**
+in the **Copilot App UI**. You will choose **New worktree** for each and select
+**`main` as the base branch** for both. You will send the corresponding task prompt
+below to start each session, then rename it once the conversation has started.
+Both sessions will start from that same published version. Each session will work
+in its own worktree on a separate branch, leaving **`main` unchanged until its PR
+is merged**.
 
 <figure>
   <a href="{{ site.baseurl }}/assets/illustration-parallel-worktrees.svg" target="_blank"><img src="{{ site.baseurl }}/assets/illustration-parallel-worktrees.svg" alt="Two App sessions start from the same reviewed main in separate worktrees and may edit the same files. Merge the reviewed UI PR first, use Agent Merge to reconcile the second PR, review any conflict resolutions, then verify the combined application." width="1440" height="820" loading="lazy"></a>
