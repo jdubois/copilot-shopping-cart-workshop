@@ -5,8 +5,12 @@ This is a synthetic local training app, not a production shop.
 - Use the Maven wrapper, Java 21+, existing Spring Boot/H2/JUnit stack and vanilla
   JS. No Docker, dependencies, upgrades, agents, checkout or authentication.
 - Each task has its own acceptance card. Do not combine the bug, removal feature
-  and query optimization into one unreviewable change. Keep sequential exercises
-  in the same existing session and branch, with a separate commit per exercise.
+  and query optimization into one unreviewable change. Use one named session
+  and reviewed PR per task, starting from the previous task's verified merged
+  main. Removal and Canvas polish share one PR. Create the two later parallel
+  sessions manually; they may edit the same files. Merge the UI PR first and
+  authorize the test PR separately. Continue review and explicitly authorized
+  mock checkout in Cart: boundary tests.
 - Run all Maven commands below from the repository root.
 - Application (human-run): `./mvnw spring-boot:run`, then open
   http://127.0.0.1:18765. Stop any previous workshop server first; agents must

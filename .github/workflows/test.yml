@@ -26,7 +26,7 @@ jobs:
           name: test-reports
           path: target/surefire-reports
   reference-contracts:
-    if: github.repository == 'jdubois/copilot-shopping-cart-workshop'
+    if: github.repository == 'jdubois/github-copilot-app-java-workshop'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
