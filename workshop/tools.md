@@ -60,8 +60,16 @@ is preinstalled. Its MCP configuration is included in `.github/mcp.json`:
 }
 ```
 
-Use **Customize → MCP** to review and trust the repository's MCP configuration,
-then reload it if prompted. If the endpoint is missing, add it there.
+In Copilot App's sidebar, right-click your **cart-workshop** project and select
+**Settings**. Open **Repository customizations → MCP servers** and review
+`bootui-shopping-cart`. Review and trust the repository's MCP configuration,
+then reload it if prompted. If the server is missing, check that
+`.github/mcp.json` is present in this session's worktree before reloading the
+repository configuration.
+
+The server is already configured for this repository; you do not need to
+install another one. See the
+[Copilot App MCP documentation](https://docs.github.com/en/copilot/how-tos/github-copilot-app/customize-github-copilot-app#configuring-mcp-servers).
 No VS Code configuration, public tunnel or extra MCP server is needed.
 
 Ask Copilot:

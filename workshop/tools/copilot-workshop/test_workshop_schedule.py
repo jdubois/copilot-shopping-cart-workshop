@@ -342,11 +342,15 @@ class WorkshopScheduleTests(unittest.TestCase):
         self.assertNotIn("get_live_activity", setup)
         self.assertIn("MCP setup comes later", setup)
         tools = chapter("tools")
-        steps = ["## Connect runtime tools", "**Customize → MCP**",
+        steps = ["## Connect runtime tools", "right-click your **cart-workshop** project",
+                 "**Settings**", "**Repository customizations → MCP servers**",
                  'query: "/api/cart" and limit: 1',
                  "## Reproduce the same workload", "## Ask Copilot for evidence"]
         positions = [tools.index(text) for text in steps]
         self.assertEqual(positions, sorted(positions))
+        self.assertNotIn("**Customize → MCP**", tools)
+        self.assertIn("you do not need to\ninstall another one", tools)
+        self.assertIn("customize-github-copilot-app#configuring-mcp-servers", tools)
         self.assertIn('"bootui-shopping-cart": {', tools)
         self.assertNotIn('"shopping-cart": {', tools)
         self.assertIn('"url": "http://127.0.0.1:18765/bootui/api/mcp"', tools)
