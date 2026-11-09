@@ -46,6 +46,19 @@ server before starting another:
 ./mvnw spring-boot:run
 ```
 
+Spring Boot DevTools restarts this development process when compiled classes
+change; saving a Java source file alone is not enough. After editing, build in
+your IDE or run this in a second terminal in the **same worktree**:
+
+```sh
+./mvnw -q compile
+```
+
+This also copies changed HTML, CSS and JavaScript into the runtime classpath;
+refresh the browser to see those changes. Java restarts clear the in-memory
+cart. DevTools is an optional runtime dependency and is excluded from the
+packaged executable jar by the Spring Boot Maven plugin.
+
 Open http://127.0.0.1:18765. Add the €10 Notebook twice: the starter incorrectly
 shows quantity 1 / €10 instead of 2 / €20.
 Opening a Browser canvas does not restart the server or change its revision.
