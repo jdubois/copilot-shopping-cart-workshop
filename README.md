@@ -60,38 +60,48 @@ customer data.
 
 ## First three separate tickets
 
-1. Activate `teaching/CartContractTest.java`: 3 tests, 2 expected failures in the
-   starter. Fix accumulated quantity and total, not just displayed text.
-2. Activate `teaching/RemoveContractTest.java`: generate DELETE
-   `/api/cart/items/{productId}`, a Remove button and tests. Removing an item
+1. Generate `CartContractTest.java` from agreed quantity acceptance criteria.
+   Repeated additions must accumulate quantity and total without duplicating
+   lines; quantities, including accumulated quantities, must stay within 1–99.
+   Rejected additions must preserve the cart. Fix persisted state, not just
+   displayed text.
+2. Use `/spring-boot-testing` to generate `RemoveContractTest.java` from agreed
+   removal acceptance criteria before implementing DELETE
+   `/api/cart/items/{productId}` and a Remove button. Removing an item
    returns 200 with the updated cart and remaining item count. If the item is
    not in the cart, return 404 without changing the cart, whether or not the
    product exists in the catalogue.
-3. Activate `teaching/QueryContractTest.java`: inspect GET `/api/cart` through
-   BootUI MCP for 8 distinct products. Tests measure the completed HTTP response
-   at 8 and 16 products; each response should require 1 SELECT instead of 9 and 17.
+3. Inspect GET `/api/cart` through BootUI MCP for 8 distinct products. Generate
+   `QueryContractTest.java` before optimizing: completed HTTP GET `/api/cart`
+   responses with 8 and 16 distinct products must each use exactly 1 SELECT
+   after the fix, instead of the starter's 9 and 17. Exclude all seeding/setup
+   SELECTs from measurement. Assert that product names, server-owned prices,
+   quantities, line totals, item count and cart total are preserved. Do not use
+   global eager loading or add dependencies.
 
-Ask Copilot to copy each acceptance file unchanged into
-`src/test/java/com/juliendubois/workshop/`, review the diff, then have Copilot
-commit it before fixing code.
-Maven does not run tests in `teaching/`; copying them into `src/test/java/`
-adds them to the test suite.
-Do not weaken the tests. Keep bug, feature and query changes separately reviewed.
+Ask Copilot to generate each acceptance file in
+`src/test/java/com/juliendubois/workshop/`, reusing `HttpFixture` and the existing
+Spring Boot/H2/JUnit stack. Review its assertions against the acceptance card and
+observe the intended failures before fixing code. The starter deliberately has
+no ready-made `teaching/` answer tests. Generated test counts vary; do not replace
+reviewed generated assertions with historical references or weaken them to pass.
+Keep bug, feature and query changes separately reviewed, with a separate commit
+per exercise.
 
 ```sh
 ./mvnw -q -Dtest=BaselineTest,CartContractTest,RemoveContractTest,QueryContractTest test
 ```
 
-These three tickets bring the supplied suite to 12 tests, not the final workshop
-total. Generated boundary and checkout tests add cases alongside the unchanged
-contracts. CI runs all activated tests on pushes and PRs. Passing the four
-initial tests does not mean the known cart bug is fixed.
+Run that selector once all three contracts exist; use each contract's selector
+as it is generated. Generated boundary and checkout tests add cases alongside
+the reviewed contracts. CI runs all activated tests on pushes and PRs. Passing
+the four initial tests does not mean the known cart bug is fixed.
 
 Current `main` also runs two `QuantityInputTest` regressions: fractional JSON
 quantities must return 400 without creating an item or changing an existing cart.
-The full starter suite therefore has six tests; the explicit chapter commands
-and original 12 supplied cases keep their counts. Integer-input hardening and
-keyboard focus-ring spacing do not solve the quantity, removal or query tickets.
+Four `StartupLogTest` cases also cover the startup links, so the full starter
+suite has ten tests. Integer-input hardening and keyboard focus-ring spacing do
+not solve the quantity, removal or query tickets.
 
 ## UI, parallel improvements and checkout delivery
 
@@ -99,7 +109,7 @@ Follow the handbook's acceptance cards for Browser/Canvas UI work, then two
 bounded improvements in isolated worktree sessions. Review each diff and grant
 scoped permission before using Agent Merge to integrate its PR. Independently
 critique the integrated result and add boundary tests without weakening the
-supplied contracts.
+reviewed contracts.
 
 For the fourth ticket, use the existing orchestrator session with **exactly five
 bounded specialists**: Order model, Checkout service, REST API, UI and Acceptance
@@ -151,8 +161,9 @@ counts or dollar costs.
 
 ## Reference solutions
 
-This repository is the **only source of sample code and reference solutions**.
-There are no maintained source ZIPs or copies in the website repository.
+This repository's immutable history remains the canonical source for the
+published sample-code checkpoints. Reference tests are maintainer recovery
+material, not files supplied in the learner starter.
 
 | Versioned tag | State | Passing tests |
 |---|---|---:|
@@ -162,7 +173,8 @@ There are no maintained source ZIPs or copies in the website repository.
 | [`v2-performance`](https://github.com/jdubois/copilot-shopping-cart-workshop/tree/v2-performance) | N+1 fixed | 12 |
 
 These immutable checkpoints cover only the first three tickets and their 12
-supplied tests, not the expanded curriculum, generated boundary tests or checkout.
+historical reference tests, not the expanded curriculum, generated acceptance
+tests, boundary tests or checkout.
 They predate the current starter's fractional-input and keyboard-geometry
 hardening; keep their pinned code and recorded results unchanged.
 They are commits in one reference history on `reference/v2`, not duplicated
@@ -193,8 +205,17 @@ reference checkpoint was used.
 
 The checkpoint verifier loads `tools/checkpoint-pins.json` from current `main` and
 verifies every published checkpoint tag and reference tip against its expected
-full commit SHA before running tests. Use a current maintainer checkout with all
-published refs:
+full commit SHA before running tests. Its `contractSourceRevision` pins
+`c0ac24920dc16812e2c7187cc95245faffc84316`: the verifier reads
+`teaching/{CartContractTest,RemoveContractTest,QueryContractTest}.java` directly
+from that Git commit, not from the starter working tree or an unpublished website
+copy. It compares every checkpoint's staged and activated contracts byte-for-byte
+with that source, then activates contracts only in temporary reference worktrees.
+Missing source commits or files are errors. Maintainers can recover a file with
+`git show c0ac24920dc16812e2c7187cc95245faffc84316:teaching/CartContractTest.java`;
+never overwrite a learner's reviewed generated tests.
+
+Use a current maintainer checkout with full history and all published refs:
 
 ```sh
 git fetch origin main 'refs/heads/reference/*:refs/remotes/origin/reference/*' --tags

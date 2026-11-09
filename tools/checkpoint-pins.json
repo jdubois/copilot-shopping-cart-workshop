@@ -1,5 +1,6 @@
 {
   "edition": "v2",
+  "contractSourceRevision": "c0ac24920dc16812e2c7187cc95245faffc84316",
   "checkpoints": {
     "v1-start": "d6e6b5ca3fb5121ebae917621e8417db6a82a5e2",
     "v1-bugfix": "f0bcbfe617e38a5465f1a62c545b1cc8916bc3b3",
