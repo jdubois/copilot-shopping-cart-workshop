@@ -13,12 +13,17 @@ This is a synthetic local training app, not a production shop.
 - Baseline: `./mvnw -Dtest=BaselineTest test` (4 tests).
 - Full suite: `./mvnw test` (all currently activated tests, including any
   additional tests in `src/test/java/`; not staged files in `teaching/`).
-- Regression: activate `teaching/CartContractTest.java` unchanged (3 tests).
+- Regression: generate
+  `src/test/java/com/juliendubois/workshop/CartContractTest.java` from the agreed
+  quantity acceptance criteria and review its assertions before fixing code.
+  The generated test count varies. `teaching/CartContractTest.java` is only a
+  facilitator fallback/reference; do not overwrite reviewed generated tests.
 - Feature: activate `teaching/RemoveContractTest.java` unchanged (3 tests).
 - Performance: activate `teaching/QueryContractTest.java` unchanged (2 tests).
 - Staged `teaching/` tests are outside Maven discovery until copied into
   `src/test/java/com/juliendubois/workshop/`. Never weaken, skip, remove or
-  exclude acceptance tests. Add your own tests alongside them.
+  exclude acceptance tests. Preserve reviewed generated assertions too.
+  Add your own tests alongside them.
 - Money uses integer cents; prices come from the server. Quantities are 1–99
   including the accumulated quantity. Preserve response fields and other items.
 - BootUI is only used through MCP for the N+1 exercise: bounded
