@@ -154,8 +154,9 @@ Awesome Copilot skills with references and source records. Use only the guidance
 relevant to the task. Their general recommendations never override the workshop's
 H2-only, no-Docker stack; do not introduce Testcontainers or replace H2.
 
-The `.github/mcp.json` endpoint is loopback-only. BootUI runs normally with masked
-values; this workshop uses it only through the two configured diagnostic tools.
+The `bootui-shopping-cart` MCP server in `.github/mcp.json` uses a loopback-only
+endpoint. BootUI runs normally with masked values; this workshop uses it only
+through the two configured diagnostic tools.
 You do not need to use the dashboard. You control the running app and restart it
 when needed.
 
