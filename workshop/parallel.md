@@ -143,4 +143,4 @@ steps. Do not report local integration as GitHub or Agent Merge completion.
 
 - Confirm the reviewed work is published on `main`, then create two isolated sessions from that same starting point.
 - Give each session a focused task; separate worktrees keep working copies isolated even when files overlap.
-- Review the contributions and use Agent Merge to help resolve conflicts before verifying the combined result.
+- Review each session's changes and preview or test results, and preserve its branch and commit for integration in the next chapter.
