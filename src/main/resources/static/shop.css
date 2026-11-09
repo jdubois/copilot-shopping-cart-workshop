@@ -1,7 +1,10 @@
 :root { color-scheme: light; font-family: system-ui, sans-serif; color: #0f1419; background: #f4f6f8; }
 * { box-sizing: border-box; }
 body { margin: 0; }
+html, .products { scroll-padding-block: 7px; }
 header { display: flex; justify-content: space-between; align-items: center; padding: 1.4rem max(5vw, 1rem); border-bottom: 1px solid #d2d8df; background: #fff; gap: 1rem; }
+header > a { min-height: 44px; }
+header > a[href="#cart"] { display: inline-flex; align-items: center; }
 a { color: #0f1419; text-decoration: none; }
 .brand { font-weight: 750; font-size: 1.25rem; letter-spacing: -.025em; }
 .brand span { display: block; color: #46505f; font-size: .75rem; font-weight: 400; letter-spacing: 0; margin-top: .25rem; }
@@ -20,12 +23,13 @@ h2 { font-size: 1.3rem; margin: 0; letter-spacing: -.02em; }
 .notebook small { display: block; font-size: .55rem; margin-top: 2.8rem; }
 .featured p { font-size: 1.7rem; font-weight: 650; letter-spacing: -.035em; margin: 0 0 .4rem; }
 .featured > div > span { display: block; max-width: 20ch; color: #46505f; font-size: .85rem; line-height: 1.6; }
-.products { list-style: none; padding: 0; margin: .5rem 0 0; max-height: 315px; overflow-y: auto; }
+.products { list-style: none; padding: 0 7px; margin: .5rem 0 0; max-height: 315px; overflow-y: auto; }
 .products li { display: flex; gap: 1rem; align-items: center; padding: .8rem 0; border-bottom: 1px solid #d2d8df; }
 .product-name { flex: 1; font-size: .9rem; }
 .price { font-variant-numeric: tabular-nums; font-size: .85rem; }
 button { font: inherit; border: 1px solid #d2d8df; border-radius: 5px; background: white; padding: .65rem .8rem; cursor: pointer; min-height: 44px; }
 .add-button { color: white; background: #0f1419; border-color: #0f1419; font-size: .8rem; }
+.products .add-button { scroll-margin-block: 7px; }
 button:hover { color: white; background: #1d4ed8; border-color: #1d4ed8; }
 button:disabled { opacity: .6; cursor: wait; }
 :focus-visible { outline: 3px solid #1d4ed8; outline-offset: 3px; }
