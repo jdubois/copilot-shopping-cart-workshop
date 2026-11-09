@@ -1047,7 +1047,8 @@ class WorkshopScheduleTests(unittest.TestCase):
                 "{: #check-ui-merge}",
                 "## Update and merge the test PR",
                 "## Verify the combined application",
-                "Leave the test PR's Agent Merge off.",
+                "repairs and CI can run in parallel",
+                "Keep merging disabled on both PRs during parallel preparation.",
                 "**Done when:** the UI PR's status is **Merged**",
                 "**all earlier reviewed tests plus the new boundary",
                 "all required checks and approvals pass",
@@ -1120,8 +1121,10 @@ class WorkshopScheduleTests(unittest.TestCase):
         section = integration.split(
             "## Update and merge the test PR", 1)[1].split(
                 "## Verify the combined application", 1)[0]
-        for text in ["Start repair-only Agent Merge",
+        for text in ["Keep repair-only Agent Merge running",
                      "**Merge pull request** still off",
+                     "After the UI merge is verified",
+                     "Earlier green checks do not verify the combined result",
                      "Resolve merge conflicts",
                      "preserving both workers' intended changes and tests",
                      "merging disabled while I review the conflict resolution",

@@ -119,7 +119,8 @@ Before integration, preserve unfinished branches and review what is actually
 ready. Ask for help if either worker is blocked.
 Do not let the workers open or merge PRs yet. In the next chapter, you will
 target both worker PRs at **`main`**,
-and use **Agent Merge** one PR at a time.
+and use repair-only **Agent Merge** on both in parallel, then authorize their
+merges one at a time.
 
 <details markdown="1" id="local-recovery">
 <summary>Recovery: the MCP handoff could not be published</summary>

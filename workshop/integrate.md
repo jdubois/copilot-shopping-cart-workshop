@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Merge PRs with Agent Merge
-description: "Review two pull requests, use Agent Merge one at a time, and verify the combined application."
+description: "Prepare PRs in parallel, merge UI first, and verify the combined application."
 permalink: /integrate/
 workshop: true
 next: rubber-duck
@@ -10,12 +10,12 @@ next_title: Review with rubber duck
 
 ## What you will learn
 
-Review contributions from parallel Copilot App sessions, use **Agent Merge**
-to land their pull requests one at a time, and verify the combined result.
+In Copilot App, prepare both PRs with repair-only **Agent Merge** in parallel, authorize their
+merges separately, then verify the combined result.
 
 ## Open the two worker PRs
 
-Keep the existing **Cart: empty-state UX** and **Cart: boundary tests** sessions;
+Keep **Cart: empty-state UX** and **Cart: boundary tests**;
 do not create another session or integration branch.
 
 In each session, review **Changes**, its preview or test results, and any
@@ -24,8 +24,8 @@ Keep earlier tests and resolve any failing regression before continuing.
 
 Select **Create PR** in Copilot App, targeting **`main` in your own repository**.
 If the PR already exists, open it.
-**Both worker PRs target `main`.** Each diff should contain only that session's
-contribution: the three earlier task PRs are already merged.
+**Both worker PRs target `main`.** Limit each diff to its session's work:
+the three earlier task PRs are already merged.
 Check **`base: main` ← `head: this session's branch`** in the PR overview.
 
 ## Merge the UI PR first
@@ -34,15 +34,16 @@ Check **`base: main` ← `head: this session's branch`** in the PR overview.
 conflicts. It does not replace your review or bypass repository protections.
 See the <a href="https://docs.github.com/en/copilot/how-tos/github-copilot-app/managing-issues-and-pull-requests#merging-a-pull-request" target="_blank">Agent Merge guide</a>.
 
-In **Cart: empty-state UX**:
+In **Cart: empty-state UX**, follow these steps. Optionally run steps 1–2 in
+**Cart: boundary tests** too: repairs and CI can run in parallel; authorize
+merges separately, **UI first**.
 
-1. Open the dropdown beside **Create PR**, choose **Agent Merge**, and check that its linked PR, repository and head branch match this session, not an earlier PR. If it is not linked, ask the facilitator; do not create a duplicate.
-2. Leave **Merge pull request** unchecked, review the repair options, then start **Agent Merge**. Have Copilot preserve acceptance tests and ask before any out-of-scope correction. Leave the test PR's Agent Merge off.
+1. Open the **Create PR** dropdown and choose **Agent Merge**. Verify its linked PR, repository and head branch match this session, not an earlier PR. If not linked, ask the facilitator; do not create a duplicate.
+2. Leave **Merge pull request** unchecked and start **Agent Merge** with the reviewed repair options. Preserve acceptance tests; ask before out-of-scope corrections. Keep merging disabled on both PRs during parallel preparation.
 3. Review **Files changed**, including repairs. Once you accept the result and the **tests** job and all required checks and approvals pass for the current PR revision, enable **Merge pull request** and confirm the App's authorization prompt for this PR only.
 
 After authorization, Agent Merge may make further permitted repairs and merge
-without another review pause. Keep merging off if you need to inspect another
-correction first.
+without another review pause. Keep merging off to review corrections first.
 
 **Done when:** the UI PR's status is **Merged** and the **tests** job passes
 for its merged revision on `main`.
@@ -61,9 +62,9 @@ not permission to bypass protections. If blocked, turn off Agent Merge and use
 
 ## Update and merge the test PR
 
-Only after the UI merge is verified, select **Cart: boundary tests**.
-Start repair-only Agent Merge using the same options, with **Merge pull request**
-still off. The sessions may have changed the same files; ask:
+After the UI merge is verified, return to **Cart: boundary tests** with
+**Merge pull request** still off. Keep repair-only Agent Merge running, or start
+it now. The sessions may have changed the same files; ask:
 
 ```copilot
 Update this boundary-test PR against the latest origin/main.
@@ -77,15 +78,15 @@ Do not merge the PR yet.
 ```
 
 Review any conflict resolutions, the complete updated diff and **fresh CI for
-its new revision**. Even conflict-free changes can interact incorrectly.
+its new revision** against the updated `main`. Earlier green checks do not verify
+the combined result. Even conflict-free changes can interact incorrectly.
 Once you accept the result and all required checks and approvals pass,
 enable **Merge pull request** and confirm a **separate authorization for this PR**.
 **Done when:** this second PR is also **Merged**.
 
 ## Verify the combined application
 
-Stay in **Cart: boundary tests**. Both PRs are merged, so use this same
-session to check the code now on `main`, rather than the old worker version.
+Stay in **Cart: boundary tests**. Verify merged `main`, not an old worker version.
 Ask Copilot:
 
 ```copilot
@@ -161,5 +162,6 @@ checked result before building the next feature on its own branch.
 ## What you have learned
 
 - Use **Changes** and each session's handoff to check its scope, committed code and reported results.
-- Target updated `main`, authorize Agent Merge for one worker PR at a time and confirm each PR actually merged.
+- Use **Agent Merge** as a PR-maintenance agent: it can address review feedback, fix CI failures and resolve merge conflicts. With **Merge pull request** off, it prepares the PR without merging; enabling that option authorizes it to merge when required checks and approvals allow it, without another review pause.
+- Prepare both PRs with repair-only Agent Merge in parallel, but authorize merges separately: UI first, then the test PR after review and fresh checks against updated `main`.
 - Verify the merged application, rather than assuming that two individually passing branches will work together.
