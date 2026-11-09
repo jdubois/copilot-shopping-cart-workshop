@@ -57,16 +57,37 @@ try {
     assert.equal(await page.locator('.workshop-content h1').count(), 1);
     assert.equal(await page.locator('.workshop-next a').getAttribute('href'), prefix + '/setup/');
     assert.equal(await page.locator('.workshop-nav').first().locator('a[aria-current=page]').count(), 1);
+    assert.equal(await page.getByRole('link', { name: 'Copilot App workshop', exact: true, includeHidden: true }).count(), 0);
+    assert.equal(await page.locator('.workshop-nav ol').first().locator('a').first().textContent(), 'Overview');
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
       'Horizontal page overflow');
     assert.ok(await page.locator('.navbar').evaluate(element =>
       getComputedStyle(element).position === 'fixed'), 'Theme CSS did not load');
+    const header = page.getByRole('navigation', { name: 'Workshop', exact: true });
+    assert.equal(await header.getByRole('link').count(), 1);
+    assert.equal(await header.getByRole('link').textContent(), 'GitHub Copilot App Java workshop');
+    assert.equal(await header.getByRole('link').getAttribute('href'), prefix + '/');
+    assert.equal(await page.locator('.navbar-toggler').count(), 0);
+    assert.equal(await page.getByText('Back to conferences', { exact: true }).count(), 0);
+    const repositoryLinks = page.getByRole('link', { name: 'View on GitHub', includeHidden: true });
+    assert.equal(await repositoryLinks.count(), 2);
+    for (const link of await repositoryLinks.all()) {
+      assert.equal(await link.getAttribute('href'),
+        'https://github.com/jdubois/github-copilot-app-java-workshop');
+    }
     if (viewport.width < 600) {
-      await page.locator('.navbar-toggler').click();
-      await page.locator('#navbarNav.show').waitFor();
-      await page.locator('.navbar-toggler').click();
-      await page.locator('#navbarNav').waitFor({ state: 'hidden' });
       await page.locator('.workshop-mobile-nav summary').click();
+    }
+    const repositoryLink = page.getByRole('link', { name: 'View on GitHub' });
+    assert.equal(await repositoryLink.isVisible(), true);
+    assert.ok((await repositoryLink.boundingBox()).height >= 44, 'Repository button touch target');
+    await repositoryLink.focus();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(await repositoryLink.evaluate(element =>
+      element === document.activeElement && getComputedStyle(element).outlineStyle !== 'none'), true,
+      'Repository button keyboard focus');
+    if (viewport.width < 600) {
       await page.locator('.workshop-mobile-nav a', { hasText: 'Prompt cards' }).click();
       assert.ok(page.url().endsWith('/prompts/'));
     }

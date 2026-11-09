@@ -44,15 +44,25 @@ class SiteMigrationTests(unittest.TestCase):
         self.assertNotIn("```", readme)
         setup = (SITE / "setup.md").read_text()
         self.assertIn("https://github.com/jdubois/github-copilot-app-java-workshop", setup)
+        self.assertIn("This workshop's", setup)
+        self.assertIn("is also the shopping-cart template.", setup)
         self.assertIn("your new `cart-workshop` repository", setup)
         self.assertIn("Do not select the template owner's repository", setup)
 
-    def test_theme_assets_are_prefixed_and_main_site_navigation_is_external(self):
+    def test_theme_assets_are_prefixed_and_navigation_is_workshop_specific(self):
         layout = (SITE / "_layouts/default.html").read_text()
         consent = (SITE / "_includes/analytics-consent.html").read_text()
         self.assertFalse(re.search(r'(?:href|src)="/(?!/)', layout + consent))
         nav = (SITE / "_includes/copilot-workshop-nav.html").read_text()
-        self.assertIn('href="https://www.julien-dubois.com/conferences"', nav)
+        self.assertIn('href="https://github.com/jdubois/github-copilot-app-java-workshop"', nav)
+        self.assertIn('class="btn workshop-repo"', nav)
+        self.assertIn("View on GitHub", nav)
+        self.assertNotIn("Back to conferences", nav)
+        header = layout.split('aria-label="Workshop">', 1)[1].split("</nav>", 1)[0]
+        self.assertIn('href="{{ \'/\' | relative_url }}"', header)
+        self.assertIn("GitHub Copilot App Java workshop", header)
+        self.assertNotIn("julien-dubois.com", header)
+        self.assertNotIn("navbar-toggler", header)
         for asset in ["/css/main.css", "/css/consent.css", "/js/main.js", "/favicon.ico"]:
             self.assertIn("'" + asset + "' | relative_url", layout)
         self.assertIn("'/js/analytics.js' | relative_url", consent)

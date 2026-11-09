@@ -3,9 +3,10 @@
 The Jekyll source is `workshop/`. The public home is
 https://www.julien-dubois.com/github-copilot-app-java-workshop/; chapters such as
 `setup/` sit directly below it. `_config.yml` supplies the project base URL.
-Main-site navigation uses absolute links; site assets and chapter links use the
-project prefix. Do not add a CNAME: this project inherits the owner's Pages
-domain. The main website owns redirects from the former handbook URLs.
+The minimal header links to the workshop home; chapter navigation includes a
+**View on GitHub** button for the source repository. Site assets and chapter
+links use the project prefix. Do not add a CNAME: this project inherits the
+owner's Pages domain. The main website owns redirects from the former handbook URLs.
 
 `.github/workflows/workshop-pages.yml` builds and validates the handbook on
 relevant canonical-repository PRs and publishes verified `main` builds using
@@ -48,8 +49,10 @@ Run `./mvnw test` separately from the repository root for the Java starter.
 
 The initial migration comes from tracked source at
 [`jdubois/jdubois.github.com@98ed7f0`](https://github.com/jdubois/jdubois.github.com/commit/98ed7f008192ef9ab497e299e7df2adb5b399f3d).
-Its layout, navigation, fonts, styles, prompt-copy behavior, consent UI and
-analytics implementation are retained, with standalone route adaptations.
+Its reading layout, chapter navigation, fonts, styles, prompt-copy behavior,
+consent UI and analytics implementation are retained, with standalone route
+adaptations. The personal-site header and conference return link have been
+replaced with workshop navigation and the repository button.
 The shared analytics property remains `G-92TRR0HJMQ` and the origin-wide
 localStorage key remains `jdubois-analytics-consent`. No analytics loads before
 acceptance; the footer's Cookie settings control supports live revocation.

@@ -13,9 +13,10 @@ next_title: Investigate with Copilot
 You need JDK 21+, Git and a supported Copilot App account. No Docker or Node
 installation is needed.
 
-Open the
-<a href="https://github.com/jdubois/github-copilot-app-java-workshop" target="_blank">shopping-cart template repository</a>
-and choose **Use this template → Create a new repository**. Choose your account
+This workshop's
+<a href="https://github.com/jdubois/github-copilot-app-java-workshop" target="_blank">GitHub repository</a>
+is also the shopping-cart template. Open it and choose
+**Use this template → Create a new repository**. Choose your account
 as owner and a name such as **cart-workshop**; private or public both work.
 Leave **Include all branches** unchecked so your repository contains only the
 starting code, without the solutions.
