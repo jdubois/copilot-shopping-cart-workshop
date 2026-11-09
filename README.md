@@ -84,6 +84,12 @@ total. Generated boundary and checkout tests add cases alongside the unchanged
 contracts. CI runs all activated tests on pushes and PRs. Passing the four
 initial tests does not mean the known cart bug is fixed.
 
+Current `main` also runs two `QuantityInputTest` regressions: fractional JSON
+quantities must return 400 without creating an item or changing an existing cart.
+The full starter suite therefore has six tests; the explicit chapter commands
+and original 12 supplied cases keep their counts. Integer-input hardening and
+keyboard focus-ring spacing do not solve the quantity, removal or query tickets.
+
 ## UI, parallel improvements and checkout delivery
 
 Follow the handbook's acceptance cards for Browser/Canvas UI work, then two
@@ -154,6 +160,8 @@ There are no maintained source ZIPs or copies in the website repository.
 
 These immutable checkpoints cover only the first three tickets and their 12
 supplied tests, not the expanded curriculum, generated boundary tests or checkout.
+They predate the current starter's fractional-input and keyboard-geometry
+hardening; keep their pinned code and recorded results unchanged.
 They are commits in one reference history on `reference/v2`, not duplicated
 project directories. The `v1-*` tags and `reference/v1` remain unchanged for older
 workshops. Review each ticket's diff, then the
