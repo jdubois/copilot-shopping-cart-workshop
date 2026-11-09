@@ -31,6 +31,7 @@ class SiteMigrationTests(unittest.TestCase):
         self.assertIn("actions/deploy-pages@", workflow)
         self.assertIn("check-site.py --remote", workflow)
         self.assertIn("test-site.mjs", workflow)
+        self.assertIn("runs-on: ubuntu-24.04", workflow.split("  deploy:", 1)[0])
         java = (REPO / ".github/workflows/test.yml").read_text()
         tests = java.split("  tests:", 1)[1].split("  reference-contracts:", 1)[0]
         self.assertNotIn("if:", tests.split("      - uses: actions/upload-artifact", 1)[0])

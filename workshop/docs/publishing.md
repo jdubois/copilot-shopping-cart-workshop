@@ -13,6 +13,8 @@ GitHub Actions Pages. Set repository **Settings → Pages → Source** to
 **GitHub Actions**. The `github-pages` environment must permit `main` deployment.
 No default-branch publication or Pages configuration should happen without
 maintainer approval.
+The build runner is pinned to Ubuntu 24.04, supported by the existing pinned
+Playwright release; do not silently follow `ubuntu-latest` to unsupported images.
 
 The workflow is explicitly gated to `jdubois/github-copilot-app-java-workshop`.
 Learner repositories created with **Use this template** retain their own Java CI
