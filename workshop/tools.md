@@ -203,7 +203,9 @@ starting point.
 
 ## What you have learned
 
-- Give Copilot runtime context through **get_live_activity** and **get_request_profile**, selecting the request that matches your workload.
+- Configure and trust a repository-scoped **MCP server**, giving Copilot tools that connect to the **live running shop**.
+- Call **get_live_activity** and **get_request_profile** through MCP to retrieve actual tool results for the request that matches your workload.
+- Understand why tools matter: live request IDs, timestamps, timings and executed SELECT counts are not available from source code or model knowledge. Copilot must retrieve this runtime evidence through a tool, not guess it. Saved reference responses are a fallback, not evidence from your live system.
 - Ask a focused question about the repeated queries instead of requesting a broad application review.
 - Generate query-budget tests that measure the completed HTTP response without counting setup or verification queries.
 - Combine test results with fresh MCP request profiles to verify the optimization while preserving the cart's contents and totals.
