@@ -6,7 +6,13 @@ This is a synthetic local training app, not a production shop.
   JS. No Docker, dependencies, upgrades, agents, checkout or authentication.
 - Each task has its own acceptance card. Do not combine the bug, removal feature
   and query optimization into one unreviewable change.
-- Baseline: `./mvnw -q -Dtest=BaselineTest test` (4 tests).
+- Run all Maven commands below from the repository root.
+- Application (human-run): `./mvnw spring-boot:run`, then open
+  http://127.0.0.1:18765. Stop any previous workshop server first; agents must
+  not start or restart the persistent app.
+- Baseline: `./mvnw -Dtest=BaselineTest test` (4 tests).
+- Full suite: `./mvnw test` (all currently activated tests, including any
+  additional tests in `src/test/java/`; not staged files in `teaching/`).
 - Regression: activate `teaching/CartContractTest.java` unchanged (3 tests).
 - Feature: activate `teaching/RemoveContractTest.java` unchanged (3 tests).
 - Performance: activate `teaching/QueryContractTest.java` unchanged (2 tests).
