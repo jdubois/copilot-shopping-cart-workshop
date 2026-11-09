@@ -13,22 +13,27 @@ This is a synthetic local training app, not a production shop.
   not start or restart the persistent app.
 - Baseline: `./mvnw -Dtest=BaselineTest test` (4 tests).
 - Full suite: `./mvnw test` (all currently activated tests, including any
-  additional tests in `src/test/java/`; not staged files in `teaching/`).
+  additional tests in `src/test/java/`).
 - Regression: generate
   `src/test/java/com/juliendubois/workshop/CartContractTest.java` from the agreed
   quantity acceptance criteria and review its assertions before fixing code.
-  The generated test count varies. `teaching/CartContractTest.java` is only a
-  facilitator fallback/reference; do not overwrite reviewed generated tests.
+  The generated test count varies.
 - Feature: use `/spring-boot-testing` to generate
   `src/test/java/com/juliendubois/workshop/RemoveContractTest.java` from agreed
   removal acceptance criteria and review its assertions before implementing.
-  The generated test count varies. `teaching/RemoveContractTest.java` is only a
-  facilitator fallback/reference; do not overwrite reviewed generated tests.
-- Performance: activate `teaching/QueryContractTest.java` unchanged (2 tests).
-- Staged `teaching/` tests are outside Maven discovery until copied into
-  `src/test/java/com/juliendubois/workshop/`. Never weaken, skip, remove or
-  exclude acceptance tests. Preserve reviewed generated assertions too.
-  Add your own tests alongside them.
+  The generated test count varies.
+- Performance: generate
+  `src/test/java/com/juliendubois/workshop/QueryContractTest.java` and review its
+  assertions before optimizing. Measure completed HTTP GET `/api/cart` responses
+  with 8 and 16 distinct products: exactly 1 SELECT each after the fix, versus
+  9 and 17 in the starter. Exclude seeding/setup SELECTs and preserve product
+  names, prices, quantities, line totals, item count and cart total. No global
+  eager loading or dependencies. The generated test count varies.
+- The starter contains no ready-made acceptance tests in `teaching/` or elsewhere.
+  Generate all three contracts from the agreed acceptance criteria; do not
+  substitute historical reference tests for reviewed generated tests. Never
+  weaken, skip, remove or exclude acceptance tests. Preserve reviewed assertions
+  and add your own tests alongside them.
 - Money uses integer cents; prices come from the server. Quantities are 1–99
   including the accumulated quantity. Preserve response fields and other items.
 - BootUI is only used through MCP for the N+1 exercise: bounded
