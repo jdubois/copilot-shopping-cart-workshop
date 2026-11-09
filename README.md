@@ -46,6 +46,9 @@ server before starting another:
 ./mvnw spring-boot:run
 ```
 
+Once ready, the startup banner prints the home URL and the BootUI UI installation
+URL using the bound port and configured paths, or marks BootUI as disabled.
+
 Open http://127.0.0.1:18765. Add the €10 Notebook twice: the starter incorrectly
 shows quantity 1 / €10 instead of 2 / €20.
 Opening a Browser canvas does not restart the server or change its revision.
