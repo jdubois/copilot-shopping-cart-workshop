@@ -25,8 +25,8 @@ and **impeccable** to improve an observed UI issue.
 Investigate an N+1 query using **MCP** evidence. Build independent improvements
 in two worktree sessions, then integrate their PRs with **Agent Merge**.
 Get a second opinion from **rubber duck** and coordinate **five specialist
-agents in child App sessions** to implement mock checkout with an order receipt
-and safe cart clearing.
+agents in parallel child App sessions**: four writers implement mock checkout
+and its tests while a read-only reviewer checks their work.
 Reuse **Agent Merge** to deliver its reviewed PR into your own **`main`**,
 then verify the merged application in the orchestrator's session.
 Finish with **Chronicle** and a clear handoff.
@@ -62,8 +62,9 @@ Each of the first three tickets has a named session and one reviewed PR,
 merged before the next task. Removal and Canvas polish share a PR.
 After both parallel PRs merge, keep **Cart: boundary tests** for the critique.
 Then start a fresh **Cart: mock checkout** session from verified `main`.
-Five child sessions build the fourth ticket in **five separate worktrees**;
-the checkout session integrates their reviewed commits into **one feature branch**.
+Five child sessions start from one reviewed commit in **five separate worktrees**.
+Four write the backend, UI and tests; one reviews without editing.
+The checkout session integrates their work into **one feature branch**.
 **Mock means no real payments**:
 the order, receipt and cart clearing must actually work.
 The feature branch is a staging point, not the finish line: after your scoped
@@ -89,7 +90,7 @@ and ask for help whenever you need it.
 6. [Start two isolated sessions from the reviewed main]({{ site.baseurl }}/parallel/) to improve the empty-cart experience and add boundary tests.
 7. [Merge PRs with Agent Merge]({{ site.baseurl }}/integrate/): UI first, then boundary tests, reviewing repairs and authorizing each merge separately.
 8. [Review with rubber duck]({{ site.baseurl }}/rubber-duck/) in the existing **Cart: boundary tests** session.
-9. [Coordinate five subagents]({{ site.baseurl }}/subagents/) from **Cart: mock checkout**: create five child sessions and worktrees, integrate their handoffs, deliver one reviewed PR with Agent Merge and verify the merged app.
+9. [Coordinate five subagents]({{ site.baseurl }}/subagents/) from **Cart: mock checkout**: run four writers and one read-only reviewer in parallel, integrate their work, deliver one reviewed PR with Agent Merge and verify the merged app.
 10. [Improve token usage with Chronicle]({{ site.baseurl }}/tokens/) using the workshop sessions.
 11. [Review the full change and hand off]({{ site.baseurl }}/finish/#final-review).
 

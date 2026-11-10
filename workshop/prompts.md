@@ -145,8 +145,10 @@ the new session **Cart: mock checkout**. Use **Plan** for the checkout plan,
 review the contract, file ownership and local handoffs, then return to
 **Interactive** without implementing. Only then send the chapter's
 **`/orchestrate`** prompt to create **five visible child sessions**, each with
-its own worktree. They **implement mock checkout**; the parent integrates
-their reviewed local commits into one checkout feature branch.
+its own worktree at the same reviewed commit. Four writers **implement mock checkout**
+and its tests while a read-only reviewer checks the design and incoming commits.
+Approve safe five-way concurrency; the parent integrates four code handoffs and
+review findings into one checkout feature branch.
 Each prompt names its scope and approval boundaries;
 do not paste critique and implementation together. Do not create five specialist PRs.
 

@@ -95,8 +95,9 @@ a single-model reread as a different-model critique or broaden account permissio
 
 The next exercise is different: instead of critiquing this implementation,
 you will start a fresh **Cart: mock checkout** session and coordinate five
-child App sessions to **build mock checkout** in separate worktrees, after
-approving the shared contract. Their reviewed handoffs form one checkout PR.
+child App sessions to **build mock checkout** in parallel, after approving the
+shared contract: four writers and one read-only reviewer, each in a separate
+worktree. Their work forms one checkout PR.
 
 ## What you have learned
 

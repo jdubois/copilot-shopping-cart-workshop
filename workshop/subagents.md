@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Coordinate five subagents
-description: "Coordinate five visible child App sessions in separate worktrees, integrate mock checkout into one reviewed PR and verify merged main."
+description: "Run four writers and one read-only reviewer in parallel child sessions, then deliver mock checkout through one reviewed PR."
 permalink: /subagents/
 workshop: true
 next: tokens
@@ -11,8 +11,9 @@ next_title: Chronicle and token usage
 ## What you will learn
 
 Use Copilot App to delegate a shared goal to **five specialist agents in child
-App sessions**, route questions between them and deliver their integrated
-feature into **`main`**.
+App sessions**: **four writers and one read-only reviewer working in parallel**.
+Coordinate through a shared HTTP contract, then deliver the integrated feature
+into **`main`**.
 Keep delivery in the orchestrator's session, use Agent Merge for the checkout PR
 and verify the application actually merged.
 
@@ -30,17 +31,18 @@ The **orchestrator** is the main Copilot agent in your new
 **Cart: mock checkout** session. In this exercise, each specialist runs in a
 **visible child App session with its own worktree and branch**. You can open
 each conversation in the sidebar and inspect its changes independently.
-The orchestrator brings their reviewed local commits into its checkout branch
-for **one integrated PR**, not five specialist PRs.
+Four children write the backend, UI and two test suites; the fifth reviews.
+The orchestrator integrates the writers' reviewed local commits and resolves
+review findings for **one integrated PR**, not five specialist PRs.
 
 Earlier, two worktree sessions built independent changes. Rubber ducking
-challenged the result. Here, five specialists agree on shared interfaces
-and build one feature together, with explicit file ownership and dependencies.
+challenged the result. Here, children work on one feature at the same time,
+using the same contract and separate files rather than waiting for each other's code.
 See <a href="https://docs.github.com/en/copilot/concepts/agent-capabilities/choosing-and-delegating-agent-work/delegating-and-parallelizing-work-with-agents" target="_blank">how delegation works</a>.
 
 <figure>
-  <a href="{{ site.baseurl }}/assets/illustration-five-specialists.svg" target="_blank"><img src="{{ site.baseurl }}/assets/illustration-five-specialists.svg" alt="One orchestrator coordinates five child App sessions, each with a separate worktree and branch. Reviewed local handoff commits feed one checkout PR, Agent Merge and merged-main verification." width="1440" height="1080" loading="lazy"></a>
-  <figcaption>Five child sessions and worktrees, one integrated checkout PR. This is a conceptual workflow, not evidence that agents have run.</figcaption>
+  <a href="{{ site.baseurl }}/assets/illustration-five-specialists.svg" target="_blank"><img src="{{ site.baseurl }}/assets/illustration-five-specialists.svg" alt="Five child App sessions start from one reviewed commit: backend, UI, HTTP tests and resilience tests write separate files while a read-only reviewer checks the design and incoming commits. The orchestrator integrates four code handoffs and review findings into one checkout PR." width="1440" height="1080" loading="lazy"></a>
+  <figcaption>Four parallel writers, one read-only reviewer, one delivery owner. This is a conceptual workflow, not evidence that agents have run.</figcaption>
 </figure>
 
 > **How is this different from `/fleet`?**
@@ -52,7 +54,8 @@ See <a href="https://docs.github.com/en/copilot/concepts/agent-capabilities/choo
 >
 > Here, `/orchestrate` creates five named child App sessions with separate
 > working copies and branches. They are easier to inspect and steer individually,
-> but their commits need integration. Both approaches can parallelize independent
+> but their commits need integration. This exercise uses four writers and one
+> read-only reviewer. Both approaches can parallelize independent
 > work and increase model usage; neither guarantees a speedup.
 > **Use the child-session approach below; do not run `/fleet` for this exercise.**
 
@@ -103,7 +106,7 @@ spawn subagents, push, open PRs or merge yet.
 Once the conversation has started, name the session **Cart: mock checkout**.
 The starter instructions already allow this exercise after explicit approval;
 you do not need to edit `AGENTS.md`. This session will own the checkout plan,
-integration branch and delivery; its five children will own implementation.
+integration branch and delivery; four children write code and the fifth reviews it.
 
 ## Agree on the contract first
 {: #checkout-contract}
@@ -153,20 +156,26 @@ tests unchanged when adding checkout reads.
 
 ## Give each subagent a bounded job
 
-| Child session | Code it owns | Decision it must coordinate |
-|---|---|---|
-| Checkout: order model | New order/snapshot entities and order repository | How are receipt snapshots and unique request IDs stored? |
-| Checkout: service | Checkout logic and necessary existing cart-service/repository changes | How are creation, clearing and retries kept atomic? |
-| Checkout: REST API | New checkout controller and request/receipt mapping | Which fields and errors must UI and tests use? |
-| Checkout: UI | Changes under `src/main/resources/static/` | How are pending, failure, retry and receipt states shown? |
-| Checkout: acceptance tests | New `CheckoutContractTest.java` and any agreed test-only helpers | How are rollback, immutable snapshots and duplicate requests proved? |
+| Child session | Owns and delivers |
+|---|---|
+| Checkout: backend | Production Java: order storage, atomic checkout, retries and REST endpoint, including necessary cart changes |
+| Checkout: UI | Approved static files: pending/error states, receipt and return to shopping |
+| Checkout: HTTP tests | `CheckoutContractTest.java`: creation, validation, receipt fields/totals and cart clearing |
+| Checkout: resilience tests | `CheckoutResilienceTest.java` and assigned test helpers: retries, concurrency, rollback and immutable receipts |
+| Checkout: review | Read-only design, cart compatibility and incoming-commit review. Findings with reviewed commit IDs; no file edits or commits |
+
+Keep the backend together so other writers depend on the **HTTP contract**,
+not unfinished Java classes. Agree on test setup/reset, shared fixture ownership
+and controlled rollback/concurrency probes before launch. Each shared helper
+file has one writer. Tests may be written before the endpoint exists; that is
+not evidence they pass.
 
 **First, plan:** switch this session to **Plan** using the mode control beside
 the composer **before sending the prompt below**.
 
 **Plan mode is important here:** the main agent should investigate and propose
 the plan, not build checkout itself. Do not rely on the prompt's wording alone.
-Save implementation for the five child sessions in the later delegation step.
+Save implementation for the four writers in the later delegation step.
 The API requirements below describe the design to propose, not permission to code.
 
 ```copilot
@@ -185,21 +194,28 @@ Plan how to snapshot server data, create the order and clear the cart atomically
 Retries, including concurrent ones, must not duplicate orders or clear a later cart.
 Keep all earlier behavior and reviewed tests unchanged. No new dependencies,
 payments, authentication, personal data or external services.
-Assign exact, non-overlapping files to five roles: Order model, Checkout service,
-REST API, UI and Acceptance tests. Identify dependencies and explain how
-transaction boundaries and concurrency protect cart mutations.
+Plan four writers with exact, non-overlapping files: the complete checkout
+backend, static UI, HTTP contract tests and resilience tests.
+Add one read-only reviewer for the design, existing cart compatibility and
+incoming commits; it must not edit files or commit.
+Agree on HTTP behavior, test setup/reset and controlled rollback/concurrency
+probes. Assign each shared fixture/helper file to one writer and settle any
+test-facing Java interface before launch. Explain transaction and concurrency safety.
 Plan five coordinated child App sessions, each with a separate new worktree
-and branch. You will integrate their reviewed local handoff commits into this
-checkout feature branch; the children must not publish or merge.
-Name them Checkout: order model, Checkout: service, Checkout: REST API,
-Checkout: UI and Checkout: acceptance tests.
+and branch, all starting from the same reviewed commit and working in parallel.
+Name them Checkout: backend, Checkout: UI, Checkout: HTTP tests,
+Checkout: resilience tests and Checkout: review.
+You will integrate four reviewed code handoffs and the reviewer's findings
+into this checkout branch. The children must not publish or merge.
+Plan a machine-load check and concurrency limit of five. If unsafe or unavailable,
+stop and ask rather than silently scheduling sequential implementation.
 Plan meaningful failure/rollback and immutable-receipt tests, not only happy paths.
 Do not edit code or launch agents yet. Show the plan and wait for my approval.
 ```
 
 Review the contract, file ownership, local handoffs and concurrency limit before
-approving delegation. The orchestrator will schedule the five child sessions
-and integrate their work.
+approving delegation. The orchestrator will launch the five child sessions
+together and integrate four code handoffs plus review findings.
 
 **Do not choose an action that implements the plan.** Leave planning without
 launching implementation and return to **Interactive**, as in
@@ -208,7 +224,8 @@ If a plan-approval screen appears, choose the option that returns to the session
 without implementing it.
 
 **Then, delegate:** send **`/orchestrate`** below in the same session's composer.
-This is the step that authorizes the five child sessions and their local handoffs.
+This is the step that authorizes the five child sessions, four writers' local
+handoff commits and the read-only review.
 
 If planning already changed code, stop and review the diff before continuing.
 Preserve the changes; do not reset or discard them without explicit approval.
@@ -216,41 +233,53 @@ Do not count existing main-agent implementation as five specialists' work.
 
 ```copilot
 /orchestrate I approve the checkout contract, implementation plan, file ownership
-and local handoffs. Coordinate implementation; do not implement it yourself.
+and local handoffs, including five concurrent children subject to a safe load check.
+Coordinate implementation; do not implement it yourself.
+Check machine load, available resources and active sessions before launching.
+If five concurrent children are unsafe or unavailable, stop and ask.
 Create exactly five coordinated child App sessions in this repository,
-each with its own New worktree and branch: Checkout: order model,
-Checkout: service, Checkout: REST API, Checkout: UI and Checkout: acceptance tests.
+each with its own New worktree and branch: Checkout: backend, Checkout: UI,
+Checkout: HTTP tests, Checkout: resilience tests and Checkout: review.
 Do not substitute /fleet or in-session subagents. Do not create extra sessions.
 Keep this session's checkout feature branch as the integration branch, not main.
-Before each child starts, show its name, assignment and reviewed starting commit.
-Create it from this integration branch's latest reviewed commit, not default main;
-verify its actual base includes the upstream handoffs it needs before editing.
-Stage model, service and API work in dependency order. UI and tests may run in
-parallel after their interfaces are integrated. Respect the agreed concurrency limit
-during follow-ups as well as launches.
+Record one reviewed starting commit on this integration branch, not default main.
+Before starting work, verify all five child worktrees have that same base,
+separate directories/branches and the approved assignments.
+Start all five in Interactive mode without waiting for any writer's handoff.
+Do not serialize backend, UI or test implementation. Respect the concurrency limit
+during follow-ups as well as launches; monitor load and ask if it becomes unsafe.
 Check active workers before starting or waking another child.
-Give every child the complete approved contract, exact owned files, dependencies,
-actual upstream interfaces and AGENTS.md. Do not assume shared context.
-Before dependent implementation, have receiving specialists check the actual
-upstream interface.
+Give every child the complete approved contract, role, file ownership,
+test setup/probe agreements, relevant source and AGENTS.md. Do not assume shared context.
 Preserve the approved contract, stack, response fields and all earlier tests.
-Workers edit only assigned files and may commit those files locally for handoff.
+The four writers edit only assigned files and may commit those files locally for handoff.
+The reviewer is read-only: no file edits, commits, cherry-picks or branch changes.
 Workers must not run Maven, start/stop the shop, change other branches, push,
 open PRs, merge, launch nested agents or add agent profiles.
-Have each child report its branch, handoff commit, changed files, decisions,
-questions and anything incomplete. Relay interface questions and answers.
+Assign each shared fixture/helper file to one writer. Relay questions and coordinate
+any interface change before affected work continues; do not invent placeholder
+implementations or claim unexecuted tests pass.
+Have writers report their branch, handoff commits, files and incomplete work.
+Give the reviewer exact handoff commits to inspect read-only from its own worktree;
+it begins with the design/existing cart code while writers implement.
+It reports reviewed commit IDs, actionable findings and coverage gaps, not a code handoff.
 You may review and cherry-pick only the accepted handoff commits into your clean
 integration worktree. Check whether each handoff is already included; do not apply
 it twice or overwrite unfinished work. Do not move or reset child branches.
 Stop and ask before expanding scope or resolving conflicting ownership.
 Stop and ask before resolving integration conflicts. Route implementation fixes
 back to the owning child and review each new handoff.
-After all five contributions are integrated, review the combined diff and run
+After all four writer handoffs are integrated, review the combined diff and run
 ./mvnw test here. You own the Maven run and final shop preview, not five workers.
 Confirm BaselineTest, CartContractTest, RemoveContractTest, QueryContractTest,
-CartBoundaryTest and new CheckoutContractTest execute without failures or skips.
-Never weaken tests. Report the five actual contributions and child-session links,
-reviewed handoff commits, exchanges, final diff, test counts and anything incomplete.
+CartBoundaryTest, new CheckoutContractTest and CheckoutResilienceTest execute
+without failures, errors or skips. Never weaken tests.
+Have the reviewer check the final integrated commit and test results. Resolve
+actionable findings through the owning writers and rerun checks after changes;
+any deferral needs my review. Track which final commit was reviewed and tested.
+Report the five actual contributions and child-session links, common base,
+observed execution overlap, four code handoffs, review findings, final diff,
+executed test counts and anything incomplete. Missing overlap is not a parallel run.
 Preserve all child sessions, branches and unfinished work.
 Wait for my review before publishing or merging. Only this orchestrator may
 deliver the one integrated checkout PR after separate explicit approval.
@@ -265,8 +294,8 @@ Local handoff commits are not permission to push or open five PRs.
 ## Watch how they communicate
 {: #communication}
 
-Open the five child sessions and inspect their actual contributions and local
-handoffs. Record actual questions, answers and decisions, or **none exchanged**.
+Open the five child sessions and inspect the four writers' handoffs and the
+reviewer's findings. Record actual questions, answers and decisions, or **none exchanged**.
 If direct messaging is unavailable, relay questions through the orchestrator;
 messages do not copy code between worktrees. Report missing contributions or
 unavailable messaging. Do not manufacture dialogue.
@@ -276,7 +305,7 @@ unavailable messaging. Do not manufacture dialogue.
 
 Stay in the **orchestrator's integration worktree**, not a child's checkout.
 
-1. **Review the combined changes.** Confirm all five reviewed handoffs are included once, the UI and API agree, and accepted critique corrections are present.
+1. **Review the combined changes.** Confirm all four writer handoffs are included once, the UI and API agree, accepted critique corrections are present and reviewer findings have recorded decisions for this commit.
 2. **Check the full suite.** The orchestrator runs `./mvnw test`. All **earlier reviewed tests**, boundary tests and **new checkout tests** must execute with no failures/errors/skips.
 3. **Preview checkout.** Once the shop is running here, ask Copilot to open or reload **http://127.0.0.1:18765** in the Browser canvas. Add the €10 Notebook twice and place an order: the receipt must show quantity **2** and total **€20**, followed by an empty cart. Return to shopping.
 
@@ -324,7 +353,7 @@ helper even when another cleanup fails. An incomplete probe is not a pass.
 </details>
 
 Review **Changes**, the full starter-to-current result, tests and the running
-checkout before authorizing delivery. Children own their local handoff commits;
+checkout before authorizing delivery. Writers own their local handoff commits;
 only the orchestrator integrates, publishes and manages the checkout PR.
 
 ## Deliver checkout into main
@@ -340,6 +369,7 @@ Do not publish a recovered combined branch against incomplete remote `main`
 as though the earlier PRs had merged.
 
 Confirm all five workers have finished and all reviewed handoffs are integrated.
+Check the read-only review covers the current head and every finding has a recorded decision.
 Resolve any pending child changes before freezing the reviewed checkout result.
 After accepting the final diff, tests and preview:
 
@@ -405,9 +435,9 @@ Then continue with Chronicle and the final handoff.
 Five agents are a teaching example, not automatically the most efficient
 choice for a small app. Each consumes model usage. Check the `/` picker and
 permissions; do not broaden account access to create child sessions.
-Concurrency depends on your build and machine: five total assignments can
-be scheduled in smaller batches, and must not be reported as five simultaneous
-agents unless that actually happened.
+Concurrency depends on your build and machine. If five concurrent children are
+unsafe or unavailable, stop and agree on a fallback. Work scheduled in smaller
+batches is a limited-concurrency run, not the five-way parallel exercise.
 If child sessions or worktrees are unavailable, use a facilitator's demonstration
 or an explicitly approved single-agent implementation.
 Mark it as **not a completed five-agent run**.
@@ -430,7 +460,8 @@ The published reference checkpoints do not include checkout.
 ## What you have learned
 
 - Distinguish five visible child App sessions from `/fleet` subagents within one session.
-- Give each specialist a worktree, owned files and sufficient context, then coordinate questions and reviewed local handoffs.
+- Run four writers and one read-only reviewer from a common base, using HTTP contracts and exclusive file ownership rather than serial backend handoffs.
+- Distinguish four code handoffs from review findings and verify actual execution overlap.
 - Verify atomic checkout, immutable receipts and retry behavior alongside all earlier tests and the running UI.
 - Reuse Agent Merge for the integrated checkout PR under explicit authorization, then verify the exact merged-main application rather than an older running copy.
 - Distinguish locally verified work, merged and verified delivery, and blocked or unavailable capabilities.

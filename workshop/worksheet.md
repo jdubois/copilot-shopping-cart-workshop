@@ -120,12 +120,15 @@ recovery, record **Agent Merge not completed: local recovery used**.
 |---|---|
 | Shared goal, reviewed base and checkout feature branch | |
 | Cart: mock checkout session, new worktree directory and verified starting commit | |
-| Approved contract, owned files and dependency order | |
+| Approved HTTP contract, test setup/probes and exclusive file/fixture ownership | |
+| Common starting commit verified in all five child worktrees | |
 | Five actual assignments/contributions; concurrency observed | |
+| Load check, five-way concurrency approval and observed execution overlap or limitation | |
+| Reviewer's findings, reviewed final commit and fix/defer decisions | |
 | Questions/answers exchanged, directly or through the orchestrator | |
 | Implemented API, order snapshot, atomic clearing and duplicate handling | |
 | Conflicting proposals resolved or decisions still open | |
-| Full-suite counts, including baseline, generated cart/removal/query, boundary and CheckoutContractTest | |
+| Full-suite counts, including baseline, generated cart/removal/query, boundary, CheckoutContractTest and CheckoutResilienceTest | |
 | Rollback, snapshot and concurrent/later-retry evidence | |
 | Browser canvas receipt, cleared cart, keyboard and narrow-screen observations | |
 | Final diff accepted, checkout publication approved, Agent Merge repairs reviewed and merge separately authorized | |
@@ -135,21 +138,20 @@ recovery, record **Agent Merge not completed: local recovery used**.
 | Place order and receipt verified with the app serving the verified merged-main code | |
 | Delegation or messaging unavailable, or demonstration | |
 
-Record each actual child session and its local handoff:
+Record four writers' local handoffs and the read-only review:
 
-| Child session | Session link, worktree and branch | Reviewed commit integrated into checkout |
+| Child session | Session link, worktree and branch | Integrated handoff commit or reviewed commit/findings |
 |---|---|---|
-| Checkout: order model | | |
-| Checkout: service | | |
-| Checkout: REST API | | |
+| Checkout: backend | | |
 | Checkout: UI | | |
-| Checkout: acceptance tests | | |
+| Checkout: HTTP tests | | |
+| Checkout: resilience tests | | |
+| Checkout: review | | No code commit; record findings |
 
 Mark checkout **merged and verified on main**, **unfinished**, or **demonstrated**
 according to the evidence. Use **verified locally; delivery blocked** or
 **merged; post-merge verification blocked** when appropriate.
-Record actual contributions, not the illustrative
-exchange. Write **none exchanged** if there were no questions/answers, and
+Record actual contributions. Write **none exchanged** if there were no questions/answers, and
 **unknown** for concurrency you did not observe. Local checkout code is not on
 `main` until its checkout PR actually merges. Keep the approved plan and agent
 activity available for Chronicle.

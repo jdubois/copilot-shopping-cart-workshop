@@ -547,7 +547,7 @@ class WorkshopScheduleTests(unittest.TestCase):
     def test_agent_evidence_and_empty_checkout_do_not_require_invented_activity(self):
         agents = re.sub(r"\s+", " ", chapter("subagents"))
         for text in ["concurrency limit", "during follow-ups as well as launches",
-                     "receiving specialists check the actual upstream interface",
+                     "any interface change before affected work continues",
                      "**none exchanged**", "Do not manufacture dialogue",
                      "verify the required **409** through HTTP tests",
                      "do not enable it just for this demonstration"]:
@@ -922,14 +922,15 @@ class WorkshopScheduleTests(unittest.TestCase):
         agents = re.sub(r"\s+", " ", chapter("subagents"))
         for text in [
                 "**Mock means no real payment processing**", "**Cart: mock checkout**",
-                "exactly five coordinated child App sessions", "Order model", "Checkout service",
-                "REST API", "UI", "Acceptance tests",
+                "exactly five coordinated child App sessions", "Checkout: backend",
+                "Checkout: UI", "Checkout: HTTP tests", "Checkout: resilience tests",
+                "Checkout: review",
                 "/orchestrate I approve", "Read AGENTS.md",
                 "**New worktree**", "**`main` as the base branch**",
                 "on the App-created feature branch, not main or a detached checkout",
                 "Report this session's directory, actual branch and starting commit",
                 "new worktree from **that reviewed local branch**",
-                "Workers edit only assigned files", "Workers must not run Maven",
+                "The four writers edit only assigned files", "Workers must not run Maven",
                 "launch nested agents", "relay questions through the orchestrator",
                 "five actual contributions", "Wait for my review before publishing or merging",
                 "failed checkout must leave the cart intact", "Concurrent submissions",
@@ -978,6 +979,7 @@ class WorkshopScheduleTests(unittest.TestCase):
         implementation = agents.split("/orchestrate I approve", 1)[1].split("```", 1)[0]
         self.assertIn("Preserve the approved contract", implementation)
         self.assertIn("CheckoutContractTest", implementation)
+        self.assertIn("CheckoutResilienceTest", implementation)
         self.assertNotIn("POST /api/orders", implementation)
         for text in ["rollback", "snapshots", "concurrent duplicate",
                      "**€20**", "confirm the App's authorization prompt",
@@ -999,11 +1001,11 @@ class WorkshopScheduleTests(unittest.TestCase):
                 "Planning only: do not modify source, tests, configuration or AGENTS.md",
                 "Do not implement any part of checkout or launch agents",
                 "Review the contract, file ownership, local handoffs and concurrency limit before approving delegation",
-                "The orchestrator will schedule the five child sessions and integrate their work",
+                "The orchestrator will launch the five child sessions together and integrate four code handoffs plus review findings",
                 "**Do not choose an action that implements the plan.**",
                 "return to **Interactive**",
                 "without implementing it",
-                "This is the step that authorizes the five child sessions and their local handoffs",
+                "This is the step that authorizes the five child sessions, four writers' local handoff commits and the read-only review",
                 "do not reset or discard them without explicit approval",
                 "Do not count existing main-agent implementation as five specialists' work"]:
             with self.subTest(planning_boundary=text):
@@ -1019,7 +1021,7 @@ class WorkshopScheduleTests(unittest.TestCase):
             "## Review and run the integrated feature", 1)[0]
         self.assertLessEqual(len(re.findall(r"\b[\w'-]+\b", communication)), 80)
         self.assertNotIn("**example exchange**", communication)
-        for text in ["actual contributions and local",
+        for text in ["four writers' handoffs", "reviewer's findings",
                      "Record actual questions, answers and decisions",
                      "**none exchanged**", "messages do not copy code",
                      "Report missing contributions", "Do not manufacture dialogue"]:
@@ -1035,7 +1037,8 @@ class WorkshopScheduleTests(unittest.TestCase):
                           "Preview checkout."])
         visible = re.sub(r"\s+", " ", visible)
         for text in ["**orchestrator's integration worktree**",
-                     "all five reviewed handoffs are included once",
+                     "all four writer handoffs are included once",
+                     "reviewer findings have recorded decisions for this commit",
                      "accepted critique corrections", "./mvnw test",
                      "must execute with no failures/errors/skips",
                      "http://127.0.0.1:18765", "quantity **2** and total **€20**",
@@ -1063,14 +1066,14 @@ class WorkshopScheduleTests(unittest.TestCase):
             with self.subTest(detailed_review_requirement=text):
                 self.assertIn(text, details)
 
-    def test_checkout_children_have_reviewed_bases_and_local_handoffs(self):
+    def test_checkout_children_share_one_base_and_run_four_writers_plus_reviewer(self):
         agents = re.sub(r"\s+", " ", chapter("subagents"))
         prompt = agents.split("/orchestrate I approve", 1)[1].split("```", 1)[0]
-        expected_names = ["Checkout: order model", "Checkout: service",
-                          "Checkout: REST API", "Checkout: UI",
-                          "Checkout: acceptance tests"]
+        expected_names = ["Checkout: backend", "Checkout: UI",
+                          "Checkout: HTTP tests", "Checkout: resilience tests",
+                          "Checkout: review"]
         actual_names = re.findall(
-            r"Checkout: (?:order model|service|REST API|UI|acceptance tests)", prompt)
+            r"Checkout: (?:backend|UI|HTTP tests|resilience tests|review)", prompt)
         self.assertEqual(actual_names, expected_names)
         for name in expected_names:
             self.assertIn(name, chapter("worksheet"))
@@ -1079,12 +1082,23 @@ class WorkshopScheduleTests(unittest.TestCase):
                 "each with its own New worktree and branch",
                 "Do not substitute /fleet or in-session subagents",
                 "Do not create extra sessions",
-                "integration branch's latest reviewed commit, not default main",
-                "verify its actual base includes the upstream handoffs it needs before editing",
-                "Stage model, service and API work in dependency order",
-                "UI and tests may run in parallel after their interfaces are integrated",
+                "five concurrent children subject to a safe load check",
+                "Check machine load, available resources and active sessions before launching",
+                "If five concurrent children are unsafe or unavailable, stop and ask",
+                "Record one reviewed starting commit on this integration branch, not default main",
+                "verify all five child worktrees have that same base",
+                "separate directories/branches and the approved assignments",
+                "Start all five in Interactive mode without waiting for any writer's handoff",
+                "Do not serialize backend, UI or test implementation",
+                "monitor load and ask if it becomes unsafe",
                 "Check active workers before starting or waking another child",
-                "Workers edit only assigned files and may commit those files locally for handoff",
+                "The four writers edit only assigned files and may commit those files locally for handoff",
+                "The reviewer is read-only: no file edits, commits, cherry-picks or branch changes",
+                "Assign each shared fixture/helper file to one writer",
+                "do not invent placeholder implementations or claim unexecuted tests pass",
+                "Give the reviewer exact handoff commits to inspect read-only from its own worktree",
+                "it begins with the design/existing cart code while writers implement",
+                "reviewed commit IDs, actionable findings and coverage gaps, not a code handoff",
                 "Workers must not run Maven, start/stop the shop",
                 "push, open PRs, merge, launch nested agents",
                 "review and cherry-pick only the accepted handoff commits",
@@ -1094,13 +1108,63 @@ class WorkshopScheduleTests(unittest.TestCase):
                 "Do not move or reset child branches",
                 "ask before resolving integration conflicts",
                 "Route implementation fixes back to the owning child",
-                "After all five contributions are integrated",
+                "After all four writer handoffs are integrated",
                 "You own the Maven run and final shop preview",
+                "Have the reviewer check the final integrated commit and test results",
+                "any deferral needs my review",
+                "Track which final commit was reviewed and tested",
+                "observed execution overlap, four code handoffs, review findings",
+                "Missing overlap is not a parallel run",
                 "Preserve all child sessions, branches and unfinished work"]:
             with self.subTest(child_handoff_requirement=text):
                 self.assertIn(text, prompt)
-        self.assertLess(prompt.index("After all five contributions are integrated"),
+        self.assertLess(prompt.index("After all four writer handoffs are integrated"),
                         prompt.index("./mvnw test"))
+        self.assertLess(prompt.index("./mvnw test"),
+                        prompt.index("Have the reviewer check the final integrated commit"))
+        for stale in ["Stage model, service and API work in dependency order",
+                      "UI and tests may run in parallel after their interfaces are integrated",
+                      "After all five contributions are integrated"]:
+            self.assertNotIn(stale, agents)
+
+    def test_parallel_checkout_roles_and_review_evidence_are_consistent(self):
+        source = chapter("subagents")
+        role_section = source.split("## Give each subagent a bounded job", 1)[1]
+        roles = re.findall(r"^\| (Checkout: [^|]+?) \|", role_section, re.MULTILINE)
+        self.assertEqual(roles, ["Checkout: backend", "Checkout: UI",
+                                 "Checkout: HTTP tests", "Checkout: resilience tests",
+                                 "Checkout: review"])
+        plan = re.sub(r"\s+", " ", source).split(
+            "Read this branch's cart implementation", 1)[1].split("```", 1)[0]
+        for text in ["complete checkout backend, static UI, HTTP contract tests and resilience tests",
+                     "one read-only reviewer", "it must not edit files or commit",
+                     "test setup/reset and controlled rollback/concurrency probes",
+                     "each shared fixture/helper file to one writer",
+                     "settle any test-facing Java interface before launch",
+                     "same reviewed commit and working in parallel",
+                     "stop and ask rather than silently scheduling sequential implementation"]:
+            with self.subTest(parallel_plan_requirement=text):
+                self.assertIn(text, plan)
+        for slug in ["index", "prompts", "rubber-duck", "facilitator"]:
+            with self.subTest(parallel_supporting_page=slug):
+                self.assertIn("read-only reviewer", chapter(slug))
+                self.assertNotIn("Review and integrate model, then service", chapter(slug))
+        worksheet = chapter("worksheet")
+        for text in ["Common starting commit verified in all five child worktrees",
+                     "observed execution overlap or limitation", "No code commit; record findings",
+                     "CheckoutResilienceTest", "reviewed final commit"]:
+            self.assertIn(text, worksheet)
+        delivery = re.sub(r"\s+", " ", source).split(
+            "## Deliver checkout into main", 1)[1].split("## Verify the merged application", 1)[0]
+        self.assertIn("read-only review covers the current head", delivery)
+        self.assertIn("every finding has a recorded decision", delivery)
+        illustration = (ROOT / "assets/illustration-five-specialists.svg").read_text()
+        for text in ["Checkout backend", "Checkout UI", "HTTP contract tests",
+                     "Resilience tests", "Read-only reviewer",
+                     "Four parallel writers + one read-only reviewer"]:
+            self.assertIn(text, illustration)
+        self.assertNotIn('class="link"', illustration)
+        self.assertNotIn("Model precedes service", illustration)
 
     def test_fleet_is_explained_in_an_information_box_not_used_for_execution(self):
         source = chapter("subagents")
@@ -1121,7 +1185,7 @@ class WorkshopScheduleTests(unittest.TestCase):
         self.assertEqual(sum(p.startswith("/orchestrate ") for p in prompts), 1)
         self.assertFalse(any(p.startswith("/fleet") for p in prompts))
         illustration = (ROOT / "assets/illustration-five-specialists.svg").read_text()
-        self.assertIn("Five child sessions / five worktrees / one integrated feature",
+        self.assertIn("Five parallel child sessions / five worktrees / one reviewed base",
                       illustration)
         self.assertNotIn("not five worktrees", illustration)
 
