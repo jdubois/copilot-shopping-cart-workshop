@@ -46,8 +46,8 @@ Rehearse with the App build and accounts you will use.
 
 ### Evidence and privacy
 
-Confirm the `/chronicle` picker and its cost-tips spelling in your build:
-App docs show `cost tips`; the CLI reference shows `cost-tips`.
+Confirm `/chronicle tips` is available in your build. Focus on token efficiency,
+agent turnaround and output quality; `cost-tips` is an optional drill-down.
 History may span repositories or still be indexing. Never project unrelated
 private work, invent missing usage figures or treat a later filter as undoing
 earlier access.
@@ -91,6 +91,8 @@ No extra integration session is needed.
 After rubber duck, start **Cart: mock checkout**:
 **build and review checkout → Create PR → Agent Merge →
 checkout PR merged into `main` → verify merged app → Chronicle → handoff**.
+Run Chronicle in a fresh **Cart: Chronicle** session; scope its report to this
+repository over the past seven days, excluding the analysis session itself.
 Keep the single checkout PR in the orchestrator's session and authorize its merge explicitly.
 Confirm its linked PR is checkout, not the earlier boundary-test PR.
 Use actual PR links rather than fixed numbers. The template's `main` remains

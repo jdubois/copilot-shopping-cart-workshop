@@ -124,7 +124,7 @@ class WorkshopScheduleTests(unittest.TestCase):
     def test_supporting_pages_follow_main_sessions_and_checkout_children(self):
         names = ["Cart: quantity bug", "Cart: item removal",
                  "Cart: query optimization", "Cart: empty-state UX",
-                 "Cart: boundary tests", "Cart: mock checkout"]
+                 "Cart: boundary tests", "Cart: mock checkout", "Cart: Chronicle"]
         for slug in ["prompts", "worksheet", "facilitator"]:
             for name in names:
                 with self.subTest(surface=slug, session=name):
@@ -136,14 +136,14 @@ class WorkshopScheduleTests(unittest.TestCase):
                      "Delivery starts with the quantity-fix PR"]:
             self.assertIn(text, overview)
         tokens = re.sub(r"\s+", " ", chapter("tokens"))
-        self.assertIn("Include all three initial task sessions, both parallel sessions, "
-                      "**Cart: mock checkout** and its **five checkout child sessions**", tokens)
-        self.assertIn("also contains integration and rubber duck", tokens)
-        self.assertIn("checkout has its own App session", tokens)
+        for text in ["**current repository**", "**past seven days**",
+                     "do not need to enter dates or list session names or IDs",
+                     "Exclude this Chronicle session"]:
+            self.assertIn(text, tokens)
         worksheet = chapter("worksheet")
         for text in ["UI merged-main revision and its passing tests CI job",
                      "Combined preview from the verified directory",
-                     "All eleven workshop sessions"]:
+                     "Current repository, reported seven-day range/timezone and actual source sessions"]:
             self.assertIn(text, worksheet)
         for path in HANDBOOK.glob("*.md"):
             for stale in ["preparation PR", "preparation handoff", "preparation recovery",
@@ -331,18 +331,111 @@ class WorkshopScheduleTests(unittest.TestCase):
         self.assertNotIn("/chronicle", chapter("setup"))
         tokens = chapter("tokens")
         steps = ["## Decide before analyzing history",
-                 "## Open Chronicle if you opted in", "Stay in **Cart: mock checkout**",
-                 "```copilot\n/chronicle cost-tips\n```",
+                 "## Open Chronicle if you opted in", "Create a **new App session**",
+                 "```copilot\n/chronicle tips Review all workshop sessions",
                  "If Chronicle is unavailable in your build"]
         positions = [tokens.index(text) for text in steps]
         self.assertEqual(positions, sorted(positions))
         self.assertIn("Chronicle not available.", tokens)
-        self.assertIn("You do not need a new session or worktree", tokens)
-        self.assertIn("Chronicle can review all eleven workshop sessions from here", tokens)
-        self.assertIn("**`tips`** is a separate subcommand", tokens)
+        self.assertIn("**Cart: Chronicle**", tokens)
+        self.assertIn("The App creates a new worktree, but this read-only analysis does not use it",
+                      re.sub(r"\s+", " ", tokens))
+        self.assertIn("no app restart is needed", tokens)
+        self.assertIn("A fresh session does not restrict history access", tokens)
+        self.assertNotIn("Stay in **Cart: mock checkout**", tokens)
+        self.assertIn("Use **`tips`** for this broader workflow review", tokens)
+        self.assertIn("**`cost-tips`** is an optional", tokens)
+        self.assertIn("you do not need to run both", tokens)
         self.assertNotIn("/chronicle cost tips", tokens)
+        self.assertNotIn("```copilot\n/chronicle cost-tips\n```", tokens)
+        self.assertNotIn("```copilot\n/chronicle tips\n```", tokens)
         self.assertNotIn("```copilot\n/chronicle\n```", tokens)
+        self.assertNotIn("Do not send `/chronicle` alone.", tokens)
         self.assertNotIn("Check that the picker appears", tokens)
+
+    def test_chronicle_prompt_is_concise_repo_scoped_and_consistent(self):
+        tokens = chapter("tokens")
+        token_prompts = re.findall(r"```copilot\n(.*?)```", tokens, re.DOTALL)
+        self.assertEqual(len(token_prompts), 1)
+        prompt = token_prompts[0].strip()
+        card = chapter("prompts").split("## Improve usage", 1)[1].split(
+            "## Review the diff", 1)[0]
+        card_prompts = re.findall(r"```copilot\n(.*?)```", card, re.DOTALL)
+        self.assertEqual(len(card_prompts), 1)
+        card_prompt = card_prompts[0].strip()
+        self.assertEqual(prompt, card_prompt)
+        self.assertTrue(prompt.startswith("/chronicle tips "))
+        self.assertLessEqual(len(prompt.split()), 80)
+        normalized = re.sub(r"\s+", " ", prompt)
+        for text in ["all workshop sessions for the current repository",
+                     "over the past seven days",
+                     "excluding this Chronicle session and unrelated work",
+                     "State the repository, resolved time range/timezone and sessions used",
+                     "Suggest up to three improvements",
+                     "token efficiency, agent turnaround time and output quality",
+                     "grounded in observed examples", "Explain trade-offs",
+                     "Preserve tests, review and permission boundaries",
+                     "Report only available metrics", "units and coverage",
+                     "mark missing data unknown",
+                     "Do not infer currency or edit files"]:
+            with self.subTest(chronicle_prompt_requirement=text):
+                self.assertIn(text, normalized)
+        self.assertNotIn("[session", prompt)
+        self.assertNotIn("[repository]", prompt)
+        self.assertNotRegex(prompt, r"\[[^\]]+\]")
+        source = re.sub(r"\s+", " ", tokens)
+        self.assertIn("a later workshop-only prompt **cannot undo prior access**", source)
+        self.assertIn("Scope wording does not restrict history access", source)
+        self.assertLess(source.index("send the command and request as **one message**"),
+                        source.index("/chronicle tips"))
+        self.assertIn("Cart: Chronicle analysis session, excluded from source sessions",
+                      chapter("worksheet"))
+        self.assertIn("Return to **Cart: mock checkout**",
+                      re.sub(r"\s+", " ", chapter("finish")))
+
+    def test_chronicle_balances_tokens_turnaround_and_quality_with_evidence(self):
+        source = re.sub(r"\s+", " ", chapter("tokens"))
+        for text in [
+                "balance token economics, turnaround time and quality",
+                "| Token economics |", "| Agent turnaround |", "| Output quality |",
+                "**performance means completing tasks faster with fewer corrections**",
+                "Check the application separately with tests and HTTP/SQL measurements",
+                "not a performance benchmark or proof of code quality",
+                "Use recorded agent execution time when available, excluding time spent waiting for human input",
+                "use existing sessions rather than creating extra comparison runs",
+                "Missing usage is **unknown, not zero**",
+                "Credits, model-weighted usage and billed currency are different",
+                "Do not infer complete Fusion accounting",
+                "Different tasks are not controlled comparisons",
+                "Describe expected benefits as predictions until you measure them",
+                "**do not edit the verified main checkout**"]:
+            with self.subTest(chronicle_evidence_requirement=text):
+                self.assertIn(text, source)
+        explanation = next(paragraph for paragraph in chapter("tokens").split("\n\n")
+                           if paragraph.startswith("Here, **performance means"))
+        self.assertLessEqual(len(explanation.split()), 45)
+        self.assertIn("Observed turnaround/rework and quality evidence, or unavailable",
+                      chapter("worksheet"))
+        self.assertIn("Token/time/quality trade-off and supporting session/example",
+                      chapter("worksheet"))
+        self.assertIn("Reviewed workflow efficiency and quality", chapter("finish"))
+        self.assertIn("Confirm `/chronicle tips` is available", chapter("facilitator"))
+        self.assertNotIn("App docs show `cost tips`", chapter("facilitator"))
+
+    def test_chronicle_learning_outcomes_are_aligned_and_concise(self):
+        tokens = chapter("tokens")
+        for heading in ["What you will learn", "What you have learned"]:
+            section = tokens.split(f"## {heading}\n", 1)[1].split("\n## ", 1)[0]
+            source = re.sub(r"\s+", " ", section)
+            with self.subTest(heading=heading):
+                for text in ["privacy", "token usage, task completion time and result quality",
+                             "tests", "review"]:
+                    self.assertIn(text, source)
+        recap = tokens.split("## What you have learned\n", 1)[1]
+        self.assertEqual(len(re.findall(r"^- ", recap, re.MULTILINE)), 3)
+        self.assertIn("refine a prompt or propose a repository instruction", recap)
+        self.assertIn("keeping tests and review unchanged", recap)
+        self.assertNotIn("improve the next prompt or project instruction", recap)
 
     def test_mcp_connection_is_deferred_to_runtime_exercise(self):
         setup = chapter("setup")

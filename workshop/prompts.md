@@ -175,15 +175,20 @@ Before running Chronicle tips, follow the
 [Chronicle privacy decision]({{ site.baseurl }}/tokens/#decide-before-analyzing-history).
 The command may immediately access history beyond this workshop; a later scope
 prompt cannot undo that. Opt out and use your local workshop transcript if that
-access is unsuitable. If you decide to run the analysis, request:
+access is unsuitable.
+
+Start a fresh **Cart: Chronicle** session in your workshop repository.
+Leave the verified checkout unchanged and exclude the analysis session itself.
+Send the command and request as one message; no dates need filling in:
 
 ```copilot
-Limit analysis to [workshop session IDs/names], [repository], [time window].
-State which records you used. Do not inspect unrelated work or edit files.
-Explain reported token/usage fields with their units and coverage;
-mark missing data unknown. Identify two avoidable workflow patterns
-with concrete examples, and suggest one better next prompt.
-Keep acceptance tests, permission boundaries and review checks unchanged.
+/chronicle tips Review all workshop sessions for the current repository
+over the past seven days, excluding this Chronicle session and unrelated work.
+State the repository, resolved time range/timezone and sessions used.
+Suggest up to three improvements covering token efficiency, agent turnaround
+time and output quality, grounded in observed examples. Explain trade-offs.
+Preserve tests, review and permission boundaries. Report only available metrics
+with units and coverage; mark missing data unknown. Do not infer currency or edit files.
 ```
 
 ## Review the diff

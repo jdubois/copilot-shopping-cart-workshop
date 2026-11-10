@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Improve usage with Chronicle
-description: "Review token usage in your workshop sessions and choose one change to your prompts or workflow."
+description: "Review token efficiency, agent turnaround and output quality, then choose one evidence-backed workflow change."
 permalink: /tokens/
 workshop: true
 next: finish
@@ -10,21 +10,23 @@ next_title: Review and hand off
 
 ## What you will learn
 
-Use Chronicle in Copilot App to understand reported token usage and costs,
-check history privacy and choose one practical workflow improvement.
+Review workshop history with Chronicle while respecting privacy. Balance token
+usage, task completion time and result quality, then choose one evidence-backed
+workflow improvement without weakening tests or review.
 
 ## Review your workshop sessions
 
 You have fixed a bug, generated a feature, polished the UI, investigated a query
 problem, coordinated parallel work, requested a critique and delegated checkout
-implementation. Instead of memorizing token prices, use **Chronicle
-in GitHub Copilot App** to examine those sessions and their integration.
+implementation. Use **Chronicle in GitHub Copilot App** to find patterns across
+those sessions: what helped, what caused rework and what you could improve.
 
-**Goal:** reduce unnecessary token usage without relaxing tests or code review.
+**Goal:** balance token economics, turnaround time and quality, not simply use
+fewer tokens. Preserve tests, review and permission boundaries.
 
 <figure>
-  <a href="{{ site.baseurl }}/assets/illustration-chronicle-history-insights.svg" target="_blank"><img src="{{ site.baseurl }}/assets/illustration-chronicle-history-insights.svg" alt="Chronicle analyzes Copilot session history to summarize and search past work, explain reported usage patterns, provide workflow tips and suggest project-instruction improvements. This chapter focuses on usage insights." width="1440" height="880" loading="lazy"></a>
-  <figcaption>Chronicle turns session history into insights. Here, use its cost tips to understand your workshop workflow.</figcaption>
+  <a href="{{ site.baseurl }}/assets/illustration-chronicle-history-insights.svg" target="_blank"><img src="{{ site.baseurl }}/assets/illustration-chronicle-history-insights.svg" alt="Chronicle analyzes Copilot session history to summarize and search past work, explain reported usage patterns, provide workflow tips and suggest project-instruction improvements. This chapter focuses on token efficiency, agent turnaround and output quality." width="1440" height="880" loading="lazy"></a>
+  <figcaption>Use workflow tips to balance token efficiency, turnaround time and quality.</figcaption>
 </figure>
 
 ## Decide before analyzing history
@@ -44,63 +46,55 @@ on a classroom screen.
 
 ## Open Chronicle if you opted in
 
-Stay in **Cart: mock checkout**. You do not need a new session or worktree:
-Chronicle can review all eleven workshop sessions from here.
+Create a **new App session** in your workshop repository and name it
+**Cart: Chronicle**. The App creates a new worktree, but this read-only analysis
+does not use it. Leave **Cart: mock checkout** and its verified worktree unchanged;
+no app restart is needed. A fresh session does not restrict history access.
 
-After the privacy decision above, type this in this session's
-**App composer, not a terminal**:
+Review the **current repository** over the **past seven days**;
+you do not need to enter dates or list session names or IDs.
+Exclude this Chronicle session.
+
+In the new session's **App composer, not a terminal**, send the command and
+request as **one message**:
 
 ```copilot
-/chronicle cost-tips
+/chronicle tips Review all workshop sessions for the current repository
+over the past seven days, excluding this Chronicle session and unrelated work.
+State the repository, resolved time range/timezone and sessions used.
+Suggest up to three improvements covering token efficiency, agent turnaround
+time and output quality, grounded in observed examples. Explain trade-offs.
+Preserve tests, review and permission boundaries. Report only available metrics
+with units and coverage; mark missing data unknown. Do not infer currency or edit files.
 ```
 
-Use **`cost-tips`** for this usage exercise. **`tips`** is a separate subcommand
-for general workflow advice, not an alternative spelling.
-Do not send `/chronicle` alone.
+Use **`tips`** for this broader workflow review. **`cost-tips`** is an optional
+token-spend drill-down; you do not need to run both.
 
 If Chronicle is unavailable in your build, review your workshop transcript
 locally instead and record **"Chronicle not available."**
+Scope wording does not restrict history access. Check the returned scope;
+if unrelated work appears, stop and do not share it.
 
-Prepare the request below with the **session names shown in the App sidebar**,
-your repository, and the workshop start/end time. IDs are optional if your App
-exposes them. Include all three initial task sessions, both parallel sessions,
-**Cart: mock checkout** and its **five checkout child sessions**: eleven sessions
-for a complete run. Use the actual child names from the sidebar; if a child never
-ran, record the missing contribution rather than inventing a session.
-**Cart: boundary tests** also contains integration and rubber duck;
-checkout has its own App session.
-If your build accepts initial scope instructions, supply them
-before execution. Otherwise, after opting in to the command's broader access,
-use it as a follow-up to narrow the **report**, not as a claim of isolation.
-Check the returned scope; if unrelated work appears, stop and do not share it.
+## Understand the recommendations
 
-```copilot
-Analyze only my shopping-cart workshop sessions [session names/IDs],
-in [repository] during [start/end time and timezone].
-Exclude unrelated projects and conversations. State which sessions
-and data you actually used. Do not edit files.
-
-Explain where token usage appears to accumulate. Report input,
-output and cache-related counts only if exposed, with their units
-and coverage. Mark unavailable fields unknown. Identify two concrete
-workflow improvements, tied to examples in these sessions, while
-preserving all acceptance tests and review checks.
-```
-
-## Understand the usage report
-
-| Look for | What it may teach you |
+| Lens | Evidence to look for |
 |---|---|
-| Repeated broad file reads or entire logs | Point to relevant files, request IDs and the failing test |
-| Repeated follow-up corrections | Include reproduction steps, expected behavior, exclusions and acceptance criteria in the first prompt |
-| Unrelated work in one long session | Start a focused session with a verified handoff when the task changes |
-| Unnecessary skill/reference loading | Load useful guidance on demand, not every installed skill |
-| Effort/model choices | Use Fusion Standard or your chosen coding model; use higher effort when the task needs it |
+| Token economics | Repeated broad reads, oversized logs or unnecessary skill loading. Narrow the investigation and load guidance on demand. |
+| Agent turnaround | Repeated corrections, duplicate investigation or avoidable serial handoffs. Improve the brief or agree on interfaces before delegating. |
+| Output quality | Missing acceptance cases, UI/API mismatch or stale review evidence. Strengthen the contract and verification. |
 
-Look for these patterns in the report; they will not appear in every workflow.
-A short prompt can cause an expensive search; a longer, precise prompt can
-prevent several retries. Use the sessions you already have rather than running
-an intentionally inefficient prompt for comparison.
+These are patterns to look for, not findings every report must contain.
+A longer initial brief or an additional review may use more tokens but reduce
+rework and improve the result. Choose model and effort for the task, not on the
+assumption that more effort always improves quality.
+
+Here, **performance means completing tasks faster with fewer corrections**.
+Chronicle reviews how you work with Copilot, not how fast the shopping cart
+responds. Check the application separately with tests and HTTP/SQL measurements.
+
+Use recorded agent execution time when available, excluding time spent waiting
+for human input.
 
 ### Distinguish tokens, credits and cost
 
@@ -124,9 +118,11 @@ On the [worksheet]({{ site.baseurl }}/worksheet/), record:
 For example, replace “fix the cart” with the reproduction, relevant endpoint,
 acceptance criteria and exact regression command.
 
-Use that improved brief for the final review. Keep the same tests and evidence
-requirements. Different tasks are not a controlled cost comparison, so do not
-treat their usage differences as proof of savings.
+Choose one recommendation and record the expected token, time or quality
+benefit and its trade-off. Use that improved brief for the final review, keeping
+the same tests and evidence requirements. Different tasks are not controlled
+comparisons; usage or timing differences do not prove an improvement.
+For this exercise, use existing sessions rather than creating extra comparison runs.
 
 If history is not available yet, use the actual workshop transcript to identify
 a repeated read or unclear prompt and mark Chronicle “not observed.”
@@ -141,13 +137,13 @@ If you explicitly choose to apply it, use a new follow-up feature branch.
 That change needs its own review, publishing/merge approval, PR and verification.
 For local recovery, preserve the checked result and create a normal branch before
 any separately approved edits.
-Describe expected savings as a prediction until you measure them.
+Describe expected benefits as predictions until you measure them. Session-history
+advice is not a performance benchmark or proof of code quality.
 
 Continue with the [final review and handoff]({{ site.baseurl }}/finish/).
 
 ## What you have learned
 
-- Decide whether Chronicle's history access is appropriate before running an analysis, or review the workshop transcript without it.
-- Read token, cache, credit and cost fields with their reported units and coverage, keeping unavailable data separate from zero usage.
-- Connect a usage pattern to a specific session and improve the next prompt or project instruction without weakening acceptance criteria.
-- Distinguish a suggested saving from a measured result; a different task's lower usage does not prove that the change saved tokens.
+- Review workshop history with Chronicle or a local transcript, respecting privacy.
+- Balance token usage, task completion time and result quality rather than assuming fewer tokens means better work.
+- Choose one improvement supported by session examples: refine a prompt or propose a repository instruction, keeping tests and review unchanged.

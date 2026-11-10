@@ -162,10 +162,12 @@ activity available for Chronicle.
 | Field | Your observation |
 |---|---|
 | Privacy choice and scope controls checked before running | |
-| All eleven workshop sessions, including Cart: mock checkout and its five children, repository/timezone/window | |
+| Cart: Chronicle analysis session, excluded from source sessions | |
+| Current repository, reported seven-day range/timezone and actual source sessions | |
 | Returned scope and coverage | |
 | Reported input/output/cache/usage values **with units**, or unavailable | |
-| Usage pattern and supporting session/example | |
+| Observed turnaround/rework and quality evidence, or unavailable | |
+| Token/time/quality trade-off and supporting session/example | |
 | One prompt/workflow change | |
 | Acceptance and review checks retained | |
 | Result observed, or improvement not yet checked | |

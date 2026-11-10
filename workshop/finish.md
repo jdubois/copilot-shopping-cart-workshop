@@ -15,9 +15,10 @@ five-agent contributions and delivery evidence.
 ## Final review
 {: #final-review}
 
-The checkout chapter already reviewed and delivered the code. Keep this final
-review **read-only**, using the verified merged-main revision. If delivery was
-blocked, review the preserved local result and state that limitation instead.
+The checkout chapter already reviewed and delivered the code. Return to
+**Cart: mock checkout** for this **read-only** final review of the verified
+merged-main revision. If delivery was blocked, review the preserved local result
+and state that limitation instead.
 Inspect **Changes** in the App, then ask Copilot for a full comparison with
 your original starter. Include already committed tickets, current edits and
 new files—not just the latest uncommitted change.
@@ -61,7 +62,7 @@ completed main-branch result.
 | Coordinated parallel work | Reviewed starting point published on `main`, two isolated sessions from that version, two worker PRs merged sequentially with Agent Merge, and a tested combined result; or an explicit local-recovery record |
 | Requested an independent critique | Actual rubber duck findings, decisions and evidence for corrections; or a recorded unavailable critic |
 | Delivered mock checkout with five subagents | Five child-session links/worktrees and observed overlap, four code handoffs plus read-only findings for the PR head at merge authorization and coverage limits for later repairs, one checkout PR merged into `main`, passing merged-revision checks and receipt/cart preview; or an explicit incomplete/demonstration record |
-| Reviewed token usage | Chronicle report or a note that it was unavailable/not run, plus one improvement based on the workshop sessions |
+| Reviewed workflow efficiency and quality | Chronicle tips report or a note that it was unavailable/not run, plus one evidence-backed improvement balancing tokens, turnaround and quality |
 | Used Copilot App effectively | Reviewed plan, loaded skills, inspected changed files and checked test output |
 
 Use the [worksheet]({{ site.baseurl }}/worksheet/); mark demos, reference

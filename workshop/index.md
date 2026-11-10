@@ -91,7 +91,7 @@ and ask for help whenever you need it.
 7. [Merge PRs with Agent Merge]({{ site.baseurl }}/integrate/): UI first, then boundary tests, reviewing repairs and authorizing each merge separately.
 8. [Review with rubber duck]({{ site.baseurl }}/rubber-duck/) in the existing **Cart: boundary tests** session.
 9. [Coordinate five subagents]({{ site.baseurl }}/subagents/) from **Cart: mock checkout**: run four writers and one read-only reviewer in parallel, integrate their work, deliver one reviewed PR with Agent Merge and verify the merged app.
-10. [Improve token usage with Chronicle]({{ site.baseurl }}/tokens/) using the workshop sessions.
+10. [Improve usage with Chronicle]({{ site.baseurl }}/tokens/) in a fresh **Cart: Chronicle** session: review token efficiency, turnaround and quality in this repository over the past seven days.
 11. [Review the full change and hand off]({{ site.baseurl }}/finish/#final-review).
 
 ## What you will leave with
