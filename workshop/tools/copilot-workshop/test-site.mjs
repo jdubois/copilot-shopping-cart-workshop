@@ -59,6 +59,29 @@ try {
     assert.equal(await page.locator('.workshop-nav').first().locator('a[aria-current=page]').count(), 1);
     assert.equal(await page.getByRole('link', { name: 'Copilot App workshop', exact: true, includeHidden: true }).count(), 0);
     assert.equal(await page.locator('.workshop-nav ol').first().locator('a').first().textContent(), 'Overview');
+    await page.evaluate(() => document.fonts.ready);
+    const fonts = await page.evaluate(() =>
+      Object.fromEntries([...document.fonts].map(font => [font.family, font.status])));
+    assert.equal(fonts['Mona Sans'], 'loaded', 'Reading font did not load');
+    assert.equal(fonts['Mona Sans Mono'], 'loaded', 'Code font did not load');
+    assert.equal(await page.locator('.workshop-nav-resources a').first().textContent(), 'Prompt cards');
+    const chapterStyle = await page.locator('.workshop-nav a[aria-current=page]').first()
+      .evaluate(element => ({
+        background: getComputedStyle(element).backgroundColor,
+        marker: getComputedStyle(element, '::before').backgroundColor
+      }));
+    assert.equal(chapterStyle.background, 'rgb(242, 245, 243)', 'Selected chapter should be neutral');
+    assert.equal(chapterStyle.marker, 'rgb(8, 135, 43)', 'Selected chapter should have a green marker');
+    const actionBoxes = await page.locator('.workshop-content p > .btn').evaluateAll(elements =>
+      elements.map(element => {
+        const { x, y, width, height } = element.getBoundingClientRect();
+        return { x, y, width, height };
+      }));
+    const [setupAction, templateAction] = actionBoxes;
+    const actionGap = Math.abs(setupAction.y - templateAction.y) < 1
+      ? templateAction.x - setupAction.x - setupAction.width
+      : templateAction.y - setupAction.y - setupAction.height;
+    assert.ok(actionGap >= 7.9, 'Overview actions need spacing when inline or wrapped');
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
       'Horizontal page overflow');
     assert.ok(await page.locator('.navbar').evaluate(element =>

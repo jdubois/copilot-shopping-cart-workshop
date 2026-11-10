@@ -1,8 +1,9 @@
 <nav class="workshop-nav" aria-label="Workshop chapters">
+    <h2 class="workshop-nav-title">Workshop chapters</h2>
     <ol>
         {% for chapter in site.data.copilot_workshop %}
         {% assign chapter_url = '/' | append: chapter.slug %}
-        <li><a href="{{ chapter_url | relative_url }}"{% if page.url == chapter_url %} aria-current="page"{% endif %}>{{ chapter.title }}</a></li>
+        <li{% if chapter.slug == 'prompts/' %} class="workshop-nav-resources"{% endif %}><a href="{{ chapter_url | relative_url }}"{% if page.url == chapter_url %} aria-current="page"{% endif %}>{{ chapter.title }}</a></li>
         {% endfor %}
     </ol>
     <a class="btn workshop-repo" href="https://github.com/jdubois/github-copilot-app-java-workshop">

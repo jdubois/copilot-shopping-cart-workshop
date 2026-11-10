@@ -70,6 +70,32 @@ class SiteMigrationTests(unittest.TestCase):
         self.assertIn("var GA_ID = 'G-92TRR0HJMQ';", analytics)
         self.assertIn("var KEY = 'jdubois-analytics-consent';", analytics)
 
+    def test_brand_fonts_are_self_hosted_licensed_and_project_prefixed(self):
+        layout = (SITE / "_layouts/default.html").read_text()
+        css = (SITE / "css/main.css").read_text()
+        self.assertIn("'/assets/fonts/mona-sans.woff2' | relative_url", layout)
+        self.assertNotIn("fonts.googleapis.com", layout)
+        self.assertNotIn("fonts.gstatic.com", layout)
+        for name in ["mona-sans", "mona-sans-mono"]:
+            with self.subTest(font=name):
+                self.assertIn(f"../assets/fonts/{name}.woff2", css)
+                self.assertEqual((SITE / f"assets/fonts/{name}.woff2").read_bytes()[:4], b"wOF2")
+        license_text = (SITE / "assets/fonts/OFL.txt").read_text()
+        self.assertIn("The Mona Sans Project Authors", license_text)
+        self.assertIn("SIL OPEN FONT LICENSE Version 1.1", license_text)
+        self.assertIn("font-optical-sizing: auto", css)
+        self.assertIn("font-variant-ligatures: none", css)
+
+    def test_docs_style_keeps_workshop_identity_and_separates_reference_navigation(self):
+        layout = (SITE / "_layouts/default.html").read_text()
+        nav = (SITE / "_includes/copilot-workshop-nav.html").read_text()
+        overview = (SITE / "index.md").read_text()
+        self.assertIn('property="og:site_name" content="GitHub Copilot App Java workshop"', layout)
+        self.assertIn('class="workshop-nav-title">Workshop chapters</h2>', nav)
+        self.assertIn("chapter.slug == 'prompts/'", nav)
+        self.assertIn('class="workshop-nav-resources"', nav)
+        self.assertIn('<figure class="workshop-intro-illustration">', overview)
+
 
 if __name__ == "__main__":
     unittest.main()

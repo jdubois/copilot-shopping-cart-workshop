@@ -49,10 +49,29 @@ Run `./mvnw test` separately from the repository root for the Java starter.
 
 The initial migration comes from tracked source at
 [`jdubois/jdubois.github.com@98ed7f0`](https://github.com/jdubois/jdubois.github.com/commit/98ed7f008192ef9ab497e299e7df2adb5b399f3d).
-Its reading layout, chapter navigation, fonts, styles, prompt-copy behavior,
-consent UI and analytics implementation are retained, with standalone route
+Its chapter navigation, prompt-copy behavior, consent UI and analytics
+implementation are retained, with standalone route
 adaptations. The personal-site header and conference return link have been
 replaced with workshop navigation and the repository button.
+The reading layout follows
+[GitHub Docs](https://docs.github.com/en/get-started/using-github/hello-world)
+and [Primer navigation](https://primer.style/product/components/nav-list/):
+a white structural rail, neutral selected rows with green active markers,
+compact typography and blue reading links. Colors and fonts draw on the
+[GitHub brand foundations](https://brand.github.com/foundations/color).
+The overview's conceptual artwork is deliberately smaller and unframed;
+genuine application captures retain their contents and provenance.
+This remains an independently authored workshop; the
+GitHub mark identifies only the repository link, not the site's own identity.
+
+[Mona Sans](https://brand.github.com/foundations/typography) and its mono companion
+are self-hosted under `assets/fonts/`, with the SIL Open Font License alongside.
+The unmodified normal-width variable WOFF2 files come from
+[`github/mona-sans@4bc6ba8`](https://github.com/github/mona-sans/tree/4bc6ba8b354c36b4fb66d32cd67b4c1f2beb0a06/fonts/webfonts/variable):
+`MonaSansVF[opsz,wght].woff2` and `MonaSansMonoVF[wght].woff2`.
+Use optical sizing without manual letterspacing or ligatures for reading text.
+Do not introduce a GitHub-logo site lockup or deprecated Copilot mascot imagery.
+
 The shared analytics property remains `G-92TRR0HJMQ` and the origin-wide
 localStorage key remains `jdubois-analytics-consent`. No analytics loads before
 acceptance; the footer's Cookie settings control supports live revocation.
