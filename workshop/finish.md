@@ -6,40 +6,38 @@ permalink: /finish/
 workshop: true
 ---
 
-## What you will learn
-
-Use Copilot App to review the implemented shop and its evidence, then hand
-off the completed application on **`main`**, alongside the independent critique,
-five-agent contributions and delivery evidence.
-
 ## Final review
 {: #final-review}
 
 The checkout chapter already reviewed and delivered the code. Return to
-**Cart: mock checkout** for this **read-only** final review of the verified
-merged-main revision. If delivery was blocked, review the preserved local result
-and state that limitation instead.
-Inspect **Changes** in the App, then ask Copilot for a full comparison with
-your original starter. Include already committed tickets, current edits and
-new files—not just the latest uncommitted change.
+**Cart: mock checkout** after the Chronicle exercise for this **read-only**
+final review of the verified merged-main revision. If delivery was blocked,
+review the recorded reviewed local result and state that limitation instead.
+Inspect **Changes** in the App, then ask Copilot to compare your original starter
+with that verified commit, including all committed tickets.
+Report current edits and untracked files separately as unverified work;
+preserve them rather than treating them as part of the verified result.
 If continuing from a separate reference checkout, compare from **`v2-start`**
 instead and note that your work is based on the reference.
-Ask for a review without edits:
 
 The comparison starts at the **`workshop-start` tag**, not the PR's integration
-target. This only selects the diff to review; it does not move your code or
-change where a PR merges.
+target. This is the comparison starting point only; it does not move your code
+or change where a PR merges.
+Ask for a review without edits:
 
 ```copilot
-Review the full starter-to-current change, including committed tickets,
-staged/unstaged edits and new files, for cart behavior, validation, server
+Review the full change from workshop-start to the verified main commit,
+or the recorded reviewed local commit if delivery is blocked.
+State both compared commits. Check cart behavior, validation, server
 prices, removal, Canvas UI changes, the query change, both parallel workers'
-contributions and the checkout implementation.
-Check stored order snapshots, atomic clearing, retry behavior and receipt UI.
-Distinguish local checkout code from what is actually merged into main.
-Use workshop-start as the comparison starting point only
-and do not edit, reset branches or retarget PRs.
+contributions and mock checkout: order snapshots, atomic clearing, rollback,
+concurrent duplicates, retry/reload recovery and receipt UI.
+Preserve reviewed acceptance criteria.
+Report current edits and untracked files separately as unverified work.
 Identify concrete regressions or missing evidence, not style preferences.
+Cite specific code and evidence; mark unverified assumptions.
+Do not infer that the running app uses this revision or that CI is green.
+Do not edit files, switch or reset branches, or retarget PRs.
 ```
 
 Inspect findings yourself. If corrections are needed after delivery, ask Copilot
@@ -54,15 +52,15 @@ completed main-branch result.
 
 | Outcome | Evidence |
 |---|---|
-| Fixed repeated additions | Notebook added twice → quantity 2 / €20, persists after reload; regression tests pass |
+| Fixed repeated additions | From an empty cart, Notebook added twice → quantity 2 / €20, persists after reload; regression tests pass |
 | Generated removal | Correct DELETE response, working button, other products and totals preserved |
 | Used a Canvas | Running shop preview, selected UI issue and checked correction, or an explicit fallback record |
-| Investigated N+1 | Matched MCP before/after request profiles, same workload, query tests green |
+| Investigated N+1 | Matched MCP before/after profiles for the same eight-product workload; query tests confirm exactly 1 SELECT per completed GET `/api/cart` at 8 and 16 distinct products, with response values preserved |
 | Delivered three task PRs | Quantity fix, removal plus Canvas, and query fix each merged and verified before the next task |
 | Coordinated parallel work | Reviewed starting point published on `main`, two isolated sessions from that version, two worker PRs merged sequentially with Agent Merge, and a tested combined result; or an explicit local-recovery record |
 | Requested an independent critique | Actual rubber duck findings, decisions and evidence for corrections; or a recorded unavailable critic |
 | Delivered mock checkout with five subagents | Five child-session links/worktrees and observed overlap, four code handoffs plus read-only findings for the PR head at merge authorization and coverage limits for later repairs, one checkout PR merged into `main`, passing merged-revision checks and receipt/cart preview; or an explicit incomplete/demonstration record |
-| Reviewed workflow efficiency and quality | Chronicle tips report or a note that it was unavailable/not run, plus one evidence-backed improvement balancing tokens, turnaround and quality |
+| Reviewed workflow efficiency and quality | Fresh Cart: Chronicle session, scoped tips report and one evidence-backed improvement balancing tokens, turnaround and quality; or a note that Chronicle was unavailable/not run |
 | Used Copilot App effectively | Reviewed plan, loaded skills, inspected changed files and checked test output |
 
 Use the [worksheet]({{ site.baseurl }}/worksheet/); mark demos, reference
@@ -81,20 +79,24 @@ use the preserved result and explicitly record that it is not merged:
 
 All baseline, generated cart/removal/query, boundary and checkout
 tests must execute with no failures/errors/skips. Report actual counts and
-check the reports for every acceptance class, `CartBoundaryTest` and
-`CheckoutContractTest`; no reviewed case may be removed or weakened.
+check the reports for `BaselineTest`, `CartContractTest`, `RemoveContractTest`,
+`QueryContractTest`, `CartBoundaryTest`, `CheckoutContractTest` and
+`CheckoutResilienceTest`; no reviewed case may be removed or weakened.
 If checkout was blocked, mark its cases as not completed rather than treating
 an earlier passing suite as checkout evidence.
 If a ticket or worker remains unfinished, record that explicitly rather than
 presenting partial work as the complete workshop result.
 
-Ask Copilot to show the intended file list and diff, including new files.
-Review them in **Changes**. On the normal path the accepted workshop work is
+Ask Copilot to show the file list and diff between the recorded comparison
+commits. Review them in **Changes**, keeping any local edits and untracked files
+separate as unfinished work. On the normal path the accepted workshop work is
 already merged; do not create another commit just to finish. If you made corrections
 on a follow-up feature branch, deliver them through their own reviewed PR before
 claiming they are on `main`.
 Ask Copilot for a concise handoff:
 what changed, what was checked, what is still unknown.
+Include the independent critique and checkout branch/commit, actual PR/CI
+status and verified revision. Keep private Chronicle output out of the handoff.
 
 ## Where your result lives
 
@@ -124,19 +126,10 @@ or **merged; post-merge verification blocked**, as appropriate.
 
 ## Keep one useful habit
 
-Leave with the reviewed result, a record of unfinished work,
-the independent review decisions, the delivered checkout feature
-and the reusable prompt or usage habit you chose with Chronicle.
+Leave with the reviewed result, actual delivery status, unfinished work,
+independent review decisions and one workflow habit based on your session review.
 
 The transferable loop is **reproduce → plan → implement → inspect → verify**.
 Skills provide procedure, Canvas grounds UI feedback, and MCP provides runtime
 evidence. Rubber duck challenges your reasoning; subagents coordinate focused
 work. Chronicle helps you improve the workflow. None replaces your judgment.
-
-## What you have learned
-
-- Ask Copilot to review the entire change from **workshop-start**, including earlier commits, current edits and new files.
-- Use **Changes**, test output and a shop preview to assess the result, and record unfinished work or unverified features.
-- Prepare a concise handoff with updated `main`, actual PR/CI status and any local recovery or unfinished work.
-- Include the independent critique and checkout branch/commit, checkout PR and verified main revision, with actual verification and local-versus-merged status.
-- Carry forward one improved Copilot habit from the workshop, such as a clearer initial prompt or more focused context.

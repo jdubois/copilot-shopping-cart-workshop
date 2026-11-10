@@ -11,7 +11,7 @@ SEQUENCE = ["", "setup", "ticket", "modes", "skills", "generate",
             "subagents", "tokens", "finish"]
 EXERCISES = {"ticket", "modes", "skills", "generate",
              "canvas", "tools", "parallel", "integrate", "rubber-duck",
-             "subagents", "tokens", "finish"}
+             "subagents", "tokens"}
 
 
 def chapter(slug):
@@ -810,6 +810,36 @@ class WorkshopScheduleTests(unittest.TestCase):
         finish = chapter("finish")
         self.assertIn("prices, removal, Canvas UI changes", finish)
         self.assertIn("independent critique and checkout branch/commit", finish)
+
+    def test_final_handoff_reviews_the_verified_result_and_all_checkout_tests(self):
+        finish = chapter("finish")
+        source = re.sub(r"\s+", " ", finish)
+        prompts = re.findall(r"```copilot\n(.*?)```", finish, re.DOTALL)
+        self.assertEqual(len(prompts), 1)
+        card = chapter("prompts").split("## Review the diff\n", 1)[1]
+        self.assertEqual(prompts, re.findall(r"```copilot\n(.*?)```", card, re.DOTALL))
+        for text in [
+                "Return to **Cart: mock checkout**",
+                "after the Chronicle exercise",
+                "verified main commit", "recorded reviewed local commit",
+                "State both compared commits",
+                "If continuing from a separate reference checkout",
+                "current edits and untracked files separately as unverified work",
+                "Preserve reviewed acceptance criteria",
+                "atomic clearing, rollback, concurrent duplicates, retry/reload recovery",
+                "Do not infer that the running app uses this revision or that CI is green",
+                "Do not edit files, switch or reset branches, or retarget PRs",
+                "From an empty cart", "exactly 1 SELECT",
+                "8 and 16 distinct products",
+                "Keep private Chronicle output out of the handoff",
+                "actual delivery status, unfinished work"]:
+            with self.subTest(handoff_requirement=text):
+                self.assertIn(text, source)
+        for name in ["BaselineTest", "CartContractTest", "RemoveContractTest",
+                     "QueryContractTest", "CartBoundaryTest", "CheckoutContractTest",
+                     "CheckoutResilienceTest"]:
+            with self.subTest(required_test_report=name):
+                self.assertIn(f"`{name}`", finish)
 
     def test_chapters_have_no_deadlines_or_timeboxes(self):
         timing = re.compile(r"^timebox:|\bminute \d+|\b\d{2,3}–\d{2,3}\b|\bcutoff\b",

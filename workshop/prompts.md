@@ -193,14 +193,22 @@ with units and coverage; mark missing data unknown. Do not infer currency or edi
 
 ## Review the diff
 
+Return to **Cart: mock checkout** for the
+[read-only final review]({{ site.baseurl }}/finish/#final-review) of the verified result.
 For a separate reference checkout, replace `workshop-start` with `v2-start`.
 Otherwise keep the personal starter tag:
 
 ```copilot
-Review the complete change from workshop-start to current tracked files,
-including committed tickets, current edits and untracked new files.
-Do not edit.
-Look for behavior regressions, weakened tests, wrong totals or scope creep.
-Cite specific code and evidence. Separate findings from unverified assumptions.
+Review the full change from workshop-start to the verified main commit,
+or the recorded reviewed local commit if delivery is blocked.
+State both compared commits. Check cart behavior, validation, server
+prices, removal, Canvas UI changes, the query change, both parallel workers'
+contributions and mock checkout: order snapshots, atomic clearing, rollback,
+concurrent duplicates, retry/reload recovery and receipt UI.
+Preserve reviewed acceptance criteria.
+Report current edits and untracked files separately as unverified work.
+Identify concrete regressions or missing evidence, not style preferences.
+Cite specific code and evidence; mark unverified assumptions.
 Do not infer that the running app uses this revision or that CI is green.
+Do not edit files, switch or reset branches, or retarget PRs.
 ```
