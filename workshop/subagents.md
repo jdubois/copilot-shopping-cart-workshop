@@ -5,7 +5,7 @@ description: "Run four writers and one read-only reviewer in parallel child sess
 permalink: /subagents/
 workshop: true
 next: tokens
-next_title: Chronicle and token usage
+next_title: Improve usage with Chronicle
 ---
 
 ## What you will learn

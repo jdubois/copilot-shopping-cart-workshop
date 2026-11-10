@@ -6,10 +6,9 @@ permalink: /facilitator/
 workshop: true
 ---
 
-Copilot App is the subject; the shopping cart is the example.
-Follow the [workshop flow]({{ site.baseurl }}/#workshop-flow), with a break
-before parallel work. Keep one workshop, without chapter deadlines.
-Use this page for preparation and troubleshooting, not as another exercise.
+Copilot App is the subject; the shop is the example.
+Follow the [workshop flow]({{ site.baseurl }}/#workshop-flow), with a break before
+parallel work and no chapter deadlines.
 
 ## Before participants arrive
 {: #rehearse-with-the-app}
@@ -21,7 +20,7 @@ Rehearse with the App build and accounts you will use.
 | Environment | The participant's own repository opens in a worktree; the 4 baseline tests pass; one owned shop runs on port 18765 |
 | App controls | Plan, Interactive, effort and permissions are understood; Fusion Standard or the [setup alternative]({{ site.baseurl }}/setup/#open-it-in-copilot-app) is available |
 | Skills and tools | Bundled Java skills load; Browser canvas, Pick & polish, impeccable and the two MCP tools have been tried |
-| GitHub delivery | Actions is enabled; **Shopping-cart checks / tests** runs; PR delivery works from the quantity fix onward; Agent Merge is allowed for the parallel PRs |
+| GitHub delivery | Actions is enabled; **Shopping-cart checks / tests** runs; PR delivery works from the quantity fix onward; Agent Merge is allowed for the two worker PRs and the integrated checkout PR |
 | History privacy | Participants decide **before running Chronicle** whether its history access is acceptable; [transcript review]({{ site.baseurl }}/tokens/#decide-before-analyzing-history) is an equal alternative |
 
 <details markdown="1">
@@ -32,6 +31,7 @@ Rehearse with the App build and accounts you will use.
 - The three Java skills are repository-bundled; **impeccable** is App-bundled. Invoke it with **`/impeccable`**. Demonstrate loading guidance, not reinstalling the workshop's pinned copies.
 - Follow the [Canvas chapter]({{ site.baseurl }}/canvas/): open the running shop and focus on one observed UI issue with Pick & polish. No instruction-file editing exercise is needed.
 - Use three named task sessions: **Cart: quantity bug**, **Cart: item removal** (including Canvas) and **Cart: query optimization**. Merge and verify each task's PR before starting the next from updated `main`; name sessions only after their first prompt. Participants create sessions in the App UI, without changing agent instructions.
+- Confirm this worktree owns the running shop before refreshing UI edits; a matching URL is not enough. If ownership is unknown or different, use the [human-run server handoff]({{ site.baseurl }}/setup/#move-running-shop) rather than touching another checkout's app.
 - Keep the shop running during same-worktree edits. DevTools reloads compiled backend changes; Maven tests compile Java and copy resources. After approved UI edits, Copilot runs `./mvnw compile`, reloads the existing Browser canvas and verifies the visible change; no manual refresh is needed. An automatic restart resets cart data; static-resource updates normally do not. Stop/start manually when switching the running app to another worktree or for recovery.
 
 ### Review and five-subagent checkout
@@ -41,7 +41,7 @@ Rehearse with the App build and accounts you will use.
 - Prepare the checkout plan in **Plan** mode. Approve the [contract, plan, file ownership and local handoffs]({{ site.baseurl }}/subagents/#checkout-contract), then return to **Interactive** without implementing. The `/orchestrate` prompt creates exactly five coordinated child sessions, each with its own worktree and branch. No `/fleet`, nested agents or custom profiles. The starter instructions already provide this scoped allowance; no `AGENTS.md` edit is needed.
 - Approve five-way concurrency after a machine-load check. Start backend, UI, HTTP tests, resilience tests and a read-only reviewer together from the same reviewed commit. Agree on HTTP behavior, test setup/probes and exclusive fixture ownership first. Do not wait for backend implementation before starting the others; record actual overlap or the concurrency limitation.
 - Four writers provide local commits; the reviewer provides findings tied to commits, including the final integrated head. The orchestrator owns integration, Maven and preview. Preserve all worktrees; no child publishing, merging, shops, Maven runs or nested agents.
-- Check all earlier reviewed tests, boundary cases and **new checkout tests**. Verify rollback, immutable receipts, concurrent duplicate requests and replay after new cart items. Wait for DevTools to load compiled changes, then place an order in the Browser canvas.
+- Check all earlier reviewed tests, boundary cases and **new checkout tests**, including `CheckoutContractTest` and `CheckoutResilienceTest`. Verify rollback, immutable receipts, concurrent duplicate requests and replay after new cart items. Wait for DevTools to load compiled changes, then place an order in the Browser canvas.
 - After final review, use **Create PR** in **Cart: mock checkout**, then reuse **Agent Merge**. Keep **Merge pull request** off while reviewing repairs; authorize this checkout PR's merge separately once checks and approvals pass. Have the same reviewer recheck repairs before merge approval; record later repair/review limitations. Workers never publish or merge. Verify exact merged main and that the shop serves its compiled code from the verified directory; change the running server's worktree only if needed.
 
 ### Evidence and privacy
@@ -51,6 +51,11 @@ agent turnaround and output quality; `cost-tips` is an optional drill-down.
 History may span repositories or still be indexing. Never project unrelated
 private work, invent missing usage figures or treat a later filter as undoing
 earlier access.
+
+For the final review, compare the recorded starter and verified result commits,
+keeping unfinished edits separate. Corrections need a new approved feature branch
+and reviewed PR; leave the verification checkout unchanged.
+Keep private Chronicle output out of the handoff.
 
 Record App actions only when their actual responses are available.
 Shop screenshots and saved HTTP captures do not prove an App interaction.
@@ -83,20 +88,21 @@ The three task PRs precede **two worker PRs targeting `main`**:
 | UI worker PR | Use **Create PR** in **Cart: empty-state UX**. Review Agent Merge repairs with **Merge pull request** off; authorize this PR only, then confirm **Merged** and passing checks on `main` |
 | Boundary-test PR | Use **Create PR** in **Cart: boundary tests**. Reconcile updated `main` with merging off; review resolutions and fresh CI, then separately authorize its merge |
 
-After both worker PRs merge, reuse **Cart: boundary tests** to verify exact
-`origin/main` in its own clean worktree. Preserve worker branches and other
-checkouts; squash-merged results count even when original commits are not ancestors.
+Verify merged `origin/main` in the clean **Cart: boundary tests** worktree.
+Preserve worker branches and other checkouts; account for squash merges.
 No extra integration session is needed.
 
 After rubber duck, start **Cart: mock checkout**:
 **build and review checkout → Create PR → Agent Merge →
 checkout PR merged into `main` → verify merged app → Chronicle → handoff**.
-Run Chronicle in a fresh **Cart: Chronicle** session; scope its report to this
+If participants opt in, run Chronicle in a fresh **Cart: Chronicle** session; scope its report to this
 repository over the past seven days, excluding the analysis session itself.
-Keep the single checkout PR in the orchestrator's session and authorize its merge explicitly.
-Confirm its linked PR is checkout, not the earlier boundary-test PR.
-Use actual PR links rather than fixed numbers. The template's `main` remains
-the unsolved starter, not a completed demo.
+Keep the checkout PR in the orchestrator's session, not the earlier boundary-test PR.
+Authorize its merge separately and record actual PR links.
+The template's `main` remains the unsolved starter, not a completed demo.
+
+After Chronicle or transcript review, return to **Cart: mock checkout** for the
+[read-only final handoff]({{ site.baseurl }}/finish/#final-review).
 
 ## Recovery
 {: #recovery}
@@ -118,7 +124,7 @@ a fallback or reference demonstration is not a successful native App exercise.
 | Checkout publishing or merge blocked | Preserve branch/open PR; mark **verified locally; delivery blocked**. No direct push or substitute local merge into `main` |
 | Checkout merged but checks or preview fail | Record **merged; post-merge verification blocked**. Repairs need a new approved feature branch and PR |
 | Session query error or interruption | Preserve source, branches and partial evidence; an idle session is not completion. Resume only missing work, not the entire rehearsal |
-| Chronicle unavailable or privacy opt-out | Review the workshop transcript without analyzing broader history; mark usage figures unavailable |
+| Chronicle unavailable or privacy opt-out | Use the workshop transcript; record **Chronicle not available** or **Chronicle not run: privacy choice**. Missing usage is unknown |
 
 **CI:** queued/running means wait; absent, skipped or failed is not a pass.
 Check Actions and the current PR revision. Keep the second PR's Agent Merge
@@ -160,8 +166,9 @@ ready-made exercise tests.
 | After feature, activate `QueryContractTest` | 2 | Two failures: 9/17 SELECTs, expected 1 |
 | After performance, all four classes | 12 | Pass |
 
-Facilitator test snapshots are maintained separately in the website repository's
-`tools/copilot-workshop/reference-tests/`, excluded from the published site.
+Maintainer test snapshots live at
+`workshop/tools/copilot-workshop/reference-tests/` in this repository,
+excluded from the published site.
 The pinned historical checkpoints below retain their own `teaching/` classes
 for reproducing these recorded counts. Use those files only in a separate
 reference checkout; never replace reviewed learner tests. Boundary and
@@ -206,7 +213,7 @@ the participant's Canvas changes, new boundary tests or checkout.
 | `v2-performance` | <a href="https://github.com/jdubois/github-copilot-app-java-workshop/tree/v2-performance" target="_blank">Query fix</a> | `0a7d9dd3962929c7909ecfee64f72b2f03f43970` |
 
 These are one reference history in the template repository, not separate
-downloads or website source copies. Earlier v1 checkpoints remain unchanged.
+repositories or archives. Earlier v1 checkpoints remain unchanged.
 
 </details>
 
@@ -224,14 +231,15 @@ capture JVM version, which differs from the Java 21 compilation target.
 [Saved MCP responses]({{ site.baseurl }}/assets/mcp-evidence.json)
 were captured using HTTP JSON-RPC, **not through the App**.
 
-Canonical code, skills and test CI live in
-<a href="https://github.com/jdubois/github-copilot-app-java-workshop" target="_blank">the template repository</a>;
-its maintainer gate is `python3 tools/verify-checkpoints.py`.
-For this website's handbook and reference captures:
+Code, skills, test CI and this handbook live in
+<a href="https://github.com/jdubois/github-copilot-app-java-workshop" target="_blank">this repository</a>.
+Run its maintainer gate, `python3 tools/verify-checkpoints.py`, from the repository root.
+For handbook builds and reference captures, change into `workshop/` first:
 
 ```sh
+cd workshop
 CAPTURE_CHANNEL=chrome python3 tools/copilot-workshop/capture-all.py --port 18767
-rbenv exec bundle exec jekyll build --destination tools/copilot-workshop/.build/site
+bundle exec jekyll build --destination tools/copilot-workshop/.build/site
 python3 -m unittest discover -s tools/copilot-workshop -p 'test_*.py'
 python3 tools/copilot-workshop/check-site.py --remote
 ```

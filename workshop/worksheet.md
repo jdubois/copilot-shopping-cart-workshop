@@ -18,6 +18,7 @@ below in workshop order:
 | Mode, model and effort | |
 | Repository/file-access and MCP approvals, denials or unresolved permissions | |
 | Skill loaded and guidance used | |
+| Generated test assertions reviewed before implementation | |
 | Initial failing tests and assertion messages | |
 | Reviewed production/test/UI changes | |
 | Test command and results (tests, failures, errors, skipped) | |
@@ -67,6 +68,10 @@ Name each session only after sending its first prompt.
 
 Wait for DevTools to load the fix, then capture a fresh request profile.
 Reusing the baseline profile does not show whether the optimization worked.
+
+Also record query-contract test results for **8 and 16 distinct products**:
+exactly **1 SELECT** per completed HTTP GET `/api/cart`, excluding setup queries
+and preserving response values. The eight-product MCP capture is separate evidence.
 
 ## Parallel handoff
 
@@ -169,9 +174,30 @@ activity available for Chronicle.
 | Observed turnaround/rework and quality evidence, or unavailable | |
 | Token/time/quality trade-off and supporting session/example | |
 | One prompt/workflow change | |
+| Suggested repository instruction (proposal only, not applied) | |
+| Expected token/time/quality benefit (prediction until measured) | |
 | Acceptance and review checks retained | |
 | Result observed, or improvement not yet checked | |
 
 There is no required savings percentage. Different tasks are not controlled
 trials. Do not convert a usage multiplier or byte count into dollars/tokens.
 Keep your full Chronicle output private; share only the relevant, reviewed excerpt.
+
+## Final review and handoff
+
+Return to **Cart: mock checkout** for the
+[read-only final review]({{ site.baseurl }}/finish/#final-review).
+Record the verified result separately from unfinished local work.
+
+| Field | Your observation |
+|---|---|
+| Read-only review session/worktree and verified result commit | |
+| Comparison starting point and result commit, reported by Copilot | |
+| Local edits/untracked files, excluded from the verified result | |
+| Final full-suite counts and per-class reports, including both checkout suites | |
+| Findings/decisions and separately approved correction PRs | |
+| Actual PR/CI status, verified revision and running directory/URL | |
+| Completed, demonstrated, unfinished or blocked status, with reason | |
+| Handoff: what changed, checked, still unknown and one reusable habit | |
+
+Keep the handoff concise; do not attach private Chronicle output or unrelated history.

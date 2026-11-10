@@ -51,6 +51,7 @@ class WorkshopScheduleTests(unittest.TestCase):
                      "Seed each cart first, then clear the statistics",
                      "before any verification queries",
                      "product IDs, names, prices, quantities, line totals",
+                     "Show the assertions; wait for my approval before running them or optimizing",
                      "real HTTP requests and database access",
                      "do not retrieve reference tests or solutions",
                      "query-budget assertions fail before fixing",
@@ -62,6 +63,8 @@ class WorkshopScheduleTests(unittest.TestCase):
             self.assertIn(text, prompt)
         self.assertLess(prompt.index("assertions fail before fixing"),
                         prompt.index("Then fix the N+1"))
+        self.assertLess(prompt.index("wait for my approval"),
+                        prompt.index("Run the tests and confirm"))
         self.assertLessEqual(len(prompt.split()), 190)
         self.assertIn("/tools/#fix-the-n1-query-issue", chapter("prompts"))
         self.assertIn("generated test count may vary", tools)
@@ -806,7 +809,8 @@ class WorkshopScheduleTests(unittest.TestCase):
             "Canvas: one observed improvement",
             "MCP before and after", "Parallel handoff",
             "Agent Merge and integration", "Rubber duck: critique and decision",
-            "Five subagents: mock-checkout implementation", "Chronicle: one better habit"])
+            "Five subagents: mock-checkout implementation", "Chronicle: one better habit",
+            "Final review and handoff"])
         finish = chapter("finish")
         self.assertIn("prices, removal, Canvas UI changes", finish)
         self.assertIn("independent critique and checkout branch/commit", finish)
@@ -840,6 +844,53 @@ class WorkshopScheduleTests(unittest.TestCase):
                      "CheckoutResilienceTest"]:
             with self.subTest(required_test_report=name):
                 self.assertIn(f"`{name}`", finish)
+
+    def test_supporting_pages_preserve_review_gates_and_recovery(self):
+        requirements = {
+            "index": ["On the completed normal path", "Return to **Cart: mock checkout**",
+                      "unfinished work separate from the verified result",
+                      "Chronicle or transcript review"],
+            "prompts": ["Review the generated assertions before allowing optimization",
+                        "recorded reviewed local base", "after the machine-load check",
+                        "The same reviewer rechecks changed heads",
+                        "coverage limits for later repairs",
+                        "Its new worktree is not used for this read-only history review"],
+            "facilitator": ["two worker PRs and the integrated checkout PR",
+                            "matching URL is not enough",
+                            "return to **Cart: mock checkout**",
+                            "leave the verification checkout unchanged",
+                            "Keep private Chronicle output out of the handoff",
+                            "workshop/tools/copilot-workshop/reference-tests/",
+                            "change into `workshop/` first"],
+        }
+        for slug, texts in requirements.items():
+            source = re.sub(r"\s+", " ", chapter(slug))
+            for text in texts:
+                with self.subTest(surface=slug, requirement=text):
+                    self.assertIn(text, source)
+        self.assertNotIn("fix the issue in one step", chapter("prompts"))
+        self.assertNotIn("website repository", chapter("facilitator"))
+        self.assertIn("cd workshop\nCAPTURE_CHANNEL=chrome", chapter("facilitator"))
+        navigation = (ROOT / "_data/copilot_workshop.yml").read_text()
+        self.assertIn("- title: Improve usage with Chronicle\n  slug: tokens/", navigation)
+
+    def test_worksheet_records_the_query_budget_and_final_verified_handoff(self):
+        source = re.sub(r"\s+", " ", chapter("worksheet"))
+        for text in ["Generated test assertions reviewed before implementation",
+                     "**8 and 16 distinct products**", "exactly **1 SELECT**",
+                     "completed HTTP GET `/api/cart`, excluding setup queries",
+                     "eight-product MCP capture is separate evidence",
+                     "Suggested repository instruction (proposal only, not applied)",
+                     "Expected token/time/quality benefit (prediction until measured)",
+                     "## Final review and handoff",
+                     "Read-only review session/worktree and verified result commit",
+                     "Local edits/untracked files, excluded from the verified result",
+                     "Final full-suite counts and per-class reports, including both checkout suites",
+                     "Actual PR/CI status, verified revision and running directory/URL",
+                     "Completed, demonstrated, unfinished or blocked status",
+                     "do not attach private Chronicle output"]:
+            with self.subTest(worksheet_requirement=text):
+                self.assertIn(text, source)
 
     def test_chapters_have_no_deadlines_or_timeboxes(self):
         timing = re.compile(r"^timebox:|\bminute \d+|\b\d{2,3}–\d{2,3}\b|\bcutoff\b",

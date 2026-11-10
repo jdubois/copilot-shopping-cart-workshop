@@ -100,8 +100,8 @@ and [create the eight-product workload]({{ site.baseurl }}/tools/#reproduce-the-
 Use the [evidence prompt]({{ site.baseurl }}/tools/#ask-copilot-for-evidence)
 to inspect the matching request through `bootui-shopping-cart`.
 Then use the [N+1 fix prompt]({{ site.baseurl }}/tools/#fix-the-n1-query-issue)
-to add regression tests and fix the issue in one step, then repeat the workload
-to verify the runtime queries. Finish with the
+to generate query-budget tests. Review the generated assertions before allowing
+optimization, then repeat the workload to verify the runtime queries. Finish with the
 [publication step]({{ site.baseurl }}/tools/#publish-the-reviewed-result):
 review the PR, merge it into your own `main` and verify the shared starting point.
 
@@ -140,15 +140,17 @@ for a read-only critique. On the normal path, deliver and verify any accepted
 correction's follow-up PR before checkout; for local recovery, keep the checked
 local result. Record deferred findings without applying them. Then follow the
 [fresh checkout session steps]({{ site.baseurl }}/subagents/#prepare-checkout):
-choose **New worktree** from verified `main`, send the first prompt and name
-the new session **Cart: mock checkout**. Use **Plan** for the checkout plan,
+choose **New worktree** from verified `main`, or the recorded reviewed local base
+if delivery is blocked. Send the first prompt and name the new session
+**Cart: mock checkout**. Use **Plan** for the checkout plan,
 review the contract, file ownership and local handoffs, then return to
 **Interactive** without implementing. Only then send the chapter's
 **`/orchestrate`** prompt to create **five visible child sessions**, each with
 its own worktree at the same reviewed commit. Four writers **implement mock checkout**
 and its tests while a read-only reviewer checks the design and incoming commits.
-Approve safe five-way concurrency; the parent integrates four code handoffs and
-review findings into one checkout feature branch.
+Approve safe five-way concurrency after the machine-load check; if unsafe or
+unavailable, stop and agree on a fallback. The parent integrates four code
+handoffs and review findings into one checkout feature branch.
 Each prompt names its scope and approval boundaries;
 do not paste critique and implementation together. Do not create five specialist PRs.
 
@@ -157,9 +159,11 @@ do not paste critique and implementation together. Do not create five specialist
 After reviewing the integrated code, tests and preview in **Cart: mock checkout**,
 follow the [checkout delivery steps]({{ site.baseurl }}/subagents/#deliver-checkout):
 use **Create PR** for one checkout PR, then **Agent Merge** with
-**Merge pull request** off while reviewing repairs. Once you accept the result
-and required checks and approvals pass, enable merging and confirm authorization
-for this PR only. The five specialists do not publish or merge.
+**Merge pull request** off while reviewing repairs. The same reviewer rechecks
+changed heads; the orchestrator reruns the full suite and affected previews
+before authorization. Once you accept the result and required checks and approvals
+pass, enable merging and confirm authorization for this PR only. Record coverage
+limits for later repairs. The five specialists do not publish or merge.
 Do not reuse the earlier worker PR; no extra delivery prompt is needed.
 
 Then use [merged-main verification]({{ site.baseurl }}/subagents/#verify-merged-checkout).
@@ -177,7 +181,8 @@ The command may immediately access history beyond this workshop; a later scope
 prompt cannot undo that. Opt out and use your local workshop transcript if that
 access is unsuitable.
 
-Start a fresh **Cart: Chronicle** session in your workshop repository.
+If you opt in, start a fresh **Cart: Chronicle** session in your workshop repository.
+Its new worktree is not used for this read-only history review.
 Leave the verified checkout unchanged and exclude the analysis session itself.
 Send the command and request as one message; no dates need filling in:
 

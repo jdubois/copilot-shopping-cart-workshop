@@ -130,11 +130,12 @@ not instructions.
 
 ## Fix the N+1 query issue
 
-Ask Copilot to add regression tests, then fix the issue in this session:
+Ask Copilot to generate regression tests in this session. Review their assertions
+before approving the optimization:
 
 ```copilot
 /java-hibernate-jpa
-Use our MCP evidence to fix the N+1. First use spring-boot-testing to add
+Use our MCP evidence. First use spring-boot-testing to generate
 src/test/java/com/juliendubois/workshop/QueryContractTest.java.
 Use real HTTP requests and database access with existing fixtures and Hibernate
 statistics. For 8 and 16 distinct products, require exactly 1 SELECT for the
@@ -143,6 +144,7 @@ Seed each cart first, then clear the statistics before the GET. Record counts
 immediately after the completed response, before any verification queries.
 Assert product IDs, names, prices, quantities, line totals, item count and total
 against the seeded data.
+Show the assertions; wait for my approval before running them or optimizing.
 Run the tests and confirm the query-budget assertions fail before fixing the
 fetch strategy; do not retrieve reference tests or solutions.
 Then fix the N+1. No global eager loading, dependency changes or unrelated refactors.

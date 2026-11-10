@@ -92,13 +92,18 @@ and ask for help whenever you need it.
 8. [Review with rubber duck]({{ site.baseurl }}/rubber-duck/) in the existing **Cart: boundary tests** session.
 9. [Coordinate five subagents]({{ site.baseurl }}/subagents/) from **Cart: mock checkout**: run four writers and one read-only reviewer in parallel, integrate their work, deliver one reviewed PR with Agent Merge and verify the merged app.
 10. [Improve usage with Chronicle]({{ site.baseurl }}/tokens/) in a fresh **Cart: Chronicle** session: review token efficiency, turnaround and quality in this repository over the past seven days.
-11. [Review the full change and hand off]({{ site.baseurl }}/finish/#final-review).
+11. Return to **Cart: mock checkout** for the [read-only final review and handoff]({{ site.baseurl }}/finish/#final-review), keeping unfinished work separate from the verified result.
 
 ## What you will leave with
 
+On the completed normal path:
+
 - A reviewed shop on your own `main` with four tickets, usable UI improvements, a working mock checkout and regression coverage.
 - Evidence from previews, tests, MCP, PRs and the independent critique, with unavailable or unfinished work recorded.
-- A merged checkout PR showing how five specialists coordinated code and shared decisions, plus a workflow improvement from Chronicle.
+- A merged checkout PR with four code handoffs and read-only review findings, plus a workflow improvement from Chronicle or transcript review.
+
+Record blocked steps, local recovery and demonstrations as limitations, not
+completed normal-path results.
 
 ## Before you begin
 
