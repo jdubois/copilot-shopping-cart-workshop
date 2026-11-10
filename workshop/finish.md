@@ -60,7 +60,7 @@ completed main-branch result.
 | Delivered three task PRs | Quantity fix, removal plus Canvas, and query fix each merged and verified before the next task |
 | Coordinated parallel work | Reviewed starting point published on `main`, two isolated sessions from that version, two worker PRs merged sequentially with Agent Merge, and a tested combined result; or an explicit local-recovery record |
 | Requested an independent critique | Actual rubber duck findings, decisions and evidence for corrections; or a recorded unavailable critic |
-| Delivered mock checkout with five subagents | Five child-session links/worktrees and observed overlap, four code handoffs plus read-only findings for the final commit, one checkout PR merged into `main`, passing merged-revision checks and receipt/cart preview; or an explicit incomplete/demonstration record |
+| Delivered mock checkout with five subagents | Five child-session links/worktrees and observed overlap, four code handoffs plus read-only findings for the PR head at merge authorization and coverage limits for later repairs, one checkout PR merged into `main`, passing merged-revision checks and receipt/cart preview; or an explicit incomplete/demonstration record |
 | Reviewed token usage | Chronicle report or a note that it was unavailable/not run, plus one improvement based on the workshop sessions |
 | Used Copilot App effectively | Reviewed plan, loaded skills, inspected changed files and checked test output |
 

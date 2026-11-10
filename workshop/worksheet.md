@@ -124,7 +124,8 @@ recovery, record **Agent Merge not completed: local recovery used**.
 | Common starting commit verified in all five child worktrees | |
 | Five actual assignments/contributions; concurrency observed | |
 | Load check, five-way concurrency approval and observed execution overlap or limitation | |
-| Reviewer's findings, reviewed final commit and fix/defer decisions | |
+| Reviewer's findings, reviewed PR head at merge authorization and fix/defer decisions | |
+| Later Agent Merge repair commits, checks and review coverage or limitation | |
 | Questions/answers exchanged, directly or through the orchestrator | |
 | Implemented API, order snapshot, atomic clearing and duplicate handling | |
 | Conflicting proposals resolved or decisions still open | |

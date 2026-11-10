@@ -1015,6 +1015,56 @@ class WorkshopScheduleTests(unittest.TestCase):
         self.assertLess(agents.index("return to **Interactive**"),
                         agents.index("/orchestrate I approve"))
 
+    def test_checkout_copyable_plan_includes_ui_recovery_contract(self):
+        agents = re.sub(r"\s+", " ", chapter("subagents"))
+        plan = agents.split("Read this branch's cart implementation", 1)[1].split("```", 1)[0]
+        for text in [
+                "keyboard-accessible UI with Place order, pending/error feedback",
+                "receipt and return to shopping",
+                "Retain the same unresolved requestId after a lost response and across reloads",
+                "Make storage failure visible; never silently replace the ID",
+                "Retire a definitive 400/409 attempt",
+                "keep new checkout locked until an authoritative cart refresh succeeds",
+                "GET-only recovery when refresh fails",
+                "a known receipt must never trigger another order POST",
+                "Keep cart totals/count/status authoritative and receipt totals separate",
+                "Asynchronous completion must respect focus the user moved elsewhere"]:
+            with self.subTest(copyable_ui_requirement=text):
+                self.assertIn(text, plan)
+
+    def test_checkout_previews_start_with_an_empty_cart(self):
+        source = re.sub(r"\s+", " ", chapter("subagents"))
+        for start, end in [
+                ("## Review and run the integrated feature", "## Deliver checkout into main"),
+                ("## Verify the merged application", "**Done when:**")]:
+            preview = source.split(start, 1)[1].split(end, 1)[0]
+            with self.subTest(preview_section=start):
+                self.assertIn("Start with an empty cart, add the €10 Notebook twice", preview)
+                self.assertLess(preview.index("Start with an empty cart"),
+                                preview.index("add the €10 Notebook twice"))
+
+    def test_checkout_repairs_refresh_review_and_record_coverage_limits(self):
+        source = re.sub(r"\s+", " ", chapter("subagents"))
+        delivery = source.split("## Deliver checkout into main", 1)[1].split(
+            "## Verify the merged application", 1)[0]
+        for text in [
+                "Any changed PR head needs the same reviewer's read-only recheck and resolved findings",
+                "the orchestrator reruns the full suite and refreshes affected previews",
+                "Record the reviewed head",
+                "Record any later repair commits and checks separately",
+                "without a new review, they are outside the recorded reviewer coverage"]:
+            with self.subTest(repair_review_requirement=text):
+                self.assertIn(text, delivery)
+        for text in ["same reviewer's read-only recheck", "Record the reviewed head"]:
+            self.assertLess(delivery.index(text), delivery.index("Then enable **Merge pull request**"))
+        worksheet = chapter("worksheet")
+        self.assertIn("reviewed PR head at merge authorization", worksheet)
+        self.assertIn("Later Agent Merge repair commits, checks and review coverage or limitation",
+                      worksheet)
+        finish = chapter("finish")
+        self.assertIn("read-only findings for the PR head at merge authorization", finish)
+        self.assertIn("coverage limits for later repairs", finish)
+
     def test_checkout_review_keeps_main_path_short_and_checks_in_existing_drawer(self):
         source = chapter("subagents")
         communication = source.split("## Watch how they communicate", 1)[1].split(
@@ -1152,7 +1202,7 @@ class WorkshopScheduleTests(unittest.TestCase):
         worksheet = chapter("worksheet")
         for text in ["Common starting commit verified in all five child worktrees",
                      "observed execution overlap or limitation", "No code commit; record findings",
-                     "CheckoutResilienceTest", "reviewed final commit"]:
+                     "CheckoutResilienceTest", "reviewed PR head at merge authorization"]:
             self.assertIn(text, worksheet)
         delivery = re.sub(r"\s+", " ", source).split(
             "## Deliver checkout into main", 1)[1].split("## Verify the merged application", 1)[0]

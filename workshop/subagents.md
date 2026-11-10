@@ -192,6 +192,14 @@ Receipt fields are orderId, requestId, items, itemCount and totalCents;
 item fields are productId, name, priceCents, quantity and lineTotalCents.
 Plan how to snapshot server data, create the order and clear the cart atomically.
 Retries, including concurrent ones, must not duplicate orders or clear a later cart.
+Plan a keyboard-accessible UI with Place order, pending/error feedback,
+receipt and return to shopping. Retain the same unresolved requestId after
+a lost response and across reloads. Make storage failure visible; never silently
+replace the ID. Retire a definitive 400/409 attempt, but keep new checkout locked
+until an authoritative cart refresh succeeds. Offer GET-only recovery when
+refresh fails; a known receipt must never trigger another order POST.
+Keep cart totals/count/status authoritative and receipt totals separate.
+Asynchronous completion must respect focus the user moved elsewhere.
 Keep all earlier behavior and reviewed tests unchanged. No new dependencies,
 payments, authentication, personal data or external services.
 Plan four writers with exact, non-overlapping files: the complete checkout
@@ -307,7 +315,7 @@ Stay in the **orchestrator's integration worktree**, not a child's checkout.
 
 1. **Review the combined changes.** Confirm all four writer handoffs are included once, the UI and API agree, accepted critique corrections are present and reviewer findings have recorded decisions for this commit.
 2. **Check the full suite.** The orchestrator runs `./mvnw test`. All **earlier reviewed tests**, boundary tests and **new checkout tests** must execute with no failures/errors/skips.
-3. **Preview checkout.** Once the shop is running here, ask Copilot to open or reload **http://127.0.0.1:18765** in the Browser canvas. Add the €10 Notebook twice and place an order: the receipt must show quantity **2** and total **€20**, followed by an empty cart. Return to shopping.
+3. **Preview checkout.** Once the shop is running here, ask Copilot to open or reload **http://127.0.0.1:18765** in the Browser canvas. Start with an empty cart, add the €10 Notebook twice and place an order: the receipt must show quantity **2** and total **€20**, followed by an empty cart. Return to shopping.
 
 **You own the server, not the agents.** If the shop runs from this worktree,
 reuse it and wait for **DevTools** to finish reloading the compiled changes.
@@ -375,10 +383,12 @@ After accepting the final diff, tests and preview:
 
 1. Select **Create PR** and approve publishing only the reviewed checkout changes to your own repository. Check **`base: main` ← `head: this session's branch`**. Reuse an existing checkout PR only if its repository, head and base match; do not reopen earlier worker PRs or create duplicates.
 2. Open **Create PR → Agent Merge** for this checkout PR, not the earlier merged boundary-test PR. Leave **Merge pull request** off and start with the reviewed repair options. Preserve all earlier and checkout tests; ask before out-of-scope corrections or conflict resolutions.
-3. Review **Files changed**, including repairs. If `main` advanced, review the integration and rerun the full suite. Require the **tests** job and all required checks and approvals to pass for the **current PR head**. Then enable **Merge pull request** and confirm the App's authorization prompt **for this checkout PR only**.
+3. Review **Files changed**, including repairs. If `main` advanced, review the integration and rerun the full suite. Any changed PR head needs the same reviewer's read-only recheck and resolved findings; the orchestrator reruns the full suite and refreshes affected previews. Require the **tests** job and all required checks and approvals to pass for the **current PR head**. Record the reviewed head. Then enable **Merge pull request** and confirm the App's authorization prompt **for this checkout PR only**.
 
 As before, authorization lets Agent Merge make further permitted repairs and
 merge without another review pause. Keep merging off until you accept the result.
+Record any later repair commits and checks separately; without a new review,
+they are outside the recorded reviewer coverage.
 Missing, skipped, queued or failed checks are not a pass. If PR identity, review
 or check status cannot be verified, stop with merging disabled.
 Continue below only when the checkout PR's actual status is **Merged**.
@@ -418,7 +428,7 @@ Only if it is not running from the verified directory, start it there:
 ```
 
 Reload **http://127.0.0.1:18765** in the Browser canvas. Confirm **Place order**
-is present, add the €10 Notebook twice and check the receipt shows quantity **2**
+is present. Start with an empty cart, add the €10 Notebook twice and check the receipt shows quantity **2**
 and **€20**, the cart clears, and returning to shopping works.
 Opening a canvas or selecting another repository does not replace a running
 server. Check its owning directory if you still see an older application.
