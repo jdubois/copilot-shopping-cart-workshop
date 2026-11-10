@@ -138,20 +138,27 @@ Stay in **Cart: boundary tests**, on the checked combined result.
 Use the [rubber duck prompt]({{ site.baseurl }}/rubber-duck/#review-prompt)
 for a read-only critique. On the normal path, deliver and verify any accepted
 correction's follow-up PR before checkout; for local recovery, keep the checked
-local result. Record deferred findings without applying them. Then use the
-[five-subagent chapter]({{ site.baseurl }}/subagents/) to prepare one
-feature branch, approve the contract and **implement mock checkout**.
+local result. Record deferred findings without applying them. Then follow the
+[fresh checkout session steps]({{ site.baseurl }}/subagents/#prepare-checkout):
+choose **New worktree** from verified `main`, send the first prompt and name
+the new session **Cart: mock checkout**. Use **Plan** for the checkout plan,
+review the contract, file ownership and local handoffs, then return to
+**Interactive** without implementing. Only then send the chapter's
+**`/orchestrate`** prompt to create **five visible child sessions**, each with
+its own worktree. They **implement mock checkout**; the parent integrates
+their reviewed local commits into one checkout feature branch.
 Each prompt names its scope and approval boundaries;
-do not paste both tasks together or launch another set of worktree sessions.
+do not paste critique and implementation together. Do not create five specialist PRs.
 
 ## Deliver checkout to main
 
-After reviewing the integrated code, tests and preview, use the
-[checkout delivery prompt]({{ site.baseurl }}/subagents/#deliver-checkout)
-in the same **Cart: boundary tests** session. Give the orchestrator scoped
-approval to commit, push, open one checkout PR and merge it after checks and
-required approvals pass. The five specialists do not publish or merge.
-Do not reuse the earlier worker PR.
+After reviewing the integrated code, tests and preview in **Cart: mock checkout**,
+follow the [checkout delivery steps]({{ site.baseurl }}/subagents/#deliver-checkout):
+use **Create PR** for one checkout PR, then **Agent Merge** with
+**Merge pull request** off while reviewing repairs. Once you accept the result
+and required checks and approvals pass, enable merging and confirm authorization
+for this PR only. The five specialists do not publish or merge.
+Do not reuse the earlier worker PR; no extra delivery prompt is needed.
 
 Then use [merged-main verification]({{ site.baseurl }}/subagents/#verify-merged-checkout).
 Record the actual merge commit and verified main revision.
@@ -162,7 +169,7 @@ Local-only or blocked delivery is not the completed normal path.
 
 ## Improve usage
 
-Before selecting cost tips, follow the
+Before running Chronicle tips, follow the
 [Chronicle privacy decision]({{ site.baseurl }}/tokens/#decide-before-analyzing-history).
 The command may immediately access history beyond this workshop; a later scope
 prompt cannot undo that. Opt out and use your local workshop transcript if that

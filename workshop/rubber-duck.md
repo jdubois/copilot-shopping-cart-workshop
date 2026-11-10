@@ -37,9 +37,8 @@ Stay in **Cart: boundary tests**, on the verified combined result from the
 previous chapter. If you used local recovery, keep that recovered checkout;
 do not switch back to incomplete remote `main`. Use **Interactive**.
 
+Use `workshop-start`, the tag you created during setup, as the review's starting point.
 Type **`/rubber-duck` in the App composer**, not a terminal, with this request:
-If working in a separate reference checkout, replace `workshop-start` with
-`v2-start` in the prompt.
 
 ```copilot
 /rubber-duck Review the full shopping-cart change from workshop-start
@@ -73,8 +72,8 @@ directly to `main`. Keep the existing **Cart: boundary tests** session.
 Review the corrected diff, run the full suite and repeat the affected preview.
 Any follow-up PR needs its own review and merge approval.
 On the normal path, use **Create PR** for the correction, targeting your own
-`main`. Merge and verify that PR, then ask Copilot to return this worktree to
-the verified `origin/main`, preserving the correction branch, before checkout.
+`main`. Merge and verify that PR, preserving the correction branch, before
+starting the fresh checkout session from verified `main`.
 If you used local recovery, keep the corrected local branch and record
 delivery as blocked; do not switch to incomplete remote `main`.
 If you defer a finding, record the reason and continue from the previously
@@ -95,8 +94,9 @@ a single-model reread as a different-model critique or broaden account permissio
 </details>
 
 The next exercise is different: instead of critiquing this implementation,
-you will coordinate five specialists to **build mock checkout** on one
-feature branch, after approving its shared contract.
+you will start a fresh **Cart: mock checkout** session and coordinate five
+child App sessions to **build mock checkout** in separate worktrees, after
+approving the shared contract. Their reviewed handoffs form one checkout PR.
 
 ## What you have learned
 

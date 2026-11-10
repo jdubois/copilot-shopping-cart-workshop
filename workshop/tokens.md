@@ -29,9 +29,9 @@ in GitHub Copilot App** to examine those sessions and their integration.
 
 ## Decide before analyzing history
 
-Chronicle can access history across repositories. Selecting cost tips may start
+Chronicle can access history across repositories. Running usage tips may start
 that analysis immediately: a later workshop-only prompt **cannot undo prior
-access**. Before selecting it, decide whether you are comfortable with the
+access**. Before running it, decide whether you are comfortable with the
 history it may use. A repository name or a request to filter the report does not restrict which
 history the command can access.
 
@@ -44,28 +44,31 @@ on a classroom screen.
 
 ## Open Chronicle if you opted in
 
-Type this in the **App composer, not a terminal**:
+Stay in **Cart: mock checkout**. You do not need a new session or worktree:
+Chronicle can review all eleven workshop sessions from here.
+
+After the privacy decision above, type this in this session's
+**App composer, not a terminal**:
 
 ```copilot
-/chronicle
+/chronicle cost-tips
 ```
 
-Check that the picker appears. If Chronicle is unavailable in your build,
-review your workshop transcript locally instead and record **"Chronicle not available."**
+Use **`cost-tips`** for this usage exercise. **`tips`** is a separate subcommand
+for general workflow advice, not an alternative spelling.
+Do not send `/chronicle` alone.
 
-After that privacy decision, choose the cost/token-usage tips entry in your
-App's picker. The
-<a href="https://docs.github.com/en/copilot/concepts/copilot-surfaces/github-copilot-app#optimizing-ai-usage-in-the-github-copilot-app" target="_blank">App documentation</a>
-currently shows `/chronicle cost tips`; the
-<a href="https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/chronicle#chronicle-cost-tips" target="_blank">CLI reference</a>
-calls it `/chronicle cost-tips`. Choose the entry shown in your App; the command
-spelling may differ from the CLI.
+If Chronicle is unavailable in your build, review your workshop transcript
+locally instead and record **"Chronicle not available."**
 
 Prepare the request below with the **session names shown in the App sidebar**,
 your repository, and the workshop start/end time. IDs are optional if your App
-exposes them. Include all three task sessions and both parallel sessions.
-**Cart: boundary tests** also contains integration, rubber duck and checkout;
-those are not separate App sessions.
+exposes them. Include all three initial task sessions, both parallel sessions,
+**Cart: mock checkout** and its **five checkout child sessions**: eleven sessions
+for a complete run. Use the actual child names from the sidebar; if a child never
+ran, record the missing contribution rather than inventing a session.
+**Cart: boundary tests** also contains integration and rubber duck;
+checkout has its own App session.
 If your build accepts initial scope instructions, supply them
 before execution. Otherwise, after opting in to the command's broader access,
 use it as a follow-up to narrow the **report**, not as a claim of isolation.

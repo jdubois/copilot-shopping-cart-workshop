@@ -121,10 +121,10 @@ class WorkshopScheduleTests(unittest.TestCase):
             self.assertNotIn("Do not create a new session", chapter(slug))
             self.assertIn("must be merged and verified first", chapter(slug))
 
-    def test_supporting_pages_follow_the_five_named_sessions(self):
+    def test_supporting_pages_follow_main_sessions_and_checkout_children(self):
         names = ["Cart: quantity bug", "Cart: item removal",
                  "Cart: query optimization", "Cart: empty-state UX",
-                 "Cart: boundary tests"]
+                 "Cart: boundary tests", "Cart: mock checkout"]
         for slug in ["prompts", "worksheet", "facilitator"]:
             for name in names:
                 with self.subTest(surface=slug, session=name):
@@ -136,13 +136,14 @@ class WorkshopScheduleTests(unittest.TestCase):
                      "Delivery starts with the quantity-fix PR"]:
             self.assertIn(text, overview)
         tokens = re.sub(r"\s+", " ", chapter("tokens"))
-        self.assertIn("Include all three task sessions and both parallel sessions", tokens)
-        self.assertIn("also contains integration, rubber duck and checkout", tokens)
-        self.assertIn("those are not separate App sessions", tokens)
+        self.assertIn("Include all three initial task sessions, both parallel sessions, "
+                      "**Cart: mock checkout** and its **five checkout child sessions**", tokens)
+        self.assertIn("also contains integration and rubber duck", tokens)
+        self.assertIn("checkout has its own App session", tokens)
         worksheet = chapter("worksheet")
         for text in ["UI merged-main revision and its passing tests CI job",
                      "Combined preview from the verified directory",
-                     "All three task sessions and both parallel sessions"]:
+                     "All eleven workshop sessions"]:
             self.assertIn(text, worksheet)
         for path in HANDBOOK.glob("*.md"):
             for stale in ["preparation PR", "preparation handoff", "preparation recovery",
@@ -330,11 +331,18 @@ class WorkshopScheduleTests(unittest.TestCase):
         self.assertNotIn("/chronicle", chapter("setup"))
         tokens = chapter("tokens")
         steps = ["## Decide before analyzing history",
-                 "## Open Chronicle if you opted in", "/chronicle",
-                 "Check that the picker appears."]
+                 "## Open Chronicle if you opted in", "Stay in **Cart: mock checkout**",
+                 "```copilot\n/chronicle cost-tips\n```",
+                 "If Chronicle is unavailable in your build"]
         positions = [tokens.index(text) for text in steps]
         self.assertEqual(positions, sorted(positions))
         self.assertIn("Chronicle not available.", tokens)
+        self.assertIn("You do not need a new session or worktree", tokens)
+        self.assertIn("Chronicle can review all eleven workshop sessions from here", tokens)
+        self.assertIn("**`tips`** is a separate subcommand", tokens)
+        self.assertNotIn("/chronicle cost tips", tokens)
+        self.assertNotIn("```copilot\n/chronicle\n```", tokens)
+        self.assertNotIn("Check that the picker appears", tokens)
 
     def test_mcp_connection_is_deferred_to_runtime_exercise(self):
         setup = chapter("setup")
@@ -452,9 +460,39 @@ class WorkshopScheduleTests(unittest.TestCase):
         self.assertIn("For this review only, I approve a read-only independent critic", duck)
         self.assertIn("Keep AGENTS.md and all other restrictions unchanged", duck)
         agents = re.sub(r"\s+", " ", chapter("subagents"))
-        self.assertIn("narrow instruction update permitting", agents)
-        self.assertIn("explicitly approved mock-checkout implementation", agents)
+        self.assertIn("Read AGENTS.md and keep it unchanged", agents)
+        self.assertIn("Stop and report any conflicting instructions", agents)
+        self.assertIn("Wait for my approval of the checkout contract, implementation plan "
+                      "and file ownership", agents)
+        self.assertNotIn("instruction diff", agents)
+        self.assertNotIn("instruction update", agents)
         self.assertIn("The five specialists must not publish or merge", agents)
+
+    def test_starter_allows_only_explicitly_approved_checkout_delegation(self):
+        instructions = re.sub(r"\s+", " ", (ROOT.parent / "AGENTS.md").read_text())
+        for text in [
+                "Subagents and checkout are off by default",
+                "Only in the five-subagent checkout chapter",
+                "explicit user approval of the contract, implementation plan and file ownership",
+                "exactly five coordinated child App sessions",
+                "each in its own new worktree and branch with a bounded assignment",
+                "approved delegation may authorize local handoff commits",
+                "integration of reviewed commits into the orchestrator's checkout branch",
+                "fresh Cart: mock checkout session and New worktree",
+                "Only the orchestrator may publish and merge",
+                "separate explicit approval of the integrated result",
+                "specialists must not publish or merge",
+                "does not authorize unrelated delegation",
+                "additional App sessions beyond those five, nested agents, /fleet execution",
+                "No Docker, dependencies, upgrades or authentication"]:
+            with self.subTest(scoped_allowance=text):
+                self.assertIn(text, instructions)
+        self.assertNotIn("mock checkout in Cart: boundary tests", instructions)
+        recovery = chapter("subagents").split(
+            "<summary>If earlier work exists only in local recovery</summary>", 1)[1].split(
+                "</details>", 1)[0]
+        self.assertIn("stop and ask", recovery)
+        self.assertIn("rather than editing them or proceeding", recovery)
 
     def test_boundary_regressions_require_approval_for_same_session_fixes(self):
         parallel = re.sub(r"\s+", " ", chapter("parallel"))
@@ -488,11 +526,14 @@ class WorkshopScheduleTests(unittest.TestCase):
             "Canvas and UI feedback", "Investigate through MCP", "Parallel worker cards",
             "Integrate with Agent Merge", "Rubber duck and subagent implementation",
             "Deliver checkout to main", "Improve usage", "Review the diff"])
-        for slug in ["prompts", "rubber-duck", "finish"]:
+        for slug in ["prompts", "finish"]:
             text = chapter(slug)
             self.assertIn("v2-start", text)
             for prompt in re.findall(r"```copilot\n(.*?)```", text, re.DOTALL):
                 self.assertNotIn("v2-start", prompt)
+        duck = chapter("rubber-duck")
+        self.assertIn("Use `workshop-start`, the tag you created during setup", duck)
+        self.assertNotIn("v2-start", duck)
 
     def test_cache_recovery_does_not_discard_design_records(self):
         recovery = re.sub(r"\s+", " ", chapter("facilitator"))
@@ -867,8 +908,8 @@ class WorkshopScheduleTests(unittest.TestCase):
                 "actual critic", "normal follow-up feature branch",
                 "before editing", "Any follow-up PR needs its own review and merge approval",
                 "On the normal path, use **Create PR** for the correction",
-                "return this worktree to the verified `origin/main`",
-                "preserving the correction branch, before checkout",
+                "preserving the correction branch",
+                "starting the fresh checkout session from verified `main`",
                 "If you used local recovery, keep the corrected local branch",
                 "do not switch to incomplete remote `main`",
                 "If you defer a finding", "without applying that correction"]:
@@ -877,20 +918,22 @@ class WorkshopScheduleTests(unittest.TestCase):
         self.assertIn("not a completed five-agent run", chapter("subagents"))
         self.assertIn("do not commit", chapter("finish"))
 
-    def test_subagents_implement_checkout_on_one_branch_with_owned_files(self):
+    def test_child_sessions_implement_checkout_with_owned_files_and_one_integrated_pr(self):
         agents = re.sub(r"\s+", " ", chapter("subagents"))
         for text in [
-                "**Mock means no real payment processing**", "**Cart: boundary tests**",
-                "exactly five subagents", "Order model", "Checkout service",
+                "**Mock means no real payment processing**", "**Cart: mock checkout**",
+                "exactly five coordinated child App sessions", "Order model", "Checkout service",
                 "REST API", "UI", "Acceptance tests",
-                "/fleet Implement the approved", "Read AGENTS.md",
-                "Create and switch to a new branch workshop-checkout",
-                "Do not replace an existing branch",
+                "/orchestrate I approve", "Read AGENTS.md",
+                "**New worktree**", "**`main` as the base branch**",
+                "on the App-created feature branch, not main or a detached checkout",
+                "Report this session's directory, actual branch and starting commit",
+                "new worktree from **that reviewed local branch**",
                 "Workers edit only assigned files", "Workers must not run Maven",
-                "further nested agents", "otherwise relay",
-                "five actual contributions", "Wait for my review before committing",
-                "failure leaves it intact", "Concurrent submissions",
-                "No payments, authentication", "**example exchange**",
+                "launch nested agents", "relay questions through the orchestrator",
+                "five actual contributions", "Wait for my review before publishing or merging",
+                "failed checkout must leave the cart intact", "Concurrent submissions",
+                "No payments, authentication", "Record actual questions, answers and decisions",
                 "scheduled in smaller batches"]:
             with self.subTest(requirement=text):
                 self.assertIn(text, agents)
@@ -898,27 +941,46 @@ class WorkshopScheduleTests(unittest.TestCase):
             with self.subTest(handoff_page=slug):
                 self.assertNotIn("planned, not implemented", chapter(slug))
                 self.assertIn("checkout feature branch", chapter(slug))
-        self.assertLess(agents.index("Prepare one feature branch"),
-                        agents.index("/fleet Implement"))
+        self.assertLess(agents.index("Start a fresh checkout session"),
+                        agents.index("/orchestrate I approve"))
+        self.assertNotIn("Create and switch to a new branch workshop-checkout", agents)
+        self.assertNotIn("Stay in **Cart: boundary tests**", agents)
+        for slug in ["index", "prompts", "tokens", "finish", "facilitator", "worksheet"]:
+            with self.subTest(checkout_session_page=slug):
+                self.assertIn("Cart: mock checkout", chapter(slug))
         self.assertLess(agents.index("Show the plan and wait for my approval"),
-                        agents.index("/fleet Implement"))
+                        agents.index("/orchestrate I approve"))
         self.assertLess(SEQUENCE.index("parallel"), SEQUENCE.index("rubber-duck"))
         self.assertLess(SEQUENCE.index("rubber-duck"), SEQUENCE.index("subagents"))
 
     def test_checkout_contract_verification_and_recovery_are_explicit(self):
+        contract = chapter("subagents").split("## Agree on the contract first", 1)[1].split(
+            "## Give each subagent a bounded job", 1)[0]
+        overview, details = contract.split('<details markdown="1">', 1)
+        self.assertIn("before approving", overview)
+        self.assertIn("one-SELECT", overview)
+        self.assertNotIn("| Case |", overview)
+        self.assertIn("<summary>Detailed checkout contract and edge cases</summary>", details)
+        self.assertIn("| Case | Required result |", details)
+        self.assertIn("Concurrent submissions", details)
+        self.assertIn("</details>", details)
         agents = re.sub(r"\s+", " ", chapter("subagents"))
-        prompt = agents.split("/fleet Implement", 1)[1].split("```", 1)[0]
+        prompt = agents.split("Read this branch's cart implementation", 1)[1].split("```", 1)[0]
         for text in ["POST /api/orders", "UUID requestId", "201", "200",
-                     "400", "409", "orderId, requestId, items, itemCount, totalCents",
-                     "productId, name, priceCents, quantity, lineTotalCents",
-                     "clear the cart atomically", "failure leaves it intact",
-                     "Concurrent or later retries", "CheckoutContractTest",
+                     "400", "409", "orderId, requestId, items, itemCount and totalCents",
+                     "productId, name, priceCents, quantity and lineTotalCents",
+                     "clear the cart atomically", "failure/rollback",
+                     "Retries, including concurrent ones",
                      "Validate requestId first", "return a stored order before",
                      "one-SELECT GET /api/cart budget"]:
             with self.subTest(copyable_contract=text):
                 self.assertIn(text, prompt)
+        implementation = agents.split("/orchestrate I approve", 1)[1].split("```", 1)[0]
+        self.assertIn("Preserve the approved contract", implementation)
+        self.assertIn("CheckoutContractTest", implementation)
+        self.assertNotIn("POST /api/orders", implementation)
         for text in ["rollback", "snapshots", "concurrent duplicate",
-                     "**€20**", "Then squash-merge this checkout PR into main",
+                     "**€20**", "confirm the App's authorization prompt",
                      "published reference checkpoints do not include checkout",
                      "record checkout as unfinished"]:
             with self.subTest(verification=text):
@@ -926,6 +988,142 @@ class WorkshopScheduleTests(unittest.TestCase):
         for path in HANDBOOK.glob("*.md"):
             with self.subTest(page=path.name):
                 self.assertNotIn("planning-only exercise", path.read_text())
+
+    def test_checkout_planning_does_not_authorize_implementation(self):
+        agents = re.sub(r"\s+", " ", chapter("subagents"))
+        for text in [
+                "switch this session to **Plan**",
+                "**before sending the prompt below**",
+                "**Plan mode is important here:**",
+                "Do not rely on the prompt's wording alone",
+                "Planning only: do not modify source, tests, configuration or AGENTS.md",
+                "Do not implement any part of checkout or launch agents",
+                "Review the contract, file ownership, local handoffs and concurrency limit before approving delegation",
+                "The orchestrator will schedule the five child sessions and integrate their work",
+                "**Do not choose an action that implements the plan.**",
+                "return to **Interactive**",
+                "without implementing it",
+                "This is the step that authorizes the five child sessions and their local handoffs",
+                "do not reset or discard them without explicit approval",
+                "Do not count existing main-agent implementation as five specialists' work"]:
+            with self.subTest(planning_boundary=text):
+                self.assertIn(text, agents)
+        self.assertLess(agents.index("switch this session to **Plan**"),
+                        agents.index("Read this branch's cart implementation"))
+        self.assertLess(agents.index("return to **Interactive**"),
+                        agents.index("/orchestrate I approve"))
+
+    def test_checkout_review_keeps_main_path_short_and_checks_in_existing_drawer(self):
+        source = chapter("subagents")
+        communication = source.split("## Watch how they communicate", 1)[1].split(
+            "## Review and run the integrated feature", 1)[0]
+        self.assertLessEqual(len(re.findall(r"\b[\w'-]+\b", communication)), 80)
+        self.assertNotIn("**example exchange**", communication)
+        for text in ["actual contributions and local",
+                     "Record actual questions, answers and decisions",
+                     "**none exchanged**", "messages do not copy code",
+                     "Report missing contributions", "Do not manufacture dialogue"]:
+            self.assertIn(text, communication)
+
+        review = source.split("## Review and run the integrated feature", 1)[1].split(
+            "## Deliver checkout into main", 1)[0]
+        self.assertEqual(review.count("<details"), 1)
+        visible = re.sub(r"<details\b.*?</details>", "", review, flags=re.DOTALL)
+        self.assertLessEqual(len(re.findall(r"\b[\w'-]+\b", visible)), 240)
+        self.assertEqual(re.findall(r"^\d\. \*\*(.*?)\*\*", visible, re.MULTILINE),
+                         ["Review the combined changes.", "Check the full suite.",
+                          "Preview checkout."])
+        visible = re.sub(r"\s+", " ", visible)
+        for text in ["**orchestrator's integration worktree**",
+                     "all five reviewed handoffs are included once",
+                     "accepted critique corrections", "./mvnw test",
+                     "must execute with no failures/errors/skips",
+                     "http://127.0.0.1:18765", "quantity **2** and total **€20**",
+                     "empty cart", "Return to shopping",
+                     "**You own the server, not the agents.**", "**DevTools**",
+                     "**Ctrl+C in its owning terminal**",
+                     "Only if no shop is running", "./mvnw spring-boot:run",
+                     "before authorizing delivery", "only the orchestrator"]:
+            with self.subTest(visible_review_requirement=text):
+                self.assertIn(text, visible)
+
+        details = re.sub(r"\s+", " ", review.split('<details markdown="1">', 1)[1].split(
+            "</details>", 1)[0])
+        for text in ["Detailed failure, concurrency and accessibility checks",
+                     "same fields and errors", "snapshots, concurrent duplicate submissions",
+                     "replay after new items have been added",
+                     "not a new supplied reference checkpoint",
+                     "visible error feedback", "**409**", "a narrow viewport",
+                     "keyboard access", "must respect that choice", "live status",
+                     "complete focus ring", "physical commit", "after a real write",
+                     "both order and cart roll back",
+                     "two client futures alone are not proof", "parsed wire JSON",
+                     "same ID after reload", "never fabricate a successful backend response",
+                     "close each owned helper", "An incomplete probe is not a pass"]:
+            with self.subTest(detailed_review_requirement=text):
+                self.assertIn(text, details)
+
+    def test_checkout_children_have_reviewed_bases_and_local_handoffs(self):
+        agents = re.sub(r"\s+", " ", chapter("subagents"))
+        prompt = agents.split("/orchestrate I approve", 1)[1].split("```", 1)[0]
+        expected_names = ["Checkout: order model", "Checkout: service",
+                          "Checkout: REST API", "Checkout: UI",
+                          "Checkout: acceptance tests"]
+        actual_names = re.findall(
+            r"Checkout: (?:order model|service|REST API|UI|acceptance tests)", prompt)
+        self.assertEqual(actual_names, expected_names)
+        for name in expected_names:
+            self.assertIn(name, chapter("worksheet"))
+        for text in [
+                "Coordinate implementation; do not implement it yourself",
+                "each with its own New worktree and branch",
+                "Do not substitute /fleet or in-session subagents",
+                "Do not create extra sessions",
+                "integration branch's latest reviewed commit, not default main",
+                "verify its actual base includes the upstream handoffs it needs before editing",
+                "Stage model, service and API work in dependency order",
+                "UI and tests may run in parallel after their interfaces are integrated",
+                "Check active workers before starting or waking another child",
+                "Workers edit only assigned files and may commit those files locally for handoff",
+                "Workers must not run Maven, start/stop the shop",
+                "push, open PRs, merge, launch nested agents",
+                "review and cherry-pick only the accepted handoff commits",
+                "clean integration worktree",
+                "Check whether each handoff is already included",
+                "do not apply it twice or overwrite unfinished work",
+                "Do not move or reset child branches",
+                "ask before resolving integration conflicts",
+                "Route implementation fixes back to the owning child",
+                "After all five contributions are integrated",
+                "You own the Maven run and final shop preview",
+                "Preserve all child sessions, branches and unfinished work"]:
+            with self.subTest(child_handoff_requirement=text):
+                self.assertIn(text, prompt)
+        self.assertLess(prompt.index("After all five contributions are integrated"),
+                        prompt.index("./mvnw test"))
+
+    def test_fleet_is_explained_in_an_information_box_not_used_for_execution(self):
+        source = chapter("subagents")
+        box = re.sub(r"\s+", " ", " ".join(
+            line[2:] for line in source.splitlines() if line.startswith("> ")))
+        for text in [
+                "**How is this different from `/fleet`?**",
+                "within its current App session",
+                "Each subagent has its own context",
+                "five persistent App sessions and worktrees",
+                "exactly five workers",
+                "their commits need integration",
+                "increase model usage",
+                "do not run `/fleet` for this exercise"]:
+            with self.subTest(comparison=text):
+                self.assertIn(text, box)
+        prompts = re.findall(r"```copilot\n(.*?)```", source, re.DOTALL)
+        self.assertEqual(sum(p.startswith("/orchestrate ") for p in prompts), 1)
+        self.assertFalse(any(p.startswith("/fleet") for p in prompts))
+        illustration = (ROOT / "assets/illustration-five-specialists.svg").read_text()
+        self.assertIn("Five child sessions / five worktrees / one integrated feature",
+                      illustration)
+        self.assertNotIn("not five worktrees", illustration)
 
     def test_next_links_and_navigation_have_one_linear_sequence(self):
         for index, slug in enumerate(SEQUENCE):
@@ -1176,33 +1374,46 @@ class WorkshopScheduleTests(unittest.TestCase):
         self.assertNotIn("## Optional GitHub delivery", finish)
         self.assertNotIn("No remote PR is required", finish)
 
-    def test_checkout_delivery_belongs_to_orchestrator_under_scoped_approval(self):
+    def test_checkout_delivery_reuses_agent_merge_under_scoped_approval(self):
         agents = re.sub(r"\s+", " ", chapter("subagents"))
         delivery = agents.split("## Deliver checkout into main", 1)[1].split(
             "## Verify the merged application", 1)[0]
         for text in [
-                "one checkout PR", "not five specialist PRs or another App session",
-                "I approve this reviewed checkout result",
-                "the five workers must not publish or merge",
-                "all five workers have finished and none can still modify this worktree",
-                "all three task PRs and both worker PRs are merged into main",
-                "Confirm any approved critique corrections are merged too",
-                "base main and head this branch",
+                "one checkout PR", "not five specialist PRs or a new delivery session",
+                "all five workers have finished and all reviewed handoffs are integrated",
+                "The three task PRs, both worker PRs and any accepted critique corrections",
+                "already be on your own `main`",
+                "**Create PR**", "**Create PR → Agent Merge**",
+                "**`base: main` ← `head: this session's branch`**",
                 "repository, head and base match",
                 "not the earlier merged boundary-test PR",
-                "Do not reopen or retarget earlier PRs or create duplicate PRs",
-                "current PR head", "Missing, skipped, queued or failed checks",
-                "Then squash-merge this checkout PR into main under this approval",
-                "Do not push directly to main, bypass protections",
-                "stop and report unavailable required approval"]:
+                "do not reopen earlier worker PRs or create duplicates",
+                "Leave **Merge pull request** off",
+                "Preserve all earlier and checkout tests",
+                "ask before out-of-scope corrections or conflict resolutions",
+                "review the integration and rerun the full suite",
+                "**current PR head**", "Missing, skipped, queued or failed checks",
+                "all required checks and approvals",
+                "confirm the App's authorization prompt **for this checkout PR only**",
+                "merge without another review pause",
+                "If PR identity, review or check status cannot be verified",
+                "stop with merging disabled",
+                "checkout PR's actual status is **Merged**"]:
             with self.subTest(delivery_requirement=text):
                 self.assertIn(text, delivery)
-        self.assertLess(agents.index("Wait for my review before committing"),
-                        agents.index("I approve this reviewed checkout result"))
+        self.assertLess(agents.index("Wait for my review before publishing or merging"),
+                        agents.index("Select **Create PR**"))
+        self.assertNotIn("```copilot", delivery)
+        self.assertLess(delivery.index("Leave **Merge pull request** off"),
+                        delivery.index("Then enable **Merge pull request**"))
+        self.assertLess(delivery.index("**current PR head**"),
+                        delivery.index("Then enable **Merge pull request**"))
         for slug in ["index", "finish", "worksheet", "facilitator", "prompts"]:
             with self.subTest(surface=slug):
                 self.assertIn("checkout PR", chapter(slug))
+                self.assertIn("Agent Merge", chapter(slug))
                 self.assertNotIn("checkout PR is optional", chapter(slug))
+        self.assertNotIn("checkout delivery prompt", chapter("prompts"))
         self.assertIn("Only the orchestrator may publish and merge", agents)
         self.assertIn("after separate explicit approval", agents)
 
@@ -1238,6 +1449,9 @@ class WorkshopScheduleTests(unittest.TestCase):
         agents = re.sub(r"\s+", " ", chapter("subagents"))
         self.assertIn("Do not publish a recovered combined branch", agents)
         self.assertIn("Do not substitute a direct push or local merge", agents)
+        self.assertIn("Turn off Agent Merge while blocked or before local recovery", agents)
+        self.assertIn("bypass protections, force-push, broaden permissions or delete branches",
+                      agents)
         tokens = re.sub(r"\s+", " ", chapter("tokens"))
         for text in ["Record it as a suggestion", "do not edit the verified main checkout",
                      "new follow-up feature branch",

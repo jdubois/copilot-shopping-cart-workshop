@@ -37,12 +37,12 @@ Rehearse with the App build and accounts you will use.
 ### Review and five-subagent checkout
 
 - Approve a read-only independent critic for [rubber ducking]({{ site.baseurl }}/rubber-duck/) without editing the verification checkout's `AGENTS.md`. Use an actual critic, not a main-agent reread. On the normal path, merge and verify accepted corrections through a follow-up PR before checkout; local recovery keeps the checked local branch.
-- In the same **Cart: boundary tests** session, create `workshop-checkout` from the checked result before implementing. Never code on the detached verification checkout.
-- Approve the [checkout contract and file ownership]({{ site.baseurl }}/subagents/#checkout-contract), then use `/fleet`: one orchestrator, five bounded implementation assignments, no extra worktrees or custom agent profiles.
-- Give each worker its instructions and relevant code. Stage model/service/API dependencies; relay questions when direct messaging is unavailable. Record actual exchanges, not the chapter's example conversation.
-- The orchestrator owns the integrated Maven run. Five assignments can run in smaller batches; do not start five shops, Maven suites or nested fleets.
+- Start a fresh **Cart: mock checkout** session using **New worktree** from verified `main`, including merged critique corrections. The App creates the feature branch. If using local recovery, explicitly select and verify the recorded reviewed local base instead.
+- Prepare the checkout plan in **Plan** mode. Approve the [contract, plan, file ownership and local handoffs]({{ site.baseurl }}/subagents/#checkout-contract), then return to **Interactive** without implementing. The `/orchestrate` prompt creates exactly five coordinated child sessions, each with its own worktree and branch. No `/fleet`, nested agents or custom profiles. The starter instructions already provide this scoped allowance; no `AGENTS.md` edit is needed.
+- Give each child its complete brief, owned files and reviewed base. Review and integrate model, then service, then API handoff commits; start dependent children from that updated integration branch, not default `main`. UI and acceptance tests may then run in parallel. Messages do not transfer code.
+- The orchestrator owns the integrated Maven run and final preview. Children may make local handoff commits under the approved delegation, but must not publish or merge. Preserve their worktrees and local work; do not start five shops, Maven suites or nested agents.
 - Check all earlier reviewed tests, boundary cases and **new checkout tests**. Verify rollback, immutable receipts, concurrent duplicate requests and replay after new cart items. Wait for DevTools to load compiled changes, then place an order in the Browser canvas.
-- After final review and scoped approval, the orchestrator delivers one checkout PR, handles checks/reviews and squash-merges when allowed. Workers never publish or merge. Verify exact merged main and that the shop serves its compiled code from the verified directory; change the running server's worktree only if needed.
+- After final review, use **Create PR** in **Cart: mock checkout**, then reuse **Agent Merge**. Keep **Merge pull request** off while reviewing repairs; authorize this checkout PR's merge separately once checks and approvals pass. Workers never publish or merge. Verify exact merged main and that the shop serves its compiled code from the verified directory; change the running server's worktree only if needed.
 
 ### Evidence and privacy
 
@@ -88,9 +88,10 @@ After both worker PRs merge, reuse **Cart: boundary tests** to verify exact
 checkouts; squash-merged results count even when original commits are not ancestors.
 No extra integration session is needed.
 
-Continue in that session: **rubber duck → build and review checkout →
+After rubber duck, start **Cart: mock checkout**:
+**build and review checkout → Create PR → Agent Merge →
 checkout PR merged into `main` → verify merged app → Chronicle → handoff**.
-The orchestrator owns the single checkout PR under explicit delivery approval.
+Keep the single checkout PR in the orchestrator's session and authorize its merge explicitly.
 Confirm its linked PR is checkout, not the earlier boundary-test PR.
 Use actual PR links rather than fixed numbers. The template's `main` remains
 the unsolved starter, not a completed demo.
@@ -110,8 +111,8 @@ a fallback or reference demonstration is not a successful native App exercise.
 | MCP handoff cannot be published | Follow [MCP handoff recovery]({{ site.baseurl }}/parallel/#local-recovery) only from an accepted local copy with all earlier reviewed tests passing; record `main` as not updated |
 | Worker, CI or Agent Merge blocked | Preserve both branches, disable Agent Merge on open PRs and follow [integration recovery]({{ site.baseurl }}/integrate/#local-recovery) in **Cart: boundary tests** |
 | Boundary test reveals a production bug | Keep the regression, approve the [smallest correction in that session]({{ site.baseurl }}/parallel/#boundary-fix), and rerun the full suite before integration |
-| Independent critic or five-agent delegation unavailable | Use the relevant chapter's demonstration/review fallback; explicitly record the missing independent critique or five-agent run |
-| Checkout coding or tests fail | Keep the checkout branch, mark it unfinished and retain the earlier reviewed result; no checkout reference solution is supplied |
+| Independent critic or five child sessions unavailable | Use the relevant chapter's demonstration/review fallback; explicitly record the missing independent critique or five-agent run |
+| Checkout coding or tests fail | Keep the integration branch, child worktrees and local handoff commits; mark checkout unfinished and retain the earlier reviewed result. No checkout reference solution is supplied |
 | Checkout publishing or merge blocked | Preserve branch/open PR; mark **verified locally; delivery blocked**. No direct push or substitute local merge into `main` |
 | Checkout merged but checks or preview fail | Record **merged; post-merge verification blocked**. Repairs need a new approved feature branch and PR |
 | Session query error or interruption | Preserve source, branches and partial evidence; an idle session is not completion. Resume only missing work, not the entire rehearsal |

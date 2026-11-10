@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1080" viewBox="0 0 1440 1080" role="img" aria-labelledby="title desc">
-  <title id="title">Five specialists. One delivery owner.</title>
-  <desc id="desc">One orchestrator coordinates five subagents in one session and one checkout feature branch, not five worktrees. Model precedes service, which precedes REST API; UI and acceptance tests draft against a shared contract. After integrated review and tests and scoped human delivery approval, the orchestrator delivers one reviewed pull request, waits for required checks and approvals, merges it into main and verifies the merged application.</desc>
+  <title id="title">Five child sessions. One delivery owner.</title>
+  <desc id="desc">One orchestrator coordinates five child App sessions, each with its own worktree and branch. Model precedes service, which precedes REST API; UI and acceptance tests follow the integrated interfaces. The orchestrator reviews local handoff commits and integrates them into one checkout branch. After human approval, one reviewed PR goes through Agent Merge, followed by merged-main tests and preview.</desc>
   <defs>
     <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="m1 1 5 3-5 3" fill="none" stroke="#475569" stroke-width="1.5"/></marker>
     <marker id="blue-arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="m1 1 5 3-5 3" fill="none" stroke="#1d4ed8" stroke-width="1.5"/></marker>
@@ -12,16 +12,17 @@
     </style>
   </defs>
   <path fill="#fff" d="M0 0h1440v1080H0z"/>
-  <text x="72" y="95" font-size="46" font-weight="800" letter-spacing="-1.6">Five specialists. One delivery owner.</text>
-  <text x="74" y="139" class="body">Separate contexts. Shared interfaces. A working checkout on main.</text>
+  <text x="72" y="95" font-size="46" font-weight="800" letter-spacing="-1.6">Five child sessions. One delivery owner.</text>
+  <text x="74" y="139" class="body">Separate worktrees. Reviewed handoffs. A working checkout on main.</text>
   <rect x="514" y="195" width="412" height="103" rx="8" fill="#0f1419"/>
   <text x="720" y="237" text-anchor="middle" style="fill:#fff" font-size="29" font-weight="700">Orchestrator</text>
   <text x="720" y="270" text-anchor="middle" style="fill:#fff" font-size="19">Coordinates work and owns delivery</text>
   <path d="M720 298v34" stroke="#1d4ed8" stroke-width="3"/>
   <rect x="72" y="333" width="1296" height="399" rx="8" fill="#f4f6f8" stroke="#d2d8df"/>
-  <text x="100" y="372" font-size="22" font-weight="700">One session / one checkout feature branch</text>
+  <text x="100" y="372" font-size="22" font-weight="700">Five child sessions / five worktrees / one integrated feature</text>
   <text x="100" y="408" class="body">Shared contract: immutable receipt, atomic cart clearing, safe retries.</text>
   <path d="M100 432h1240" stroke="#d2d8df"/>
+  <text x="100" y="452" class="mono">Each specialist owns a branch; reviewed local commits return to the orchestrator.</text>
   <g fill="#fff" stroke="#d2d8df">
     <rect x="100" y="462" width="340" height="99" rx="6"/>
     <rect x="550" y="462" width="340" height="99" rx="6"/>
@@ -61,7 +62,7 @@
   <text x="625" y="936" font-size="21" font-weight="700">One reviewed PR</text>
   <text x="625" y="965" class="mono">Checks + approvals</text>
   <text x="941" y="936" font-size="21" font-weight="700">Merge</text>
-  <text x="941" y="965" class="mono">Into main</text>
+  <text x="941" y="965" class="mono">Agent Merge</text>
   <text x="1366" y="936" text-anchor="end" font-size="21" font-weight="700">Verify main</text>
   <text x="1366" y="965" text-anchor="end" class="mono">Tests + running app</text>
   <path d="M72 1025h1296" stroke="#e2e6ea"/>

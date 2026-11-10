@@ -119,6 +119,7 @@ recovery, record **Agent Merge not completed: local recovery used**.
 | Field | Your observation |
 |---|---|
 | Shared goal, reviewed base and checkout feature branch | |
+| Cart: mock checkout session, new worktree directory and verified starting commit | |
 | Approved contract, owned files and dependency order | |
 | Five actual assignments/contributions; concurrency observed | |
 | Questions/answers exchanged, directly or through the orchestrator | |
@@ -127,12 +128,22 @@ recovery, record **Agent Merge not completed: local recovery used**.
 | Full-suite counts, including baseline, generated cart/removal/query, boundary and CheckoutContractTest | |
 | Rollback, snapshot and concurrent/later-retry evidence | |
 | Browser canvas receipt, cleared cart, keyboard and narrow-screen observations | |
-| Final diff accepted and scoped orchestrator publishing/merge approval | |
+| Final diff accepted, checkout publication approved, Agent Merge repairs reviewed and merge separately authorized | |
 | Checkout PR URL, repository, feature head and base `main` checked | |
 | Actual merge status/commit and checks for that merged revision | |
 | Verified main commit, local full-suite results and running directory/URL | |
 | Place order and receipt verified with the app serving the verified merged-main code | |
 | Delegation or messaging unavailable, or demonstration | |
+
+Record each actual child session and its local handoff:
+
+| Child session | Session link, worktree and branch | Reviewed commit integrated into checkout |
+|---|---|---|
+| Checkout: order model | | |
+| Checkout: service | | |
+| Checkout: REST API | | |
+| Checkout: UI | | |
+| Checkout: acceptance tests | | |
 
 Mark checkout **merged and verified on main**, **unfinished**, or **demonstrated**
 according to the evidence. Use **verified locally; delivery blocked** or
@@ -148,7 +159,7 @@ activity available for Chronicle.
 | Field | Your observation |
 |---|---|
 | Privacy choice and scope controls checked before running | |
-| All three task sessions and both parallel sessions, repository/timezone/window | |
+| All eleven workshop sessions, including Cart: mock checkout and its five children, repository/timezone/window | |
 | Returned scope and coverage | |
 | Reported input/output/cache/usage values **with units**, or unavailable | |
 | Usage pattern and supporting session/example | |

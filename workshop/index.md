@@ -24,10 +24,11 @@ and **impeccable** to improve an observed UI issue.
 
 Investigate an N+1 query using **MCP** evidence. Build independent improvements
 in two worktree sessions, then integrate their PRs with **Agent Merge**.
-Get a second opinion from **rubber duck** and coordinate **five subagents**
-to implement mock checkout with an order receipt and safe cart clearing.
-The orchestrator delivers it through a reviewed PR into your own **`main`**
-and verifies the merged application.
+Get a second opinion from **rubber duck** and coordinate **five specialist
+agents in child App sessions** to implement mock checkout with an order receipt
+and safe cart clearing.
+Reuse **Agent Merge** to deliver its reviewed PR into your own **`main`**,
+then verify the merged application in the orchestrator's session.
 Finish with **Chronicle** and a clear handoff.
 
 The shop is intentionally small: Spring Boot, H2 and plain JavaScript.
@@ -52,19 +53,21 @@ You do not need to create issues in your repository.
 | Fix adding the same product twice | Quantity and total accumulate correctly | Plan, use a Java skill, reproduce a failing test and guide the fix |
 | Generate item removal | Remove one product without losing the others | Define expected behavior, generate backend and UI code, then preview and polish in a Canvas |
 | Fix repeated product queries | The cart keeps its contents with fewer SELECTs | Use MCP evidence, diagnose with a skill, verify the query budget |
-| Build and deliver mock checkout | Place a local order, see a receipt and start shopping again from the app on `main` | Agree on contracts, coordinate five subagents, verify failures/retries and let the orchestrator deliver a reviewed PR |
+| Build and deliver mock checkout | Place a local order, see a receipt and start shopping again from the app on `main` | Agree on contracts, coordinate five subagents, verify failures/retries and deliver a reviewed PR with Agent Merge |
 
 Start with **Fusion Standard**, or a strong coding model if Fusion is unavailable.
 Use higher effort when a problem calls for it, not by default.
 Review permissions, tests and changed files at every stage.
 Each of the first three tickets has a named session and one reviewed PR,
 merged before the next task. Removal and Canvas polish share a PR.
-After both parallel PRs merge, keep **Cart: boundary tests** for the critique
-and checkout. Five subagents build the fourth ticket on
-**one feature branch** in that same session. **Mock means no real payments**:
+After both parallel PRs merge, keep **Cart: boundary tests** for the critique.
+Then start a fresh **Cart: mock checkout** session from verified `main`.
+Five child sessions build the fourth ticket in **five separate worktrees**;
+the checkout session integrates their reviewed commits into **one feature branch**.
+**Mock means no real payments**:
 the order, receipt and cart clearing must actually work.
 The feature branch is a staging point, not the finish line: after your scoped
-approval, the orchestrator merges its checkout PR and verifies actual `main`.
+approval, Agent Merge merges the checkout PR; the orchestrator then verifies actual `main`.
 
 ## Workshop flow
 {: #workshop-flow}
@@ -86,7 +89,7 @@ and ask for help whenever you need it.
 6. [Start two isolated sessions from the reviewed main]({{ site.baseurl }}/parallel/) to improve the empty-cart experience and add boundary tests.
 7. [Merge PRs with Agent Merge]({{ site.baseurl }}/integrate/): UI first, then boundary tests, reviewing repairs and authorizing each merge separately.
 8. [Review with rubber duck]({{ site.baseurl }}/rubber-duck/) in the existing **Cart: boundary tests** session.
-9. [Coordinate five subagents]({{ site.baseurl }}/subagents/) to build mock checkout, then have the orchestrator deliver one reviewed PR and verify the merged app on `main`.
+9. [Coordinate five subagents]({{ site.baseurl }}/subagents/) from **Cart: mock checkout**: create five child sessions and worktrees, integrate their handoffs, deliver one reviewed PR with Agent Merge and verify the merged app.
 10. [Improve token usage with Chronicle]({{ site.baseurl }}/tokens/) using the workshop sessions.
 11. [Review the full change and hand off]({{ site.baseurl }}/finish/#final-review).
 
@@ -105,7 +108,8 @@ permission to push branches and merge PRs throughout the workshop.
 Local recovery is documented for blocked participants.
 The skills chapter also explains how to install them in another project.
 The App's Browser canvas, Pick & polish, bundled **impeccable**, rubber duck
-and `/fleet` are used in later exercises; availability depends on your build
-and policies. Each chapter explains how to record a blocked step or demonstration.
+and child-session orchestration are used in later exercises; availability
+depends on your build and policies. `/fleet` is explained as an alternative.
+Each chapter explains how to record a blocked step or demonstration.
 Keep the [prompt cards]({{ site.baseurl }}/prompts/) and
 [worksheet]({{ site.baseurl }}/worksheet/) nearby.

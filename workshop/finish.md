@@ -33,7 +33,7 @@ change where a PR merges.
 Review the full starter-to-current change, including committed tickets,
 staged/unstaged edits and new files, for cart behavior, validation, server
 prices, removal, Canvas UI changes, the query change, both parallel workers'
-contributions, reviewed instruction updates and the checkout implementation.
+contributions and the checkout implementation.
 Check stored order snapshots, atomic clearing, retry behavior and receipt UI.
 Distinguish local checkout code from what is actually merged into main.
 Use workshop-start as the comparison starting point only
@@ -60,7 +60,7 @@ completed main-branch result.
 | Delivered three task PRs | Quantity fix, removal plus Canvas, and query fix each merged and verified before the next task |
 | Coordinated parallel work | Reviewed starting point published on `main`, two isolated sessions from that version, two worker PRs merged sequentially with Agent Merge, and a tested combined result; or an explicit local-recovery record |
 | Requested an independent critique | Actual rubber duck findings, decisions and evidence for corrections; or a recorded unavailable critic |
-| Delivered mock checkout with five subagents | Actual contributions, reviewed code, checkout PR merged into `main`, passing merged-revision checks and receipt/cart preview from verified main; or an explicit incomplete/demonstration record |
+| Delivered mock checkout with five subagents | Five child-session links and worktrees, reviewed local handoff commits integrated into one checkout PR, PR merged into `main`, passing merged-revision checks and receipt/cart preview from verified main; or an explicit incomplete/demonstration record |
 | Reviewed token usage | Chronicle report or a note that it was unavailable/not run, plus one improvement based on the workshop sessions |
 | Used Copilot App effectively | Reviewed plan, loaded skills, inspected changed files and checked test output |
 
@@ -98,7 +98,7 @@ what changed, what was checked, what is still unknown.
 ## Where your result lives
 
 On the completed normal path, the three task PRs and both worker PRs landed on **`main`**,
-followed by the orchestrator's **checkout PR**. Stay in **Cart: boundary tests**
+followed by the orchestrator's **checkout PR**. Stay in **Cart: mock checkout**
 on the verified main revision, not the old worker or checkout feature branch.
 Retain the quantity-fix, removal-and-Canvas and MCP handoff PR links,
 both worker PR links and CI results, plus the checkout PR,
@@ -107,11 +107,14 @@ If any additional delivery or correction PRs were needed, retain their
 review, checks and actual merge status too.
 
 **Checkout merged and verified on `main` is required for the completed normal path.**
-The orchestrator performs that delivery under the checkout chapter's explicit
-approval; no fixed PR number is required. Do not claim checkout is on `main`
+Use Agent Merge under the checkout chapter's explicit approval, then let the
+orchestrator verify the merged result; no fixed PR number is required.
+Do not claim checkout is on `main`
 merely because the earlier PRs merged.
 If checkout remains unfinished, preserve its branch and hand off the earlier
 reviewed result with that limitation, not a fictional successful order.
+Keep the five child sessions, worktrees and local commits until their work is
+accounted for; do not delete them merely because the integrated PR merged.
 
 If you used local recovery, keep the local combined branch and record the
 GitHub, CI or Agent Merge blocker. Do not describe open PRs as merged or local

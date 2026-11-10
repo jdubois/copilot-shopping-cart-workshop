@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Coordinate five subagents
-description: "Use an orchestrator and five focused subagents to build checkout, deliver it through a reviewed PR and verify merged main."
+description: "Coordinate five visible child App sessions in separate worktrees, integrate mock checkout into one reviewed PR and verify merged main."
 permalink: /subagents/
 workshop: true
 next: tokens
@@ -10,10 +10,11 @@ next_title: Chronicle and token usage
 
 ## What you will learn
 
-Use Copilot App to delegate a shared goal to **five subagents**, route questions
-between specialists and deliver their integrated feature into **`main`**.
-The orchestrator owns the checkout PR, checks, authorized merge and verification
-of the application actually merged.
+Use Copilot App to delegate a shared goal to **five specialist agents in child
+App sessions**, route questions between them and deliver their integrated
+feature into **`main`**.
+Keep delivery in the orchestrator's session, use Agent Merge for the checkout PR
+and verify the application actually merged.
 
 ## One goal, five perspectives
 
@@ -25,10 +26,12 @@ Build a working local checkout after the three earlier tickets and parallel
 improvements. Keep Spring Boot, H2, vanilla JavaScript and server-owned integer-cent prices.
 No payments, authentication, customer personal data or external services.
 
-The **orchestrator** is the main Copilot agent in your existing
-**Cart: boundary tests** session. A **subagent** works on a delegated task in
-its own context window. Five role assignments do not require five custom
-agent files, five new App sessions or five branches.
+The **orchestrator** is the main Copilot agent in your new
+**Cart: mock checkout** session. In this exercise, each specialist runs in a
+**visible child App session with its own worktree and branch**. You can open
+each conversation in the sidebar and inspect its changes independently.
+The orchestrator brings their reviewed local commits into its checkout branch
+for **one integrated PR**, not five specialist PRs.
 
 Earlier, two worktree sessions built independent changes. Rubber ducking
 challenged the result. Here, five specialists agree on shared interfaces
@@ -36,44 +39,85 @@ and build one feature together, with explicit file ownership and dependencies.
 See <a href="https://docs.github.com/en/copilot/concepts/agent-capabilities/choosing-and-delegating-agent-work/delegating-and-parallelizing-work-with-agents" target="_blank">how delegation works</a>.
 
 <figure>
-  <a href="{{ site.baseurl }}/assets/illustration-five-specialists.svg" target="_blank"><img src="{{ site.baseurl }}/assets/illustration-five-specialists.svg" alt="One orchestrator coordinates Order model, Checkout service, REST API, UI and Acceptance tests in one session and feature branch. After integrated review and scoped approval, it owns one reviewed PR, merge into main and merged-application verification." width="1440" height="1080" loading="lazy"></a>
-  <figcaption>Five implementation specialists, one delivery owner. This is a conceptual workflow, not evidence that agents have run.</figcaption>
+  <a href="{{ site.baseurl }}/assets/illustration-five-specialists.svg" target="_blank"><img src="{{ site.baseurl }}/assets/illustration-five-specialists.svg" alt="One orchestrator coordinates five child App sessions, each with a separate worktree and branch. Reviewed local handoff commits feed one checkout PR, Agent Merge and merged-main verification." width="1440" height="1080" loading="lazy"></a>
+  <figcaption>Five child sessions and worktrees, one integrated checkout PR. This is a conceptual workflow, not evidence that agents have run.</figcaption>
 </figure>
 
-## Prepare one feature branch
+> **How is this different from `/fleet`?**
+>
+> `/fleet` lets the main agent delegate suitable work to subagents within its
+> current App session. Each subagent has its own context, but the command does
+> not itself create five persistent App sessions and worktrees or guarantee
+> exactly five workers.
+>
+> Here, `/orchestrate` creates five named child App sessions with separate
+> working copies and branches. They are easier to inspect and steer individually,
+> but their commits need integration. Both approaches can parallelize independent
+> work and increase model usage; neither guarantees a speedup.
+> **Use the child-session approach below; do not run `/fleet` for this exercise.**
+
+## Start a fresh checkout session
 {: #prepare-checkout}
 
-Stay in **Cart: boundary tests**, on the latest verified result, including
-any merged critique corrections. If you used local recovery, keep that checked
-local result rather than incomplete remote `main`.
-Keep **Interactive** and review tool-permission requests.
-The integration chapter may have left this worktree on a detached verification
-checkout. Do not implement there or switch to `main`. In this session's composer:
+After integration and rubber duck review, create a **new session** in your own
+repository using the **Copilot App UI**. Choose **This computer**, **New worktree**
+and **Interactive**, with the latest verified **`main` as the base branch**,
+including any merged critique corrections. The App will create a separate
+worktree and feature branch; keep **Cart: boundary tests** for its history.
+
+<details markdown="1">
+<summary>If earlier work exists only in local recovery</summary>
+
+Preserve the checked local result and record its branch and commit. Create the
+new worktree from **that reviewed local branch**, not incomplete remote `main`,
+and verify the starting commit before editing. Keep delivery marked as blocked
+until the earlier work and accepted critique corrections are merged and verified.
+If the recovered instructions lack the scoped checkout allowance, stop and ask
+the facilitator rather than editing them or proceeding.
+
+</details>
+
+Send this first prompt in the new session:
 
 ```copilot
-Confirm this is my reviewed combined shopping-cart result in my own repository,
+Confirm this new worktree is in my own workshop repository, on the App-created
+feature branch, not main or a detached checkout.
+Fetch origin and verify this worktree starts at the latest verified origin/main,
 including all three earlier tickets and accepted UI/boundary-test changes.
-If local recovery was used, keep that checked result, not incomplete remote main.
+Confirm any accepted critique corrections are included.
+If local recovery was used, verify the recorded reviewed starting commit instead;
+keep that checked result, not incomplete remote main, and report delivery blocked.
 Confirm the working tree is clean; stop if there is unfinished work.
-Create and switch to a new branch workshop-checkout at this exact checked commit,
-in this session's existing worktree. Do not replace an existing branch; ask me
-if the name is taken. Preserve worker branches, main and other session checkouts.
-Read AGENTS.md. If needed, propose only a narrow instruction update permitting
-the explicitly approved mock-checkout implementation and five bounded subagents
-on this feature branch. Only the orchestrator may publish and merge checkout
+Report this session's directory, actual branch and starting commit.
+Preserve worker branches, main and other session checkouts.
+Read AGENTS.md and keep it unchanged. Stop and report any conflicting instructions.
+Wait for my approval of the checkout contract, implementation plan and file ownership.
+Only the orchestrator may publish and merge checkout
 after separate explicit approval of the integrated result.
 The five specialists must not publish or merge.
 Preserve existing tests, stack, privacy and approvals.
-Show any instruction diff and wait for approval. Do not implement checkout,
+Do not implement checkout,
 spawn subagents, push, open PRs or merge yet.
 ```
 
-Review and accept any instruction change before continuing, including when
-recovery restored the starter's restrictions. This branch holds the checkout
-feature; the earlier merged `main` and worker branches stay intact.
+Once the conversation has started, name the session **Cart: mock checkout**.
+The starter instructions already allow this exercise after explicit approval;
+you do not need to edit `AGENTS.md`. This session will own the checkout plan,
+integration branch and delivery; its five children will own implementation.
 
 ## Agree on the contract first
 {: #checkout-contract}
+
+Give all five specialists the same rules: **Place order** saves a receipt and
+clears the cart together. Retrying must not create another order; a failed
+checkout must leave the cart intact. The UI shows progress, errors and a way
+back to shopping.
+
+Review Copilot's plan against the detailed contract below before approving
+implementation. Keep earlier behavior, tests and the one-SELECT cart query budget.
+
+<details markdown="1">
+<summary>Detailed checkout contract and edge cases</summary>
 
 | Case | Required result |
 |---|---|
@@ -105,20 +149,31 @@ before choosing transaction and concurrency boundaries.
 Keep the existing one-SELECT **GET `/api/cart`** budget and reviewed query
 tests unchanged when adding checkout reads.
 
+</details>
+
 ## Give each subagent a bounded job
 
-| Subagent | Code it owns | Decision it must coordinate |
+| Child session | Code it owns | Decision it must coordinate |
 |---|---|---|
-| Order model | New order/snapshot entities and order repository | How are receipt snapshots and unique request IDs stored? |
-| Checkout service | Checkout logic and necessary existing cart-service/repository changes | How are creation, clearing and retries kept atomic? |
-| REST API | New checkout controller and request/receipt mapping | Which fields and errors must UI and tests use? |
-| UI | Changes under `src/main/resources/static/` | How are pending, failure, retry and receipt states shown? |
-| Acceptance tests | New `CheckoutContractTest.java` and any agreed test-only helpers | How are rollback, immutable snapshots and duplicate requests proved? |
+| Checkout: order model | New order/snapshot entities and order repository | How are receipt snapshots and unique request IDs stored? |
+| Checkout: service | Checkout logic and necessary existing cart-service/repository changes | How are creation, clearing and retries kept atomic? |
+| Checkout: REST API | New checkout controller and request/receipt mapping | Which fields and errors must UI and tests use? |
+| Checkout: UI | Changes under `src/main/resources/static/` | How are pending, failure, retry and receipt states shown? |
+| Checkout: acceptance tests | New `CheckoutContractTest.java` and any agreed test-only helpers | How are rollback, immutable snapshots and duplicate requests proved? |
 
-Ask the **main agent** to prepare the implementation plan before launching workers:
+**First, plan:** switch this session to **Plan** using the mode control beside
+the composer **before sending the prompt below**.
+
+**Plan mode is important here:** the main agent should investigate and propose
+the plan, not build checkout itself. Do not rely on the prompt's wording alone.
+Save implementation for the five child sessions in the later delegation step.
+The API requirements below describe the design to propose, not permission to code.
 
 ```copilot
 Read this branch's cart implementation and propose a mock-checkout plan.
+Planning only: do not modify source, tests, configuration or AGENTS.md.
+Do not implement any part of checkout or launch agents.
+Treat the following as requirements for the plan:
 Use POST /api/orders with a UUID requestId, 201 for a new order,
 200 with the same receipt for a retry, 400 for an invalid requestId,
 and 409 for an empty cart with a new requestId.
@@ -126,133 +181,139 @@ Validate requestId first; return a stored order before checking whether
 the cart is empty. Preserve the one-SELECT GET /api/cart budget.
 Receipt fields are orderId, requestId, items, itemCount and totalCents;
 item fields are productId, name, priceCents, quantity and lineTotalCents.
-Snapshot server data, create the order and clear the cart atomically.
+Plan how to snapshot server data, create the order and clear the cart atomically.
 Retries, including concurrent ones, must not duplicate orders or clear a later cart.
 Keep all earlier behavior and reviewed tests unchanged. No new dependencies,
 payments, authentication, personal data or external services.
 Assign exact, non-overlapping files to five roles: Order model, Checkout service,
 REST API, UI and Acceptance tests. Identify dependencies and explain how
 transaction boundaries and concurrency protect cart mutations.
+Plan five coordinated child App sessions, each with a separate new worktree
+and branch. You will integrate their reviewed local handoff commits into this
+checkout feature branch; the children must not publish or merge.
+Name them Checkout: order model, Checkout: service, Checkout: REST API,
+Checkout: UI and Checkout: acceptance tests.
 Plan meaningful failure/rollback and immutable-receipt tests, not only happy paths.
 Do not edit code or launch agents yet. Show the plan and wait for my approval.
 ```
 
-Approve the contract and file list first. The order model comes before service
-code that uses it, and the API depends on that service. UI and HTTP tests can
-be drafted from the agreed contract. **Five assignments do not mean five
-independent coding tasks** or five simultaneous Maven runs.
-Agree on a concurrency limit suited to the machine before launching; check
-active workers again before starting or waking another worker.
+Review the contract, file ownership, local handoffs and concurrency limit before
+approving delegation. The orchestrator will schedule the five child sessions
+and integrate their work.
 
-In the **same session's composer**, use the App's **`/fleet`** command:
+**Do not choose an action that implements the plan.** Leave planning without
+launching implementation and return to **Interactive**, as in
+[Modes and effort]({{ site.baseurl }}/modes/#review-the-plan-then-prepare-to-write-tests).
+If a plan-approval screen appears, choose the option that returns to the session
+without implementing it.
+
+**Then, delegate:** send **`/orchestrate`** below in the same session's composer.
+This is the step that authorizes the five child sessions and their local handoffs.
+
+If planning already changed code, stop and review the diff before continuing.
+Preserve the changes; do not reset or discard them without explicit approval.
+Do not count existing main-agent implementation as five specialists' work.
 
 ```copilot
-/fleet Implement the approved mock-checkout plan on this session's
-workshop-checkout feature branch, never on a detached checkout or main.
-Use exactly five subagents: Order model, Checkout service, REST API,
-UI and Acceptance tests. Give each the approved contract, exact owned files,
-dependencies, existing source and AGENTS.md. Do not assume shared context.
-POST /api/orders accepts a UUID requestId. Return 201 for new creation,
-200 and the same receipt for replay, 400 for invalid requestId and
-409 for an empty cart with a new requestId.
-Validate requestId first; return a stored order before checking whether
-the cart is empty. Preserve the one-SELECT GET /api/cart budget.
-Receipt fields: orderId, requestId, items, itemCount, totalCents.
-Item fields: productId, name, priceCents, quantity, lineTotalCents.
-Snapshot server prices and quantities. Create the stored order and clear
-the cart atomically; failure leaves it intact. Concurrent or later retries
-must not duplicate orders or clear a later cart.
-Keep Spring Boot, H2, vanilla JavaScript, original response fields and all
-earlier reviewed tests. No payments, authentication, personal data,
-new dependencies, agent profiles or further nested agents.
-Workers edit only assigned files. Schedule dependencies, and coordinate
-interface questions through available messaging; otherwise relay them.
+/orchestrate I approve the checkout contract, implementation plan, file ownership
+and local handoffs. Coordinate implementation; do not implement it yourself.
+Create exactly five coordinated child App sessions in this repository,
+each with its own New worktree and branch: Checkout: order model,
+Checkout: service, Checkout: REST API, Checkout: UI and Checkout: acceptance tests.
+Do not substitute /fleet or in-session subagents. Do not create extra sessions.
+Keep this session's checkout feature branch as the integration branch, not main.
+Before each child starts, show its name, assignment and reviewed starting commit.
+Create it from this integration branch's latest reviewed commit, not default main;
+verify its actual base includes the upstream handoffs it needs before editing.
+Stage model, service and API work in dependency order. UI and tests may run in
+parallel after their interfaces are integrated. Respect the agreed concurrency limit
+during follow-ups as well as launches.
+Check active workers before starting or waking another child.
+Give every child the complete approved contract, exact owned files, dependencies,
+actual upstream interfaces and AGENTS.md. Do not assume shared context.
 Before dependent implementation, have receiving specialists check the actual
-upstream interface. Relay unresolved questions and their answers before proceeding.
-Respect the agreed concurrency limit during follow-ups as well as launches.
+upstream interface.
+Preserve the approved contract, stack, response fields and all earlier tests.
+Workers edit only assigned files and may commit those files locally for handoff.
+Workers must not run Maven, start/stop the shop, change other branches, push,
+open PRs, merge, launch nested agents or add agent profiles.
+Have each child report its branch, handoff commit, changed files, decisions,
+questions and anything incomplete. Relay interface questions and answers.
+You may review and cherry-pick only the accepted handoff commits into your clean
+integration worktree. Check whether each handoff is already included; do not apply
+it twice or overwrite unfinished work. Do not move or reset child branches.
 Stop and ask before expanding scope or resolving conflicting ownership.
-Workers must not run Maven, start/stop the shop, change branches, commit,
-push, open PRs or merge. You own the integrated test run, not five workers.
-Wait for all five workers to finish and confirm no worker is still writing files.
-Then review the combined diff and run ./mvnw test.
+Stop and ask before resolving integration conflicts. Route implementation fixes
+back to the owning child and review each new handoff.
+After all five contributions are integrated, review the combined diff and run
+./mvnw test here. You own the Maven run and final shop preview, not five workers.
 Confirm BaselineTest, CartContractTest, RemoveContractTest, QueryContractTest,
 CartBoundaryTest and new CheckoutContractTest execute without failures or skips.
-Fix actionable failures within the approved ownership; never weaken tests.
-Report the five actual contributions, meaningful exchanges, final file list,
-executed test counts and anything incomplete. Wait for my review before committing.
-If delegation cannot run, stop and report it rather than inventing agents.
+Never weaken tests. Report the five actual contributions and child-session links,
+reviewed handoff commits, exchanges, final diff, test counts and anything incomplete.
+Preserve all child sessions, branches and unfinished work.
+Wait for my review before publishing or merging. Only this orchestrator may
+deliver the one integrated checkout PR after separate explicit approval.
+If child sessions or worktrees cannot be created, stop and report the blocker.
 ```
 
-The roles are defined by this prompt; they are not necessarily names in the
-App's agent picker. **`/fleet` delegates within the session**.
-Do not substitute **`/orchestrate`**, which coordinates separate App sessions
-and repositories, for this exercise.
+Open the five child sessions from the sidebar as they are created. Check each
+assignment, starting commit and owned-file diff. A name in a plan is not a
+running child session, and an idle session is not proof its work is complete.
+Local handoff commits are not permission to push or open five PRs.
 
 ## Watch how they communicate
 {: #communication}
 
-Subagents have separate contexts. They do not automatically know another
-agent's discoveries. The orchestrator provides the shared brief, passes
-relevant information between them and tracks the decisions.
-Where the build supports direct peer messaging, agents can exchange questions
-and report the decisions back; otherwise the orchestrator relays them.
-
-For example, the API agent confirms the agreed `requestId` field. The UI agent
-asks when to retain it after a timeout. The service agent explains how a stored
-order is returned without clearing a newly filled cart, while the model agent
-confirms the unique request-ID constraint. The test agent verifies that replay.
-This is an **example exchange**, not evidence that your agents performed it.
-
-Inspect the actual agent activity and report. Confirm there are five distinct
-contributions and that code and tests use the agreed interfaces.
-Report missing contributions or unsupported messaging honestly.
-Record actual questions and answers, or explicitly **none exchanged**.
-Do not manufacture dialogue to fill the worksheet; assignments alone do not
-demonstrate collaboration.
+Open the five child sessions and inspect their actual contributions and local
+handoffs. Record actual questions, answers and decisions, or **none exchanged**.
+If direct messaging is unavailable, relay questions through the orchestrator;
+messages do not copy code between worktrees. Report missing contributions or
+unavailable messaging. Do not manufacture dialogue.
 
 ## Review and run the integrated feature
 {: #verify-checkout}
 
-Check that the UI and API use the same fields and errors, data transactions
-match the clearing rule, and tests cover failure, snapshots, concurrent duplicate
-submissions and replay after new items have been added. Check the test reports:
-all **earlier reviewed tests**, boundary tests and **new checkout
-tests** must execute with no failures/errors/skips. The generated checkout
-tests are additional cases, not a new supplied reference checkpoint.
+Stay in the **orchestrator's integration worktree**, not a child's checkout.
 
-If the shop is already running in this session's worktree, **reuse it**:
-the integrated test run compiled the changes, and **DevTools** restarts the
-app automatically. Wait for startup to finish.
+1. **Review the combined changes.** Confirm all five reviewed handoffs are included once, the UI and API agree, and accepted critique corrections are present.
+2. **Check the full suite.** The orchestrator runs `./mvnw test`. All **earlier reviewed tests**, boundary tests and **new checkout tests** must execute with no failures/errors/skips.
+3. **Preview checkout.** Once the shop is running here, ask Copilot to open or reload **http://127.0.0.1:18765** in the Browser canvas. Add the €10 Notebook twice and place an order: the receipt must show quantity **2** and total **€20**, followed by an empty cart. Return to shopping.
 
-If it is still running from another worktree, stop that shop with
-**Ctrl+C in its owning terminal**. Only if the server is not running from this
-feature branch's directory, start it here:
+**You own the server, not the agents.** If the shop runs from this worktree,
+reuse it and wait for **DevTools** to finish reloading the compiled changes.
+If it runs elsewhere, stop it with **Ctrl+C in its owning terminal**.
+Only if no shop is running, start it from this integration worktree:
 
 ```sh
 ./mvnw spring-boot:run
 ```
 
-Ask Copilot to open or reload **http://127.0.0.1:18765** in the Browser canvas.
-Add the €10 Notebook twice: the receipt must show quantity **2** and total
-**€20**, followed by an empty cart. Check visible error feedback for a
-failed request, then return to shopping. If Place order is disabled on an empty
+<details markdown="1">
+<summary>Detailed failure, concurrency and accessibility checks</summary>
+
+**Contract and regressions.** Check that the UI and API use the same fields
+and errors, data transactions match the clearing rule, and tests cover failure,
+snapshots, concurrent duplicate submissions and replay after new items have
+been added. The generated checkout tests are additional cases, not a new
+supplied reference checkpoint. A disabled button alone does not prove server-side
+duplicate prevention; use the HTTP regression results for retry, rollback and
+concurrency evidence.
+
+**Browser checks.** Check visible error feedback for a failed request.
+If Place order is disabled on an empty
 cart, verify the required **409** through HTTP tests; do not enable it just
-for this demonstration. Confirm keyboard access and a narrow
-viewport. A disabled button alone does not prove server-side duplicate prevention;
-use the HTTP regression results for retry, rollback and concurrency evidence.
-Also move focus to the catalogue while a real response is pending: completion
+for this demonstration. Confirm keyboard access and a narrow viewport.
+Move focus to the catalogue while a real response is pending: completion
 must respect that choice. Check the cart's live status as well as its visible
 total, and inspect the complete focus ring during natural Tab scrolling.
 
-<details markdown="1">
-<summary>Make failure and concurrency evidence meaningful</summary>
-
-The transaction boundary must include physical commit, not just the body of
-an annotated Java method. Inject failure after a real write and verify both
-order and cart roll back. For overlap, hold an uncommitted write and establish
-that a second request entered the server; two client futures alone are not proof.
-Compare receipts as parsed wire JSON so Java UUID or numeric node types do not
-create a test-harness mismatch.
+**Failure and concurrency probes.** The transaction boundary must include
+physical commit, not just the body of an annotated Java method. Inject failure
+after a real write and verify both order and cart roll back. For overlap, hold
+an uncommitted write and establish that a second request entered the server;
+two client futures alone are not proof. Compare receipts as parsed wire JSON
+so Java UUID or numeric node types do not create a test-harness mismatch.
 
 If simulating a lost response, let the real server commit, record its response,
 then discard delivery and retry the same ID after reload. Label fault injection;
@@ -263,55 +324,34 @@ helper even when another cleanup fails. An incomplete probe is not a pass.
 </details>
 
 Review **Changes**, the full starter-to-current result, tests and the running
-checkout before authorizing delivery. Include any corrections from the earlier
-independent critique. The five workers remain implementation specialists:
-only the orchestrator owns Git and PR operations.
+checkout before authorizing delivery. Children own their local handoff commits;
+only the orchestrator integrates, publishes and manages the checkout PR.
 
 ## Deliver checkout into main
 {: #deliver-checkout}
 
-Stay in **Cart: boundary tests**. The orchestrator delivers **one checkout PR**,
-not five specialist PRs or another App session. The reviewed starting point and
-both worker PRs and any accepted critique corrections must already be on your
-own `main`; if local recovery was used,
+Stay in **Cart: mock checkout** and reuse
+[Agent Merge]({{ site.baseurl }}/integrate/#merge-the-ui-pr-first).
+Deliver **one checkout PR**, not five specialist PRs or a new delivery session.
+The three task PRs, both worker PRs and any accepted critique corrections must
+already be on your own `main`; if local recovery was used,
 resolve those delivery blockers first or keep the result explicitly incomplete.
 Do not publish a recovered combined branch against incomplete remote `main`
 as though the earlier PRs had merged.
 
-After accepting the final diff and preview, give this scoped delivery approval:
+Confirm all five workers have finished and all reviewed handoffs are integrated.
+Resolve any pending child changes before freezing the reviewed checkout result.
+After accepting the final diff, tests and preview:
 
-```copilot
-I approve this reviewed checkout result for delivery in my own workshop repository.
-You, the orchestrator, own this delivery; the five workers must not publish or merge.
-Confirm all five workers have finished and none can still modify this worktree.
-Confirm the repository, current checkout feature branch, full intended diff and
-new files. Stop if anything is outside the approved checkout and reviewed corrections.
-Confirm all three task PRs and both worker PRs are merged into main.
-Confirm any approved critique corrections are merged too.
-Fetch origin. If main advanced, review any needed integration, ask before resolving
-conflicts and rerun the full suite before publishing.
-Commit only the accepted implementation, tests and reviewed instruction changes.
-Push only this feature branch without force-pushing, then open one checkout PR
-with base main and head this branch. Reuse an existing PR only if its repository,
-head and base match this checkout delivery.
-Confirm the linked PR is this checkout PR, not the earlier merged boundary-test PR.
-Do not reopen or retarget earlier PRs or create duplicate PRs.
-Address CI failures and review feedback only within the approved contract.
-Preserve all original acceptance tests, boundary tests and checkout regressions.
-Wait for the tests job and all required checks and approvals to pass for the
-current PR head. Missing, skipped, queued or failed checks are not a pass.
-Abort delivery if any identity, review or check read fails or times out.
-Never let a merge command run after a failed guard.
-Then squash-merge this checkout PR into main under this approval.
-Do not push directly to main, bypass protections, broaden permissions or delete branches.
-Ask before out-of-scope changes; stop and report unavailable required approval.
-Report the PR URL, accepted head, actual merge status and merge commit.
-Do not call the workshop complete until merged-main verification also succeeds.
-```
+1. Select **Create PR** and approve publishing only the reviewed checkout changes to your own repository. Check **`base: main` ← `head: this session's branch`**. Reuse an existing checkout PR only if its repository, head and base match; do not reopen earlier worker PRs or create duplicates.
+2. Open **Create PR → Agent Merge** for this checkout PR, not the earlier merged boundary-test PR. Leave **Merge pull request** off and start with the reviewed repair options. Preserve all earlier and checkout tests; ask before out-of-scope corrections or conflict resolutions.
+3. Review **Files changed**, including repairs. If `main` advanced, review the integration and rerun the full suite. Require the **tests** job and all required checks and approvals to pass for the **current PR head**. Then enable **Merge pull request** and confirm the App's authorization prompt **for this checkout PR only**.
 
-Confirm any required App permission prompts. This authorizes this delivery only,
-not unrelated PRs or later changes. The earlier **Agent Merge** exercise remains
-separate; no second configuration exercise or extra worker is required here.
+As before, authorization lets Agent Merge make further permitted repairs and
+merge without another review pause. Keep merging off until you accept the result.
+Missing, skipped, queued or failed checks are not a pass. If PR identity, review
+or check status cannot be verified, stop with merging disabled.
+Continue below only when the checkout PR's actual status is **Merged**.
 
 ## Verify the merged application
 {: #verify-merged-checkout}
@@ -364,18 +404,22 @@ Then continue with Chronicle and the final handoff.
 
 Five agents are a teaching example, not automatically the most efficient
 choice for a small app. Each consumes model usage. Check the `/` picker and
-permissions; do not broaden account access to make `/fleet` work.
+permissions; do not broaden account access to create child sessions.
 Concurrency depends on your build and machine: five total assignments can
 be scheduled in smaller batches, and must not be reported as five simultaneous
 agents unless that actually happened.
-If delegation is unavailable, use a facilitator's demonstration or an explicitly
-approved single-agent implementation. Mark it as **not a completed five-agent run**.
-If coding or tests fail, preserve this branch and earlier worker refs; record
-checkout as unfinished and continue the handoff with the earlier reviewed result.
+If child sessions or worktrees are unavailable, use a facilitator's demonstration
+or an explicitly approved single-agent implementation.
+Mark it as **not a completed five-agent run**.
+If coding or tests fail, preserve the integration branch, five child worktrees,
+local commits and earlier worker refs; record checkout as unfinished and continue
+the handoff with the earlier reviewed result.
 Do not discard work, weaken assertions or invent a successful receipt.
-If GitHub, CI or required approval blocks publication or merging, preserve the
+If GitHub, CI, Agent Merge or required approval blocks publication or merging, preserve the
 branch and any open checkout PR. Mark **verified locally; delivery blocked**,
-not complete. Do not substitute a direct push or local merge into `main`.
+not complete. Turn off Agent Merge while blocked or before local recovery.
+Do not substitute a direct push or local merge into `main`, bypass protections,
+force-push, broaden permissions or delete branches.
 If the PR merged but post-merge checks or preview fail, record **merged;
 post-merge verification blocked**. Any repair needs a separately approved
 follow-up feature branch and reviewed PR; never edit the verification checkout.
@@ -385,8 +429,8 @@ The published reference checkpoints do not include checkout.
 
 ## What you have learned
 
-- Distinguish delegated subagents from separate App worktree sessions and reusable custom-agent definitions.
-- Give each specialist owned files and sufficient context, then use actual questions and answers to coordinate dependent implementations.
+- Distinguish five visible child App sessions from `/fleet` subagents within one session.
+- Give each specialist a worktree, owned files and sufficient context, then coordinate questions and reviewed local handoffs.
 - Verify atomic checkout, immutable receipts and retry behavior alongside all earlier tests and the running UI.
-- Let one orchestrator deliver the integrated feature through a reviewed PR, then verify the exact merged-main application rather than an older running copy.
+- Reuse Agent Merge for the integrated checkout PR under explicit authorization, then verify the exact merged-main application rather than an older running copy.
 - Distinguish locally verified work, merged and verified delivery, and blocked or unavailable capabilities.

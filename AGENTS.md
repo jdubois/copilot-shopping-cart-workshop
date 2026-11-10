@@ -3,14 +3,27 @@
 This is a synthetic local training app, not a production shop.
 
 - Use the Maven wrapper, Java 21+, existing Spring Boot/H2/JUnit stack and vanilla
-  JS. No Docker, dependencies, upgrades, agents, checkout or authentication.
+  JS. No Docker, dependencies, upgrades or authentication.
 - Each task has its own acceptance card. Do not combine the bug, removal feature
   and query optimization into one unreviewable change. Use one named session
   and reviewed PR per task, starting from the previous task's verified merged
   main. Removal and Canvas polish share one PR. Create the two later parallel
   sessions manually; they may edit the same files. Merge the UI PR first and
-  authorize the test PR separately. Continue review and explicitly authorized
-  mock checkout in Cart: boundary tests.
+  authorize the test PR separately. Continue review in Cart: boundary tests.
+  Start mock checkout in a fresh Cart: mock checkout session and New worktree
+  from verified main, including merged critique corrections. For local recovery,
+  use the recorded reviewed local base instead and keep delivery marked blocked.
+- Subagents and checkout are off by default. Only in the five-subagent checkout
+  chapter, after explicit user approval of the contract, implementation plan and
+  file ownership, allow mock checkout and exactly five coordinated child App
+  sessions, each in its own new worktree and branch with a bounded assignment.
+  The approved delegation may authorize local handoff commits in those branches
+  and integration of reviewed commits into the orchestrator's checkout branch.
+  Preserve all other restrictions. Only the orchestrator may publish and merge,
+  after separate explicit approval of the integrated result; specialists must
+  not publish or merge. This allowance does not authorize unrelated delegation,
+  additional App sessions beyond those five, nested agents, /fleet execution
+  or changes to these instructions.
 - Run all Maven commands below from the repository root.
 - Application (human-run): `./mvnw spring-boot:run`, then open
   http://127.0.0.1:18765. Stop any previous workshop server first; agents must
