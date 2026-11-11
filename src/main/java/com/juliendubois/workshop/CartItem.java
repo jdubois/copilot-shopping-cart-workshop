@@ -9,8 +9,10 @@ import jakarta.persistence.ManyToOne;
 public class CartItem {
     @Id
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Product product;
+
     private int quantity;
 
     protected CartItem() {}
@@ -20,8 +22,19 @@ public class CartItem {
         this.product = product;
     }
 
-    public Long getId() { return id; }
-    public Product getProduct() { return product; }
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public Long getId() {
+        return id;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

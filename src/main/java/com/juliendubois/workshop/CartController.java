@@ -21,13 +21,18 @@ public class CartController {
     }
 
     public record AddItem(Long productId, Integer quantity) {}
+
     public record Identity(String application, String revision, long processId) {}
 
     @GetMapping("/api/products")
-    public List<CartService.ProductView> products() { return service.products(); }
+    public List<CartService.ProductView> products() {
+        return service.products();
+    }
 
     @GetMapping("/api/cart")
-    public CartService.CartView cart() { return service.cart(); }
+    public CartService.CartView cart() {
+        return service.cart();
+    }
 
     @PostMapping("/api/cart/items")
     public CartService.CartView add(@RequestBody AddItem request) {

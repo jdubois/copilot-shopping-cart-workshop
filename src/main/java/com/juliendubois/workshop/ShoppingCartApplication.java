@@ -28,17 +28,21 @@ public class ShoppingCartApplication {
                 .host(env.getProperty("server.address", "127.0.0.1"))
                 .port(env.getRequiredProperty("local.server.port", Integer.class))
                 .path(env.getProperty("server.servlet.context-path", ""))
-                .build().toUriString();
+                .build()
+                .toUriString();
         var bootUi = context.getBeanProvider(BootUiProperties.class).getIfAvailable();
-        log.info("""
+        log.info(
+                """
 
                 ----------------------------------------------------------
                   Shopping cart is ready!
                   Home:   {}/
                   BootUI: {}
                 ----------------------------------------------------------""",
-                baseUrl, bootUi == null || bootUi.getEnabled() == BootUiProperties.Mode.OFF
-                        ? "disabled" : baseUrl + bootUi.getPath() + "/");
+                baseUrl,
+                bootUi == null || bootUi.getEnabled() == BootUiProperties.Mode.OFF
+                        ? "disabled"
+                        : baseUrl + bootUi.getPath() + "/");
     }
 
     @Bean

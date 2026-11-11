@@ -1,13 +1,13 @@
 package com.juliendubois.workshop;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import org.junit.jupiter.api.Test;
 
 class QuantityInputTest extends HttpFixture {
     @Test
     void fractionalQuantityCannotCreateAnItem() throws Exception {
-        var response = request("POST", "/api/cart/items",
-                "{\"productId\":1,\"quantity\":1.5}");
+        var response = request("POST", "/api/cart/items", "{\"productId\":1,\"quantity\":1.5}");
 
         assertThat(response.statusCode()).isEqualTo(400);
         assertThat(cart().get("items").size()).isZero();
@@ -19,8 +19,7 @@ class QuantityInputTest extends HttpFixture {
         assertThat(add(1, 2).statusCode()).isEqualTo(200);
         var before = cart();
 
-        var response = request("POST", "/api/cart/items",
-                "{\"productId\":1,\"quantity\":1.5}");
+        var response = request("POST", "/api/cart/items", "{\"productId\":1,\"quantity\":1.5}");
 
         assertThat(response.statusCode()).isEqualTo(400);
         assertThat(cart()).isEqualTo(before);

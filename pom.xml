@@ -14,6 +14,8 @@
   <properties>
     <java.version>21</java.version>
     <bootui.version>2.3.0</bootui.version>
+    <palantir-java-format.version>2.94.0</palantir-java-format.version>
+    <spotless-maven-plugin.version>3.11.0</spotless-maven-plugin.version>
   </properties>
   <dependencies>
     <dependency>
@@ -51,6 +53,46 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${spotless-maven-plugin.version}</version>
+        <configuration>
+          <java>
+            <palantirJavaFormat>
+              <version>${palantir-java-format.version}</version>
+            </palantirJavaFormat>
+            <removeUnusedImports/>
+          </java>
+          <formats>
+            <format>
+              <includes>
+                <include>*.md</include>
+                <include>action.yml</include>
+                <include>.github/**/*.md</include>
+                <include>.github/**/*.yml</include>
+                <include>workshop/**/*.md</include>
+                <include>pom.xml</include>
+                <include>src/**/*.json</include>
+                <include>src/**/*.properties</include>
+                <include>src/**/*.xml</include>
+                <include>src/**/*.yaml</include>
+                <include>src/**/*.yml</include>
+              </includes>
+              <excludes>
+                <exclude>.github/skills/**</exclude>
+                <exclude>**/dist/**</exclude>
+                <exclude>**/node_modules/**</exclude>
+                <exclude>**/playwright-report/**</exclude>
+                <exclude>**/target/**</exclude>
+                <exclude>**/test-results/**</exclude>
+              </excludes>
+              <trimTrailingWhitespace/>
+              <endWithNewline/>
+            </format>
+          </formats>
+        </configuration>
       </plugin>
     </plugins>
   </build>

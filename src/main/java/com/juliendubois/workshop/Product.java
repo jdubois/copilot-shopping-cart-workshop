@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 public class Product {
     @Id
     private Long id;
+
     private String name;
     private int priceCents;
 
@@ -18,7 +19,15 @@ public class Product {
         this.priceCents = priceCents;
     }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public int getPriceCents() { return priceCents; }
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPriceCents() {
+        return priceCents;
+    }
 }

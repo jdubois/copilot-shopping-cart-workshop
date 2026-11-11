@@ -117,6 +117,9 @@ java -version
 Expect **4 tests, 0 failures, 0 errors, 0 skipped**. Maven downloads missing
 dependencies. These tests do not yet cover adding the same product twice.
 
+**App tip:** run `./mvnw spotless:apply` to format Java and supported project
+files. Use `./mvnw spotless:check` when you only want to verify formatting.
+
 ## Start the application
 
 Click the **terminal icon at the top right** to open a terminal in the
