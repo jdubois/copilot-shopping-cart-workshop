@@ -17,9 +17,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {"bootui.enabled=false", "server.address=127.0.0.1"})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"bootui.enabled=false",
+        "server.address=127.0.0.1"})
 abstract class HttpFixture {
     @LocalServerPort
     int port;
@@ -48,8 +47,7 @@ abstract class HttpFixture {
         return client.send(
                 HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + path))
                         .header("Content-Type", "application/json")
-                        .method(method, HttpRequest.BodyPublishers.ofString(body))
-                        .build(),
+                        .method(method, HttpRequest.BodyPublishers.ofString(body)).build(),
                 HttpResponse.BodyHandlers.ofString());
     }
 

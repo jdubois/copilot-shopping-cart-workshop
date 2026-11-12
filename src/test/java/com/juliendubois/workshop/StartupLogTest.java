@@ -19,25 +19,17 @@ class StartupLogTest {
     void printsHomeAndBootUiLinks(CapturedOutput output) {
         logReady(new MockEnvironment().withProperty("local.server.port", "18765"), new BootUiProperties());
 
-        assertThat(output.getOut())
-                .contains(
-                        "Shopping cart is ready!",
-                        "Home:   http://127.0.0.1:18765/",
-                        "BootUI: http://127.0.0.1:18765/bootui/");
+        assertThat(output.getOut()).contains("Shopping cart is ready!", "Home:   http://127.0.0.1:18765/",
+                "BootUI: http://127.0.0.1:18765/bootui/");
     }
 
     @Test
     void usesBoundPortAndConfiguredPaths(CapturedOutput output) {
         var properties = new BootUiProperties();
         properties.setPath("/diagnostics");
-        logReady(
-                new MockEnvironment()
-                        .withProperty("local.server.port", "54321")
-                        .withProperty("server.port", "0")
-                        .withProperty("server.address", "127.0.0.1")
-                        .withProperty("server.ssl.enabled", "true")
-                        .withProperty("server.servlet.context-path", "/shop"),
-                properties);
+        logReady(new MockEnvironment().withProperty("local.server.port", "54321").withProperty("server.port", "0")
+                .withProperty("server.address", "127.0.0.1").withProperty("server.ssl.enabled", "true")
+                .withProperty("server.servlet.context-path", "/shop"), properties);
 
         assertThat(output.getOut())
                 .contains("Home:   https://127.0.0.1:54321/shop/", "BootUI: https://127.0.0.1:54321/shop/diagnostics/")
@@ -48,8 +40,7 @@ class StartupLogTest {
     void doesNotAdvertiseAbsentBootUi(CapturedOutput output) {
         logReady(new MockEnvironment().withProperty("local.server.port", "54321"), null);
 
-        assertThat(output.getOut())
-                .contains("Home:   http://127.0.0.1:54321/", "BootUI: disabled")
+        assertThat(output.getOut()).contains("Home:   http://127.0.0.1:54321/", "BootUI: disabled")
                 .doesNotContain("/bootui/");
     }
 
@@ -69,12 +60,8 @@ class StartupLogTest {
                 context.getBeanFactory().registerSingleton("bootUiProperties", bootUi);
             }
             context.refresh();
-            new ShoppingCartApplication()
-                    .logReady(new ApplicationReadyEvent(
-                            new SpringApplication(ShoppingCartApplication.class),
-                            new String[0],
-                            context,
-                            Duration.ZERO));
+            new ShoppingCartApplication().logReady(new ApplicationReadyEvent(
+                    new SpringApplication(ShoppingCartApplication.class), new String[0], context, Duration.ZERO));
         }
     }
 }

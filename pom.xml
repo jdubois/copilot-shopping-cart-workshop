@@ -14,7 +14,7 @@
   <properties>
     <java.version>21</java.version>
     <bootui.version>2.3.0</bootui.version>
-    <palantir-java-format.version>2.94.0</palantir-java-format.version>
+    <eclipse-jdt.version>4.41</eclipse-jdt.version>
     <spotless-maven-plugin.version>3.11.0</spotless-maven-plugin.version>
   </properties>
   <dependencies>
@@ -60,10 +60,10 @@
         <version>${spotless-maven-plugin.version}</version>
         <configuration>
           <java>
-            <palantirJavaFormat>
-              <version>${palantir-java-format.version}</version>
-            </palantirJavaFormat>
-            <removeUnusedImports/>
+            <eclipse>
+              <version>${eclipse-jdt.version}</version>
+              <file>${project.basedir}/.mvn/eclipse-formatter.xml</file>
+            </eclipse>
           </java>
           <formats>
             <format>

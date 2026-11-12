@@ -17,35 +17,29 @@ public class CartService {
         this.em = em;
     }
 
-    public record ItemView(long productId, String name, int priceCents, int quantity, int lineTotalCents) {}
+    public record ItemView(long productId, String name, int priceCents, int quantity, int lineTotalCents) {
+    }
 
-    public record CartView(List<ItemView> items, int itemCount, int totalCents) {}
+    public record CartView(List<ItemView> items, int itemCount, int totalCents) {
+    }
 
-    public record ProductView(long id, String name, int priceCents) {}
+    public record ProductView(long id, String name, int priceCents) {
+    }
 
     @Transactional(readOnly = true)
     public List<ProductView> products() {
         return em.createQuery("select p from Product p order by p.id", Product.class).getResultList().stream()
-                .map(p -> new ProductView(p.getId(), p.getName(), p.getPriceCents()))
-                .toList();
+                .map(p -> new ProductView(p.getId(), p.getName(), p.getPriceCents())).toList();
     }
 
     @Transactional(readOnly = true)
     public CartView cart() {
-        var items = repository.findCart().stream()
-                .map(item -> {
-                    var product = item.getProduct();
-                    return new ItemView(
-                            product.getId(),
-                            product.getName(),
-                            product.getPriceCents(),
-                            item.getQuantity(),
-                            product.getPriceCents() * item.getQuantity());
-                })
-                .toList();
-        return new CartView(
-                items,
-                items.stream().mapToInt(ItemView::quantity).sum(),
+        var items = repository.findCart().stream().map(item -> {
+            var product = item.getProduct();
+            return new ItemView(product.getId(), product.getName(), product.getPriceCents(), item.getQuantity(),
+                    product.getPriceCents() * item.getQuantity());
+        }).toList();
+        return new CartView(items, items.stream().mapToInt(ItemView::quantity).sum(),
                 items.stream().mapToInt(ItemView::lineTotalCents).sum());
     }
 

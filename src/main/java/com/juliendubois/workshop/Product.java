@@ -11,7 +11,8 @@ public class Product {
     private String name;
     private int priceCents;
 
-    protected Product() {}
+    protected Product() {
+    }
 
     Product(long id, String name, int priceCents) {
         this.id = id;

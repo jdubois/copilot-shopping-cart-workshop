@@ -20,9 +20,11 @@ public class CartController {
         this.revision = revision;
     }
 
-    public record AddItem(Long productId, Integer quantity) {}
+    public record AddItem(Long productId, Integer quantity) {
+    }
 
-    public record Identity(String application, String revision, long processId) {}
+    public record Identity(String application, String revision, long processId) {
+    }
 
     @GetMapping("/api/products")
     public List<CartService.ProductView> products() {

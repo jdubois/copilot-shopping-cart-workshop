@@ -15,7 +15,8 @@ public class CartItem {
 
     private int quantity;
 
-    protected CartItem() {}
+    protected CartItem() {
+    }
 
     CartItem(Product product) {
         this.id = product.getId();

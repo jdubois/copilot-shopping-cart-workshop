@@ -117,8 +117,12 @@ java -version
 Expect **4 tests, 0 failures, 0 errors, 0 skipped**. Maven downloads missing
 dependencies. These tests do not yet cover adding the same product twice.
 
-**App tip:** run `./mvnw spotless:apply` to format Java and supported project
-files. Use `./mvnw spotless:check` when you only want to verify formatting.
+**Optional formatting:** run `./mvnw spotless:apply` (Windows:
+`.\mvnw.cmd spotless:apply`) to format Java with the pinned Eclipse JDT formatter
+and shared four-space profile in `.mvn/eclipse-formatter.xml`. It also trims
+trailing whitespace and adds final newlines to the configured project files.
+Use `./mvnw spotless:check` to verify without editing files. Neither command
+runs automatically during normal builds or tests. No IDE plugin is required.
 
 ## Start the application
 
