@@ -104,6 +104,10 @@ Include the reviewed correction in this session's handoff and PR.
 **App tip:** review each session's changes against its task, not a list of
 exclusively owned files. Separate worktrees do not guarantee conflict-free merges.
 
+Have both sessions follow the [shared formatting commands]({{ site.baseurl }}/setup/#formatting)
+before handing off changes. Keep the formatter version and profile
+unchanged so style-only edits do not obscure either task.
+
 Check progress and clarify the task when needed. Give each session time to work
 instead of repeatedly asking for updates or starting more agents.
 Each worker reviews and commits its changes, then reports its branch, commit

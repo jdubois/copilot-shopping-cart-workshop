@@ -49,6 +49,10 @@ This is a synthetic local training app, not a production shop.
 - Baseline: `./mvnw -Dtest=BaselineTest test` (4 tests).
 - Full suite: `./mvnw test` (all currently activated tests, including any
   additional tests in `src/test/java/`).
+- Formatting: before handing off changes to Java or Spotless-managed files,
+  run `./mvnw spotless:apply`, then `./mvnw spotless:check` from the repository
+  root. Use the existing formatter configuration. Review the diff; do not
+  silently include unrelated formatting changes. Report any formatting failure.
 - Regression: generate
   `src/test/java/com/juliendubois/workshop/CartContractTest.java` from the agreed
   quantity acceptance criteria and review its assertions before fixing code.

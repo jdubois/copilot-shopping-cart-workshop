@@ -87,6 +87,19 @@ and let the human manage the running shop.
 - Stay short and current. Link to detailed documentation instead of copying
   it, and update commands when the workflow changes.
 
+**App tip: let tools handle style.** Keep formatting commands in `AGENTS.md` so
+agents can normalize their changes before handing them back. A shared formatter
+reduces style-only differences between sessions; it does not replace tests or
+prevent conflicting changes to behavior.
+{: #formatting}
+
+In this template, run `./mvnw spotless:apply` (Windows:
+`.\mvnw.cmd spotless:apply`) to format Java with the pinned Eclipse JDT formatter
+and shared four-space profile in `.mvn/eclipse-formatter.xml`. It also trims
+trailing whitespace and adds final newlines to the configured project files.
+Use `./mvnw spotless:check` to verify without editing files. Neither command
+runs automatically during normal builds or tests. No IDE plugin is required.
+
 The template already provides these instructions; you don't need to edit them.
 Next, use its baseline-test and startup commands.
 
@@ -116,13 +129,6 @@ java -version
 
 Expect **4 tests, 0 failures, 0 errors, 0 skipped**. Maven downloads missing
 dependencies. These tests do not yet cover adding the same product twice.
-
-**Optional formatting:** run `./mvnw spotless:apply` (Windows:
-`.\mvnw.cmd spotless:apply`) to format Java with the pinned Eclipse JDT formatter
-and shared four-space profile in `.mvn/eclipse-formatter.xml`. It also trims
-trailing whitespace and adds final newlines to the configured project files.
-Use `./mvnw spotless:check` to verify without editing files. Neither command
-runs automatically during normal builds or tests. No IDE plugin is required.
 
 ## Start the application
 
